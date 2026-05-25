@@ -1,0 +1,68 @@
+vocabulary: 0.1
+name: Medplum Vocabulary
+description: >-
+  Controlled vocabulary for the Medplum open-source FHIR-native developer platform. Captures
+  operational, clinical, and platform-specific terms used across the Medplum API, SDK, Bots,
+  Subscriptions, Access Policies, and FHIR R4 resource surface.
+license: Apache-2.0
+source: https://www.medplum.com/
+modified: '2026-05-25'
+
+dimensions:
+  - name: Platform
+    description: Medplum-specific platform concepts that wrap or extend FHIR.
+    terms:
+      - term: Project
+        definition: Isolation boundary in Medplum; a tenant containing resources, users, and policies.
+      - term: Bot
+        definition: TypeScript serverless function executed in response to triggers (Subscriptions, HTTP, cron).
+      - term: AccessPolicy
+        definition: Declarative access-control resource defining read/write rules per resource type and field.
+      - term: ClientApplication
+        definition: OAuth 2.0 client registration used by external systems to authenticate to Medplum.
+      - term: ProjectMembership
+        definition: Link between a User and a Project, including roles and access policies.
+      - term: Login
+        definition: Authentication record produced by SMART on FHIR / OAuth flows.
+
+  - name: Clinical
+    description: Core FHIR R4 clinical resources Medplum stores natively.
+    terms:
+      - term: Patient
+        definition: Demographics and administrative information about an individual receiving care.
+      - term: Practitioner
+        definition: A person who is directly or indirectly involved in the provisioning of healthcare.
+      - term: Observation
+        definition: Measurements and simple assertions about a patient (vitals, labs, social history).
+      - term: Encounter
+        definition: An interaction between a patient and healthcare provider(s).
+      - term: Condition
+        definition: A clinical condition, problem, diagnosis, or other event.
+      - term: MedicationRequest
+        definition: An order or prescription for a medication.
+
+  - name: Integration
+    description: Mechanisms Medplum provides for integrating with external systems.
+    terms:
+      - term: Subscription
+        definition: FHIR resource that triggers a Bot or webhook when matching criteria are met.
+      - term: FHIRcast
+        definition: Real-time clinical context synchronization protocol supported by Medplum.
+      - term: HL7v2
+        definition: Legacy pipe-delimited messaging format Medplum can parse and transform via Bots.
+      - term: Agent
+        definition: On-premise component that bridges local clinical systems (HL7, DICOM) to Medplum cloud.
+
+  - name: Standards
+    description: External standards Medplum implements.
+    terms:
+      - term: FHIR R4
+        definition: HL7 Fast Healthcare Interoperability Resources, Release 4.
+      - term: US Core
+        definition: US Core Implementation Guide profile set used for ONC certification.
+      - term: SMART on FHIR
+        definition: OAuth 2.0 profile for healthcare apps to obtain scoped FHIR access.
+      - term: Bulk Data
+        definition: FHIR Bulk Data Access IG (2.0.0) for population-scale exports.
+      - term: USCDI
+        definition: United States Core Data for Interoperability dataset.

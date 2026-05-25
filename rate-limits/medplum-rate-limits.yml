@@ -1,0 +1,81 @@
+specification: API Commons Rate Limits
+specificationVersion: '0.1'
+schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/RateLimits
+provider: Medplum
+providerId: medplum
+created: '2026-05-25'
+modified: '2026-05-25'
+tags:
+  - Healthcare
+  - FHIR
+  - Rate Limiting
+  - Quotas
+  - Throttling
+description: >-
+  Machine-readable rate limit definitions for Medplum's hosted FHIR developer platform.
+  Captures the limits published in the Medplum documentation at
+  https://www.medplum.com/docs/rate-limits as well as scaffold values for higher tiers.
+headers:
+  limit: X-RateLimit-Limit
+  remaining: X-RateLimit-Remaining
+  reset: X-RateLimit-Reset
+  retryAfter: Retry-After
+  policy: RateLimit-Policy
+responseCodes:
+  throttled: 429
+  quotaExceeded: 429
+  serviceUnavailable: 503
+limits:
+  - tier: free
+    name: Free Tier Request Rate
+    scope: project
+    metric: requests_per_minute
+    limit: 600
+    timeFrame: minute
+    applies:
+      - Medplum FHIR REST API
+      - Medplum GraphQL API
+  - tier: production
+    name: Production Tier Request Rate
+    scope: project
+    metric: requests_per_minute
+    limit: 6000
+    timeFrame: minute
+    applies:
+      - Medplum FHIR REST API
+      - Medplum GraphQL API
+      - Medplum Bots
+  - tier: premium
+    name: Premium Tier Request Rate
+    scope: project
+    metric: requests_per_minute
+    limit: 18000
+    timeFrame: minute
+    applies:
+      - Medplum FHIR REST API
+      - Medplum GraphQL API
+      - Medplum Bots
+  - tier: enterprise
+    name: Enterprise Negotiated Rate
+    scope: contract
+    metric: requests_per_minute
+    limit: 60000
+    burst: 120000
+    timeFrame: minute
+    applies:
+      - Medplum FHIR REST API
+      - Medplum GraphQL API
+      - Medplum Bots
+  - tier: all
+    name: Bot Execution Limit
+    scope: project
+    metric: bot_executions_per_minute
+    limit: 60
+    timeFrame: minute
+    applies:
+      - Medplum Bots
+notes: >-
+  Free tier limits are derived from publicly published Medplum rate-limit documentation;
+  Production, Premium, and Enterprise rate values are scaffold projections aligned with the
+  commercial tier structure and should be reconciled with the contractually agreed limits
+  documented in each customer's plan.

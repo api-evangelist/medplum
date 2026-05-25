@@ -1,0 +1,90 @@
+specification: FinOps Framework
+specificationVersion: '1.0'
+alignedWith:
+  framework: FinOps Foundation Framework
+  frameworkUrl: https://www.finops.org/framework/
+  dataSpec: FOCUS
+  dataSpecVersion: '1.3'
+  dataSpecUrl: https://focus.finops.org/focus-specification/v1-3/
+provider: Medplum
+providerId: medplum
+publisherName: Medplum Inc.
+serviceCategory: API / Developer Platform
+created: '2026-05-25'
+modified: '2026-05-25'
+tags:
+  - Healthcare
+  - FHIR
+  - FinOps
+  - Cost Management
+  - FOCUS
+description: >-
+  FinOps framework definition for the Medplum hosted developer platform. Provides a
+  FOCUS-aligned mapping for cost allocation, usage measurement, and unit-economics
+  reporting across the Medplum FHIR REST API, GraphQL API, and Bots execution surface.
+principles:
+  - name: Visibility
+    description: Surface Medplum subscription and overage costs to engineering, product, and finance in near real-time.
+  - name: Allocation
+    description: Tag FHIR API consumption with consuming team, environment, application, and clinical workflow for chargeback.
+  - name: Optimization
+    description: Continuously evaluate batch operations, GraphQL field selection, and Bot execution patterns to reduce cost per clinical action.
+  - name: Accountability
+    description: Establish budget owners for each Medplum Project and document chargeback or showback flows.
+domains:
+  - name: Understand Usage and Cost
+    capabilities:
+      - Data Ingestion
+      - Allocation
+      - Reporting and Analytics
+      - Anomaly Management
+  - name: Quantify Business Value
+    capabilities:
+      - Planning and Estimating
+      - Forecasting
+      - Budgeting
+      - Benchmarking
+      - Unit Economics
+  - name: Optimize Usage and Cost
+    capabilities:
+      - Architecting for Cloud
+      - Rate Optimization
+      - Workload Optimization
+      - Cloud Sustainability
+      - Licensing and SaaS
+  - name: Manage the FinOps Practice
+    capabilities:
+      - FinOps Practice Operations
+      - FinOps Education and Enablement
+      - Invoicing and Chargeback
+      - Onboarding Workloads
+      - Intersecting Disciplines
+billingModel:
+  pricingCategory: Subscription + Usage
+  billingFrequency: Monthly
+  billingCurrency: USD
+  chargeCategories:
+    - Subscription
+    - Usage
+    - Purchase
+    - Tax
+    - Credit
+    - Adjustment
+  chargeFrequency: Recurring
+focusColumns:
+  ServiceName: Medplum
+  ServiceCategory: Developer Tools / Healthcare API
+  ProviderName: Medplum Inc.
+  PublisherName: Medplum Inc.
+  ChargeCategory: Subscription
+  ChargePeriodFrequency: Monthly
+  PricingCategory: Subscription
+  PricingUnit: project-month
+  BillingCurrency: USD
+unitEconomics:
+  - name: Cost per FHIR Write
+    description: Total Medplum cost divided by FHIR create/update/patch operations per period.
+  - name: Cost per Bot Execution
+    description: Total Medplum cost divided by Bot invocation count per period.
+  - name: Cost per Active Patient
+    description: Total Medplum cost divided by count of Patient resources touched in the period.

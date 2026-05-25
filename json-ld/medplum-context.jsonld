@@ -1,0 +1,33 @@
+{
+  "@context": {
+    "@version": 1.1,
+    "schema": "https://schema.org/",
+    "fhir": "http://hl7.org/fhir/",
+    "loinc": "http://loinc.org/",
+    "snomed": "http://snomed.info/sct/",
+    "ucum": "http://unitsofmeasure.org/",
+    "medplum": "https://www.medplum.com/ns/",
+    "Project": "medplum:Project",
+    "Patient": "fhir:Patient",
+    "Practitioner": "fhir:Practitioner",
+    "Organization": "fhir:Organization",
+    "Observation": "fhir:Observation",
+    "Encounter": "fhir:Encounter",
+    "Condition": "fhir:Condition",
+    "MedicationRequest": "fhir:MedicationRequest",
+    "Subscription": "fhir:Subscription",
+    "Bot": "medplum:Bot",
+    "ClientApplication": "medplum:ClientApplication",
+    "AccessPolicy": "medplum:AccessPolicy",
+    "resourceType": "@type",
+    "id": "@id",
+    "name": "schema:name",
+    "identifier": "schema:identifier",
+    "subject": { "@id": "fhir:subject", "@type": "@id" },
+    "code": "fhir:code",
+    "system": "schema:codingSystem",
+    "license": { "@id": "schema:license", "@type": "@id" }
+  },
+  "license": "https://www.apache.org/licenses/LICENSE-2.0",
+  "x-source": "https://www.medplum.com/"
+}

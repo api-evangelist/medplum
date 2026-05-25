@@ -1,0 +1,49 @@
+extends:
+  - spectral:oas
+
+rules:
+  # All operations should declare a summary
+  operation-summary:
+    description: Operations should have a Title Case summary.
+    severity: warn
+    given: $.paths[*][get,put,post,delete,patch]
+    then:
+      - field: summary
+        function: truthy
+
+  # Medplum FHIR REST uses bearer tokens
+  medplum-bearer-security:
+    description: Medplum FHIR REST API operations must require bearer-token security.
+    severity: warn
+    given: $.components.securitySchemes
+    then:
+      function: truthy
+
+  # Path-template segments must use resourceType / id naming
+  medplum-resource-path:
+    description: Medplum FHIR R4 paths must start with /fhir/R4/{resourceType}.
+    severity: warn
+    given: $.paths
+    then:
+      function: pattern
+      functionOptions:
+        match: '^/fhir/R4/.*'
+
+  # Avoid trailing slashes on paths
+  no-trailing-slash:
+    description: Paths must not end with a trailing slash.
+    severity: warn
+    given: $.paths
+    then:
+      function: pattern
+      functionOptions:
+        notMatch: '.+/$'
+
+  # Operations should reference standard FHIR R4 schemas
+  fhir-r4-schema-ref:
+    description: Request and response bodies should reference R4 component schemas.
+    severity: info
+    given: $.paths[*][get,post,put,patch].responses.200.content.application/fhir+json.schema
+    then:
+      field: '$ref'
+      function: truthy

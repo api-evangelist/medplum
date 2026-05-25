@@ -1,0 +1,12 @@
+{
+  "resourceType": "Bot",
+  "name": "HL7v2 to FHIR Patient Bot",
+  "description": "Receives HL7v2 ADT messages, parses them, and creates or updates FHIR Patient resources in Medplum.",
+  "runtimeVersion": "awslambda",
+  "sourceCode": {
+    "contentType": "text/typescript",
+    "title": "hl7-to-fhir.ts",
+    "url": "https://example.org/bots/hl7-to-fhir.ts"
+  },
+  "code": "import { BotEvent, MedplumClient } from '@medplum/core';\nimport { Bundle, Patient } from '@medplum/fhirtypes';\n\nexport async function handler(medplum: MedplumClient, event: BotEvent): Promise<any> {\n  const hl7 = event.input as string;\n  const mrn = hl7.split('\\r')[1].split('|')[3].split('^')[0];\n  const patient: Patient = {\n    resourceType: 'Patient',\n    identifier: [{ system: 'https://example.org/mrn', value: mrn }]\n  };\n  return medplum.createResourceIfNoneExist(patient, `identifier=${mrn}`);\n}\n"
+}

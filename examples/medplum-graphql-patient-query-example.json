@@ -1,0 +1,12 @@
+{
+  "endpoint": "https://api.medplum.com/fhir/R4/$graphql",
+  "method": "POST",
+  "headers": {
+    "Authorization": "Bearer REDACTED",
+    "Content-Type": "application/json"
+  },
+  "body": {
+    "query": "query PatientWithObservations($id: ID!) {\n  Patient(id: $id) {\n    id\n    name { given family }\n    birthDate\n    ObservationList(_reference: subject, code: \"85354-9\") {\n      id\n      effectiveDateTime\n      component {\n        code { coding { code display } }\n        valueQuantity { value unit }\n      }\n    }\n  }\n}",
+    "variables": { "id": "example" }
+  }
+}

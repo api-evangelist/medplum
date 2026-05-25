@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-structure.org/draft/2024/structure",
+  "title": "Medplum Patient",
+  "description": "JSON Structure description of the Medplum FHIR R4 Patient resource. Subset of the full FHIR R4 Patient schema covering the fields commonly used in Medplum applications.",
+  "type": "object",
+  "properties": {
+    "resourceType": { "type": "string", "const": "Patient" },
+    "id": { "type": "string", "description": "Logical FHIR id assigned by Medplum." },
+    "identifier": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "system": { "type": "string", "format": "uri" },
+          "value": { "type": "string" }
+        }
+      }
+    },
+    "name": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "use": { "type": "string", "enum": ["usual","official","temp","nickname","anonymous","old","maiden"] },
+          "family": { "type": "string" },
+          "given": { "type": "array", "items": { "type": "string" } }
+        }
+      }
+    },
+    "gender": { "type": "string", "enum": ["male","female","other","unknown"] },
+    "birthDate": { "type": "string", "format": "date" },
+    "telecom": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "system": { "type": "string" },
+          "value": { "type": "string" },
+          "use": { "type": "string" }
+        }
+      }
+    },
+    "active": { "type": "boolean" }
+  },
+  "required": ["resourceType"]
+}

@@ -1,0 +1,266 @@
+aid: medplum
+name: Medplum
+description: >-
+  Medplum is an Apache 2.0 open-source, FHIR-native developer platform for shipping
+  clinical software. It bundles a FHIR R4 datastore, REST and GraphQL APIs, a TypeScript
+  SDK, React component library, OAuth 2.0 / SMART on FHIR authentication, declarative
+  Access Policies, Subscriptions, and TypeScript-based serverless Bots — sold as a hosted
+  service at api.medplum.com and as a self-hostable monorepo on GitHub. Medplum is HIPAA,
+  SOC 2 Type II, and ONC-certified.
+type: Index
+image: https://kinlane-productions2.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+tags:
+  - Healthcare
+  - FHIR
+  - Open Source
+  - Developer Platform
+  - HIPAA
+  - SMART on FHIR
+  - Clinical
+  - Interoperability
+url: https://raw.githubusercontent.com/api-evangelist/medplum/refs/heads/main/apis.yml
+created: '2026-05-25'
+modified: '2026-05-25'
+specificationVersion: '0.19'
+apis:
+  - aid: medplum:medplum-fhir-rest-api
+    name: Medplum FHIR REST API
+    description: >-
+      FHIR R4 REST API exposed at https://api.medplum.com/fhir/R4. Supports the full
+      generic FHIR resource surface — create, read, update, patch, delete, search, history,
+      and version-read — across every FHIR R4 resource type, with US Core, SMART App Launch,
+      and Bulk Data 2.0 conformance.
+    humanURL: https://www.medplum.com/docs/api
+    baseURL: https://api.medplum.com/fhir/R4
+    tags:
+      - FHIR
+      - REST
+      - Healthcare
+      - Clinical
+    properties:
+      - type: Documentation
+        url: https://www.medplum.com/docs/api
+      - type: APIReference
+        url: https://www.medplum.com/docs/api
+      - type: OpenAPI
+        url: openapi/medplum-openapi-original.yml
+      - type: Authentication
+        url: https://www.medplum.com/docs/auth
+      - type: RateLimits
+        url: https://www.medplum.com/docs/rate-limits
+      - type: JSONSchema
+        url: json-schema/medplum-patient-schema.json
+      - type: JSONSchema
+        url: json-schema/medplum-observation-schema.json
+      - type: JSONSchema
+        url: json-schema/medplum-encounter-schema.json
+      - type: JSONSchema
+        url: json-schema/medplum-practitioner-schema.json
+      - type: JSONSchema
+        url: json-schema/medplum-organization-schema.json
+      - type: JSONSchema
+        url: json-schema/medplum-condition-schema.json
+      - type: JSONSchema
+        url: json-schema/medplum-medicationrequest-schema.json
+      - type: JSONSchema
+        url: json-schema/medplum-subscription-schema.json
+      - type: JSONStructure
+        url: json-structure/medplum-patient-structure.json
+      - type: Example
+        url: examples/medplum-patient-create-example.json
+      - type: Example
+        url: examples/medplum-observation-bloodpressure-example.json
+      - type: Example
+        url: examples/medplum-subscription-webhook-example.json
+      - type: NaftikoCapability
+        url: capabilities/medplum-fhir-rest.yaml
+
+  - aid: medplum:medplum-graphql-api
+    name: Medplum GraphQL API
+    description: >-
+      FHIR-aware GraphQL endpoint at https://api.medplum.com/fhir/R4/$graphql. Supports
+      typed nested queries, reverse-reference traversal (_reference), FHIRPath-style array
+      filtering, and access-policy enforcement at the field level.
+    humanURL: https://www.medplum.com/docs/graphql
+    baseURL: https://api.medplum.com/fhir/R4/$graphql
+    tags:
+      - GraphQL
+      - FHIR
+      - Healthcare
+    properties:
+      - type: Documentation
+        url: https://www.medplum.com/docs/graphql
+      - type: Example
+        url: examples/medplum-graphql-patient-query-example.json
+      - type: NaftikoCapability
+        url: capabilities/medplum-graphql.yaml
+
+  - aid: medplum:medplum-bots
+    name: Medplum Bots
+    description: >-
+      Bots are TypeScript serverless functions (AWS Lambda-style) executed in response to
+      FHIR Subscriptions, HTTP triggers, or scheduled cron. Bots are the backbone of Medplum
+      integrations — HL7v2 to FHIR conversion, document generation, webhook fan-out, and
+      questionnaire-driven workflow automation.
+    humanURL: https://www.medplum.com/docs/bots
+    tags:
+      - Bots
+      - Automation
+      - Serverless
+      - Integration
+    properties:
+      - type: Documentation
+        url: https://www.medplum.com/docs/bots
+      - type: JSONSchema
+        url: json-schema/medplum-bot-schema.json
+      - type: Example
+        url: examples/medplum-bot-hl7-to-fhir-example.json
+      - type: NaftikoCapability
+        url: capabilities/medplum-bots.yaml
+
+  - aid: medplum:medplum-subscriptions
+    name: Medplum Subscriptions
+    description: >-
+      FHIR Subscription resources that match a search criteria and dispatch real-time
+      notifications via REST hooks (webhooks) or Websockets when matching resources are
+      created or updated. Subscriptions are the primary trigger for Bots and external system
+      integrations.
+    humanURL: https://www.medplum.com/docs/subscriptions
+    tags:
+      - Subscriptions
+      - Webhooks
+      - FHIR
+      - Events
+    properties:
+      - type: Documentation
+        url: https://www.medplum.com/docs/subscriptions
+      - type: Example
+        url: examples/medplum-subscription-webhook-example.json
+
+common:
+  - type: Website
+    url: https://www.medplum.com
+  - type: Documentation
+    url: https://www.medplum.com/docs
+  - type: GettingStarted
+    url: https://www.medplum.com/docs/tutorials
+  - type: APIReference
+    url: https://www.medplum.com/docs/api
+  - type: Authentication
+    url: https://www.medplum.com/docs/auth
+  - type: SDK
+    url: https://www.medplum.com/docs/sdk/core
+  - type: SDK
+    url: https://www.npmjs.com/package/@medplum/core
+  - type: SDK
+    url: https://www.npmjs.com/package/@medplum/react
+  - type: CLI
+    url: https://www.medplum.com/docs/cli
+  - type: Console
+    url: https://app.medplum.com
+  - type: Pricing
+    url: https://www.medplum.com/pricing
+  - type: TermsOfService
+    url: https://www.medplum.com/terms
+  - type: PrivacyPolicy
+    url: https://www.medplum.com/privacy
+  - type: Blog
+    url: https://www.medplum.com/blog
+  - type: GitHubOrganization
+    url: https://github.com/medplum
+  - type: GitHubRepository
+    url: https://github.com/medplum/medplum
+  - type: Support
+    url: mailto:support@medplum.com
+  - type: Discord
+    url: https://discord.gg/medplum
+  - type: License
+    url: https://www.apache.org/licenses/LICENSE-2.0
+  - type: SpectralRules
+    url: rules/medplum-rules.yml
+  - type: Vocabulary
+    url: vocabulary/medplum-vocabulary.yml
+  - type: JSON-LD
+    url: json-ld/medplum-context.jsonld
+  - type: Plans
+    url: plans/medplum-plans-pricing.yml
+  - type: RateLimits
+    url: rate-limits/medplum-rate-limits.yml
+  - type: FinOps
+    url: finops/medplum-finops.yml
+
+  - type: Features
+    data:
+      - name: FHIR-Native Datastore
+        description: PostgreSQL-backed datastore that natively models FHIR R4 resources, including search, history, and versioning.
+      - name: REST + GraphQL APIs
+        description: Dual API surface — FHIR REST and FHIR-aware GraphQL — sharing the same authorization, schema, and access policies.
+      - name: Bots (Serverless TypeScript Functions)
+        description: AWS Lambda-style TypeScript functions executed by Subscriptions, HTTP, or cron triggers; the integration backbone of Medplum.
+      - name: Subscriptions (Webhooks + Websockets)
+        description: FHIR Subscription resources dispatch real-time notifications when matching resources change.
+      - name: Access Policies
+        description: Declarative resource- and field-level authorization rules attached to ProjectMembership.
+      - name: SMART on FHIR + OAuth 2.0
+        description: Standards-based authentication and authorization, supporting SMART App Launch 2.0.0 and Bulk Data 2.0.0.
+      - name: TypeScript SDK and React Components
+        description: '@medplum/core, @medplum/react, and @medplum/react-hooks provide typed client and reusable UI primitives.'
+      - name: On-Premise Agent
+        description: Bridges local clinical systems (HL7v2, DICOM, MLLP) to Medplum cloud.
+      - name: AWS CDK Deployment
+        description: First-class CDK constructs for self-hosting Medplum on AWS.
+
+  - type: UseCases
+    data:
+      - name: Custom EHR Development
+        description: Build custom electronic health records on top of FHIR-native storage and React UI components.
+      - name: Patient Engagement Portals
+        description: Ship patient-facing portals using SMART on FHIR auth and the Medplum React component library.
+      - name: AI Scribe and Clinical Documentation
+        description: Capture clinical notes, run them through LLM pipelines via Bots, and persist structured FHIR resources.
+      - name: HL7v2 to FHIR Integration
+        description: Receive legacy HL7v2 ADT, ORU, and SIU messages via the on-premise Agent and convert them to FHIR with Bots.
+      - name: Population Health and Analytics
+        description: Use Bulk Data 2.0 exports and GraphQL aggregations for cohort and population-level analysis.
+      - name: Care Management Workflows
+        description: Model longitudinal care plans, tasks, and questionnaires with FHIR-native resources.
+      - name: Revenue Cycle Automation
+        description: Automate claim, coverage, and explanation-of-benefit workflows with Bots and Subscriptions.
+
+  - type: Integrations
+    data:
+      - name: AWS
+        description: First-class deployment on AWS via CDK, with Bots running on Lambda and storage on RDS PostgreSQL.
+      - name: HL7v2
+        description: Bidirectional HL7v2 messaging via the Medplum on-premise Agent.
+      - name: FHIRcast
+        description: Real-time clinical-context synchronization protocol support.
+      - name: Stripe
+        description: Billing and payment integration examples for revenue cycle.
+      - name: Twilio
+        description: SMS, voice, and messaging integration patterns via Bots.
+      - name: DocuSeal / DocuSign
+        description: Patient consent and document-signing integration examples.
+      - name: SendGrid / Mailgun
+        description: Transactional email integration patterns via Bots.
+      - name: AWS HealthLake
+        description: Cross-platform FHIR data exchange examples.
+
+  - type: Solutions
+    data:
+      - name: Custom EHR
+        description: Build production EHR systems on top of Medplum.
+      - name: Patient Portal
+        description: Reference patient-facing portal application.
+      - name: Provider Portal
+        description: Reference provider-facing clinical application.
+      - name: AI-Powered Clinical Scribe
+        description: Solution pattern for LLM-driven clinical documentation pipelines.
+      - name: Population Health Platform
+        description: Solution pattern for cohort identification and outcome tracking.
+      - name: Revenue Cycle Management
+        description: Solution pattern for automating claims, coverage, and billing workflows.
+
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com

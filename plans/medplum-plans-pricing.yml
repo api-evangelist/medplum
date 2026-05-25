@@ -1,0 +1,144 @@
+specification: API Commons Plans
+specificationVersion: '0.1'
+schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/Plans
+provider: Medplum
+providerId: medplum
+created: '2026-05-25'
+modified: '2026-05-25'
+tags:
+  - Healthcare
+  - FHIR
+  - Open Source
+  - Developer Platform
+  - HIPAA
+description: >-
+  Published commercial plans for Medplum's hosted FHIR developer platform, sourced from
+  https://www.medplum.com/pricing. Medplum is Apache 2.0 open source, with a hosted SaaS
+  tier and an enterprise self-hosted option.
+plans:
+  - id: medplum-free
+    name: Free
+    type: freemium
+    description: Free hosted tier for prototyping and learning with the Medplum platform.
+    entries:
+      - label: Hosted FHIR Datastore
+        name: hosted_datastore
+        type: feature
+        description: Managed Medplum project with FHIR R4 datastore on api.medplum.com.
+        price: '0.00'
+        unit: 1
+        timeFrame: month
+      - label: Google Authentication
+        name: google_auth
+        type: feature
+        price: '0.00'
+      - label: Websocket Subscriptions
+        name: websocket_subscriptions
+        type: feature
+        price: '0.00'
+      - label: Community Support
+        name: community_support
+        type: feature
+        description: Discord and GitHub community support, no SLA.
+        price: '0.00'
+    elements:
+      - name: Medplum FHIR REST API
+      - name: Medplum GraphQL API
+      - name: TypeScript SDK
+      - name: React Components
+
+  - id: medplum-production
+    name: Production
+    type: subscription
+    description: Production hosted tier with Bots, custom domain, terminology services, and SLA-backed community support.
+    entries:
+      - label: Monthly Subscription
+        name: subscription
+        type: subscription
+        price: '2000.00'
+        timeFrame: month
+        unit: 1
+      - label: Bots Enabled
+        name: bots
+        type: feature
+        description: Execute Medplum Bots (TypeScript serverless functions) on hosted infrastructure.
+      - label: Custom Domain
+        name: custom_domain
+        type: feature
+        limit: 1
+      - label: UMLS Terminology
+        name: umls
+        type: feature
+      - label: HL7 Integration
+        name: hl7_integration
+        type: feature
+    elements:
+      - name: Everything in Free
+      - name: Medplum Bots
+      - name: HL7v2 Integration
+      - name: SLA-Backed Discord and GitHub Support
+
+  - id: medplum-premium
+    name: Premium
+    type: subscription
+    description: Premium hosted tier sized for heavier messaging and integration scenarios.
+    entries:
+      - label: Monthly Subscription
+        name: subscription
+        type: subscription
+        price: '6000.00'
+        timeFrame: month
+        unit: 1
+      - label: Email Sending
+        name: email_sending
+        type: feature
+      - label: Custom Domains
+        name: custom_domains
+        type: feature
+        limit: 5
+    elements:
+      - name: Everything in Production
+      - name: Private Slack Support
+      - name: SLA-Backed Email Support
+
+  - id: medplum-enterprise
+    name: Enterprise
+    type: enterprise
+    description: Custom-priced enterprise hosted tier with dedicated infrastructure and advanced compliance.
+    entries:
+      - label: Custom Pricing
+        name: custom
+        type: contract
+        description: Negotiated pricing for dedicated infrastructure, advanced compliance, and audit support.
+    elements:
+      - name: Dedicated Infrastructure
+      - name: All Integrations
+      - name: Advanced Security and Compliance (SOC 2, CLIA/CAP, ONC support)
+      - name: Audit Assistance
+
+  - id: medplum-community-self-hosted
+    name: Community Self-Hosted
+    type: open-source
+    description: Self-hosted, Apache 2.0 deployment of Medplum. Free of license cost; user-operated.
+    entries:
+      - label: License Fee
+        name: license
+        type: feature
+        price: '0.00'
+    elements:
+      - name: Apache 2.0 License
+      - name: Self-Operated PostgreSQL + Redis + Medplum Server
+      - name: Full Source Access on GitHub
+
+  - id: medplum-enterprise-self-hosted
+    name: Enterprise Self-Hosted
+    type: enterprise
+    description: Enterprise-supported self-hosted Medplum deployment on customer infrastructure.
+    entries:
+      - label: Custom Pricing
+        name: custom
+        type: contract
+    elements:
+      - name: Vendor-Supported Self-Hosting
+      - name: On-Premise / Customer Cloud Deployment
+      - name: Dedicated Customer Success

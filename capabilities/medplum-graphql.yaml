@@ -1,0 +1,45 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Medplum — GraphQL
+  description: >-
+    Medplum exposes a FHIR-aware GraphQL endpoint at /fhir/R4/$graphql, enabling typed,
+    nested queries across FHIR resources, reverse-reference traversal (_reference), and
+    FHIRPath-style filtering. This capability wraps the GraphQL POST operation.
+  tags:
+    - Medplum
+    - GraphQL
+    - FHIR
+  created: '2026-05-25'
+  modified: '2026-05-25'
+binds:
+  - namespace: env
+    keys:
+      MEDPLUM_ACCESS_TOKEN: MEDPLUM_ACCESS_TOKEN
+capability:
+  consumes:
+    - type: http
+      namespace: medplum-graphql
+      baseUri: https://api.medplum.com/fhir/R4
+      description: Medplum FHIR GraphQL endpoint.
+      resources:
+        - name: GraphQL
+          path: /$graphql
+          operations:
+            - name: graphqlQuery
+              method: POST
+              description: Execute a GraphQL query or mutation against the Medplum FHIR GraphQL endpoint.
+              outputRawFormat: json
+              inputParameters:
+                - name: query
+                  in: body
+                  type: string
+                  required: true
+                  description: GraphQL query document.
+                - name: variables
+                  in: body
+                  type: object
+                  description: Variables map for the query.
+                - name: operationName
+                  in: body
+                  type: string
+                  description: Optional operation name when the document contains multiple operations.

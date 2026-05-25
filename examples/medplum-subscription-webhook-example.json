@@ -1,0 +1,15 @@
+{
+  "resourceType": "Subscription",
+  "status": "active",
+  "reason": "Notify external system on new Observation",
+  "criteria": "Observation?status=final",
+  "channel": {
+    "type": "rest-hook",
+    "endpoint": "https://example.org/medplum/webhook",
+    "payload": "application/fhir+json",
+    "header": [
+      "Authorization: Bearer REDACTED"
+    ]
+  },
+  "end": "2027-01-01T00:00:00Z"
+}

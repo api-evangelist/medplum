@@ -1,0 +1,57 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Medplum — Bots
+  description: >-
+    Medplum Bots are TypeScript serverless functions (AWS Lambda-like) triggered by FHIR
+    Subscriptions, HTTP calls, or scheduled cron. This capability covers managing Bot
+    resources and invoking deployed bots over the FHIR API.
+  tags:
+    - Medplum
+    - Bots
+    - Automation
+    - Serverless
+  created: '2026-05-25'
+  modified: '2026-05-25'
+binds:
+  - namespace: env
+    keys:
+      MEDPLUM_ACCESS_TOKEN: MEDPLUM_ACCESS_TOKEN
+capability:
+  consumes:
+    - type: http
+      namespace: medplum-bots
+      baseUri: https://api.medplum.com/fhir/R4
+      description: Medplum Bot FHIR resource + $execute operation surface.
+      resources:
+        - name: Bot
+          path: /Bot
+          operations:
+            - name: createBot
+              method: POST
+              description: Create a new Medplum Bot resource (definition + source code).
+              outputRawFormat: json
+              inputParameters:
+                - name: body
+                  in: body
+                  type: object
+                  required: true
+            - name: listBots
+              method: GET
+              description: Search Bot resources in the current project.
+              outputRawFormat: json
+        - name: BotExecute
+          path: /Bot/{id}/$execute
+          operations:
+            - name: executeBot
+              method: POST
+              description: Execute a deployed Bot directly via the FHIR $execute operation.
+              outputRawFormat: json
+              inputParameters:
+                - name: id
+                  in: path
+                  type: string
+                  required: true
+                - name: body
+                  in: body
+                  type: object
+                  description: Arbitrary JSON payload made available as event.input inside the bot.
