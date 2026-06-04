@@ -1,0 +1,111 @@
+arazzo: 1.0.1
+info:
+  title: Medplum Schedule Encounter
+  summary: Create a Practitioner, create an Encounter linking the patient and practitioner, then read it back.
+  description: >-
+    Models the start of a clinical visit. The workflow creates a Practitioner
+    resource, then creates an Encounter that references both an existing Patient
+    (the subject) and the new Practitioner (a participant), and finally reads the
+    Encounter back to confirm its status. Every step spells out its FHIR request
+    inline so the flow can be read and executed without opening the underlying
+    OpenAPI description.
+  version: 1.0.0
+sourceDescriptions:
+- name: medplumApi
+  url: ../openapi/medplum-openapi-original.yml
+  type: openapi
+workflows:
+- workflowId: schedule-encounter
+  summary: Create a Practitioner and an Encounter that links them to a Patient.
+  description: >-
+    Creates a Practitioner, creates an Encounter referencing the supplied Patient
+    and the new Practitioner, then reads the Encounter to confirm it persisted.
+  inputs:
+    type: object
+    required:
+    - practitionerFamily
+    - practitionerGiven
+    - patientId
+    - encounterClass
+    properties:
+      practitionerFamily:
+        type: string
+        description: The practitioner's family (last) name.
+      practitionerGiven:
+        type: string
+        description: The practitioner's given (first) name.
+      patientId:
+        type: string
+        description: The id of an existing Patient who is the subject of the encounter.
+      encounterClass:
+        type: string
+        description: The encounter class code (e.g. AMB for ambulatory, IMP for inpatient).
+  steps:
+  - stepId: createPractitioner
+    description: >-
+      Create a Practitioner resource with the supplied name. Medplum returns the
+      persisted resource including the server assigned id.
+    operationId: createResource
+    parameters:
+    - name: resourceType
+      in: path
+      value: Practitioner
+    requestBody:
+      contentType: application/fhir+json
+      payload:
+        resourceType: Practitioner
+        name:
+        - family: $inputs.practitionerFamily
+          given:
+          - $inputs.practitionerGiven
+    successCriteria:
+    - condition: $statusCode == 201
+    outputs:
+      practitionerId: $response.body#/id
+  - stepId: createEncounter
+    description: >-
+      Create an Encounter whose subject references the supplied Patient and whose
+      participant references the newly created Practitioner.
+    operationId: createResource
+    parameters:
+    - name: resourceType
+      in: path
+      value: Encounter
+    requestBody:
+      contentType: application/fhir+json
+      payload:
+        resourceType: Encounter
+        status: in-progress
+        class:
+          system: http://terminology.hl7.org/CodeSystem/v3-ActCode
+          code: $inputs.encounterClass
+        subject:
+          reference: "Patient/$inputs.patientId"
+        participant:
+        - individual:
+            reference: "Practitioner/$steps.createPractitioner.outputs.practitionerId"
+    successCriteria:
+    - condition: $statusCode == 201
+    outputs:
+      encounterId: $response.body#/id
+  - stepId: confirmEncounter
+    description: >-
+      Read the newly created Encounter back by id to confirm it persisted and to
+      capture its current status.
+    operationId: readResource
+    parameters:
+    - name: resourceType
+      in: path
+      value: Encounter
+    - name: id
+      in: path
+      value: $steps.createEncounter.outputs.encounterId
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      encounterStatus: $response.body#/status
+      subjectReference: $response.body#/subject/reference
+  outputs:
+    practitionerId: $steps.createPractitioner.outputs.practitionerId
+    encounterId: $steps.createEncounter.outputs.encounterId
+    encounterStatus: $steps.confirmEncounter.outputs.encounterStatus

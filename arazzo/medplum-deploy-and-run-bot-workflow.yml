@@ -1,0 +1,107 @@
+arazzo: 1.0.1
+info:
+  title: Medplum Deploy Bot
+  summary: Create a Bot resource, then create a Subscription that invokes the Bot on resource changes.
+  description: >-
+    Medplum Bots are serverless functions stored as FHIR Bot resources and wired
+    to events through FHIR Subscriptions. This workflow creates a Bot resource,
+    captures its id, then creates a Subscription whose channel targets the Bot so
+    that matching resource changes trigger it, and finally reads the Subscription
+    back to confirm it is active. Every step spells out its FHIR request inline.
+    Medplum Bot deployment and execution use proprietary $deploy and $execute
+    operations that are not declared in this OpenAPI description, so this flow
+    wires the Bot to an event source via Subscription instead and notes that
+    adaptation.
+  version: 1.0.0
+sourceDescriptions:
+- name: medplumApi
+  url: ../openapi/medplum-openapi-original.yml
+  type: openapi
+workflows:
+- workflowId: deploy-bot
+  summary: Create a Bot and a Subscription that invokes it on matching changes.
+  description: >-
+    Creates a Bot resource, then creates a Subscription whose rest-hook channel
+    targets the Bot, then reads the Subscription back to confirm its status.
+  inputs:
+    type: object
+    required:
+    - botName
+    - botCode
+    - subscriptionCriteria
+    properties:
+      botName:
+        type: string
+        description: A human readable name for the Bot.
+      botCode:
+        type: string
+        description: The TypeScript or JavaScript source code body for the Bot.
+      subscriptionCriteria:
+        type: string
+        description: >-
+          A FHIR search string identifying which resource changes trigger the
+          Bot (e.g. "Patient" or "Observation?status=final").
+  steps:
+  - stepId: createBot
+    description: >-
+      Create a Bot resource carrying the supplied name and source code. Medplum
+      returns the persisted resource including the server assigned id.
+    operationId: createResource
+    parameters:
+    - name: resourceType
+      in: path
+      value: Bot
+    requestBody:
+      contentType: application/fhir+json
+      payload:
+        resourceType: Bot
+        name: $inputs.botName
+        runtimeVersion: awslambda
+        code: $inputs.botCode
+    successCriteria:
+    - condition: $statusCode == 201
+    outputs:
+      botId: $response.body#/id
+  - stepId: createSubscription
+    description: >-
+      Create a Subscription whose rest-hook channel targets the new Bot so that
+      resources matching the criteria invoke it.
+    operationId: createResource
+    parameters:
+    - name: resourceType
+      in: path
+      value: Subscription
+    requestBody:
+      contentType: application/fhir+json
+      payload:
+        resourceType: Subscription
+        status: active
+        reason: Invoke bot on matching resource changes
+        criteria: $inputs.subscriptionCriteria
+        channel:
+          type: rest-hook
+          endpoint: "Bot/$steps.createBot.outputs.botId"
+    successCriteria:
+    - condition: $statusCode == 201
+    outputs:
+      subscriptionId: $response.body#/id
+  - stepId: confirmSubscription
+    description: >-
+      Read the newly created Subscription back by id to confirm it persisted and
+      is active.
+    operationId: readResource
+    parameters:
+    - name: resourceType
+      in: path
+      value: Subscription
+    - name: id
+      in: path
+      value: $steps.createSubscription.outputs.subscriptionId
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      subscriptionStatus: $response.body#/status
+  outputs:
+    botId: $steps.createBot.outputs.botId
+    subscriptionId: $steps.createSubscription.outputs.subscriptionId
+    subscriptionStatus: $steps.confirmSubscription.outputs.subscriptionStatus

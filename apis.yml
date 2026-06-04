@@ -138,6 +138,33 @@ apis:
         url: examples/medplum-subscription-webhook-example.json
 
 common:
+  - type: ArazzoWorkflows
+    url: arazzo/
+    workflows:
+    - url: arazzo/medplum-amend-resource-with-history-workflow.yml
+      name: Medplum Amend Resource With History
+      summary: Read a resource, update it, then inspect its version history and prior version.
+    - url: arazzo/medplum-create-diagnostic-report-workflow.yml
+      name: Medplum Create Diagnostic Report
+      summary: Create an Observation result, then assemble a DiagnosticReport that references it.
+    - url: arazzo/medplum-deploy-and-run-bot-workflow.yml
+      name: Medplum Deploy Bot
+      summary: Create a Bot resource, then create a Subscription that invokes the Bot on resource changes.
+    - url: arazzo/medplum-finalize-observation-workflow.yml
+      name: Medplum Finalize Observation
+      summary: Find a preliminary Observation, patch its status to final, and read it back to confirm.
+    - url: arazzo/medplum-find-and-delete-resource-workflow.yml
+      name: Medplum Find And Delete Resource
+      summary: Search a resource type, and if a match is found read it for audit then delete it.
+    - url: arazzo/medplum-register-patient-with-observation-workflow.yml
+      name: Medplum Register Patient With Observation
+      summary: Create a Patient, then record a vital-sign Observation that references that patient.
+    - url: arazzo/medplum-schedule-encounter-workflow.yml
+      name: Medplum Schedule Encounter
+      summary: Create a Practitioner, create an Encounter linking the patient and practitioner, then read it back.
+    - url: arazzo/medplum-upsert-patient-workflow.yml
+      name: Medplum Upsert Patient
+      summary: Search for a Patient by identifier and update it if found, otherwise create it.
   - type: Website
     url: https://www.medplum.com
   - type: Documentation

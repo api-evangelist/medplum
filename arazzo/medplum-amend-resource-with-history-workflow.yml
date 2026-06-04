@@ -1,0 +1,114 @@
+arazzo: 1.0.1
+info:
+  title: Medplum Amend Resource With History
+  summary: Read a resource, update it, then inspect its version history and prior version.
+  description: >-
+    Demonstrates FHIR resource versioning. The workflow reads any existing
+    resource by type and id, performs a full update on it, then reads the
+    resource history Bundle to capture the version timeline, and finally reads
+    the immediately prior version by its versionId. This is the canonical
+    pattern for amending a clinical record while preserving an auditable history.
+    Every step spells out its FHIR request inline.
+  version: 1.0.0
+sourceDescriptions:
+- name: medplumApi
+  url: ../openapi/medplum-openapi-original.yml
+  type: openapi
+workflows:
+- workflowId: amend-resource-with-history
+  summary: Update a resource and walk its version history.
+  description: >-
+    Reads a resource, updates it with a supplied body, reads the history Bundle,
+    and then reads a specific prior version by versionId.
+  inputs:
+    type: object
+    required:
+    - resourceType
+    - resourceId
+    - resourceBody
+    properties:
+      resourceType:
+        type: string
+        description: The FHIR resource type (e.g. Patient, Observation, Encounter).
+      resourceId:
+        type: string
+        description: The id of the existing resource to amend.
+      resourceBody:
+        type: object
+        description: >-
+          The full FHIR resource payload to write on update. Must include
+          resourceType and id matching the target resource.
+  steps:
+  - stepId: readCurrent
+    description: >-
+      Read the current version of the target resource to confirm it exists before
+      amending it.
+    operationId: readResource
+    parameters:
+    - name: resourceType
+      in: path
+      value: $inputs.resourceType
+    - name: id
+      in: path
+      value: $inputs.resourceId
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      currentVersionId: $response.body#/meta/versionId
+  - stepId: applyUpdate
+    description: >-
+      Perform a full FHIR update on the resource with the supplied body. This
+      creates a new version in the resource history.
+    operationId: updateResource
+    parameters:
+    - name: resourceType
+      in: path
+      value: $inputs.resourceType
+    - name: id
+      in: path
+      value: $inputs.resourceId
+    requestBody:
+      contentType: application/fhir+json
+      payload: $inputs.resourceBody
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      newVersionId: $response.body#/meta/versionId
+  - stepId: readHistory
+    description: >-
+      Read the resource history Bundle to capture the full version timeline after
+      the amendment.
+    operationId: readResourceHistory
+    parameters:
+    - name: resourceType
+      in: path
+      value: $inputs.resourceType
+    - name: id
+      in: path
+      value: $inputs.resourceId
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      priorVersionId: $response.body#/entry/1/resource/meta/versionId
+  - stepId: readPriorVersion
+    description: >-
+      Read the immediately prior version of the resource by versionId to confirm
+      the pre-amendment state is still retrievable.
+    operationId: readVersion
+    parameters:
+    - name: resourceType
+      in: path
+      value: $inputs.resourceType
+    - name: id
+      in: path
+      value: $inputs.resourceId
+    - name: versionId
+      in: path
+      value: $steps.readHistory.outputs.priorVersionId
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      priorResourceType: $response.body#/resourceType
+  outputs:
+    newVersionId: $steps.applyUpdate.outputs.newVersionId
+    priorVersionId: $steps.readHistory.outputs.priorVersionId

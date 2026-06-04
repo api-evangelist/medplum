@@ -1,0 +1,94 @@
+arazzo: 1.0.1
+info:
+  title: Medplum Find And Delete Resource
+  summary: Search a resource type, and if a match is found read it for audit then delete it.
+  description: >-
+    A safe destructive-action pattern. The workflow searches a resource type and
+    inspects the returned FHIR Bundle, branching on whether any entry exists. When
+    a match is found it reads the matched resource for an audit snapshot and then
+    deletes it by id; when no match is found the flow ends without acting. Because
+    the Medplum search operation exposes only the resourceType path parameter,
+    filtering is performed against the returned Bundle entries rather than via a
+    declared query parameter. Every step spells out its FHIR request inline.
+  version: 1.0.0
+sourceDescriptions:
+- name: medplumApi
+  url: ../openapi/medplum-openapi-original.yml
+  type: openapi
+workflows:
+- workflowId: find-and-delete-resource
+  summary: Find a resource via search and delete it if present.
+  description: >-
+    Searches a resource type, branches on the Bundle entries, and on a match
+    reads the resource for audit then deletes it.
+  inputs:
+    type: object
+    required:
+    - resourceType
+    properties:
+      resourceType:
+        type: string
+        description: The FHIR resource type to search and potentially delete.
+  steps:
+  - stepId: findResource
+    description: >-
+      Search the resource type. Medplum returns a FHIR Bundle whose entry array
+      holds any matching resources.
+    operationId: search
+    parameters:
+    - name: resourceType
+      in: path
+      value: $inputs.resourceType
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      matchedId: $response.body#/entry/0/resource/id
+    onSuccess:
+    - name: resourceFound
+      type: goto
+      stepId: auditResource
+      criteria:
+      - context: $response.body
+        condition: $.entry.length > 0
+        type: jsonpath
+    - name: resourceMissing
+      type: end
+      criteria:
+      - context: $response.body
+        condition: $.entry.length == 0
+        type: jsonpath
+  - stepId: auditResource
+    description: >-
+      Read the matched resource by id to capture an audit snapshot before it is
+      deleted.
+    operationId: readResource
+    parameters:
+    - name: resourceType
+      in: path
+      value: $inputs.resourceType
+    - name: id
+      in: path
+      value: $steps.findResource.outputs.matchedId
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      auditVersionId: $response.body#/meta/versionId
+  - stepId: deleteResource
+    description: >-
+      Delete the matched resource by id. Medplum returns 204 No Content on a
+      successful delete.
+    operationId: deleteResource
+    parameters:
+    - name: resourceType
+      in: path
+      value: $inputs.resourceType
+    - name: id
+      in: path
+      value: $steps.findResource.outputs.matchedId
+    successCriteria:
+    - condition: $statusCode == 204
+    outputs:
+      deletedId: $steps.findResource.outputs.matchedId
+  outputs:
+    deletedId: $steps.deleteResource.outputs.deletedId
+    auditVersionId: $steps.auditResource.outputs.auditVersionId

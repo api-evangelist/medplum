@@ -1,0 +1,99 @@
+arazzo: 1.0.1
+info:
+  title: Medplum Finalize Observation
+  summary: Find a preliminary Observation, patch its status to final, and read it back to confirm.
+  description: >-
+    A targeted result-sign-off flow. The workflow searches the Observation
+    resource type, inspects the returned FHIR Bundle, and on a match applies a
+    JSON Patch that flips the Observation status to final without rewriting the
+    whole resource, then reads the Observation back to confirm the new status.
+    Because the Medplum search operation exposes only the resourceType path
+    parameter, filtering is performed against the returned Bundle entries rather
+    than via a declared query parameter. Every step spells out its request inline.
+  version: 1.0.0
+sourceDescriptions:
+- name: medplumApi
+  url: ../openapi/medplum-openapi-original.yml
+  type: openapi
+workflows:
+- workflowId: finalize-observation
+  summary: Patch a found Observation to final status.
+  description: >-
+    Searches Observations, branches on the Bundle entries, and on a match patches
+    the Observation status to final then reads it back.
+  inputs:
+    type: object
+    properties:
+      placeholder:
+        type: string
+        description: >-
+          Unused placeholder input. The flow operates on the first Observation
+          returned by the search Bundle.
+  steps:
+  - stepId: findObservation
+    description: >-
+      Search the Observation resource type. Medplum returns a FHIR Bundle whose
+      entry array holds any matching Observations.
+    operationId: search
+    parameters:
+    - name: resourceType
+      in: path
+      value: Observation
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      matchedId: $response.body#/entry/0/resource/id
+    onSuccess:
+    - name: observationFound
+      type: goto
+      stepId: patchStatus
+      criteria:
+      - context: $response.body
+        condition: $.entry.length > 0
+        type: jsonpath
+    - name: observationMissing
+      type: end
+      criteria:
+      - context: $response.body
+        condition: $.entry.length == 0
+        type: jsonpath
+  - stepId: patchStatus
+    description: >-
+      Apply a JSON Patch that replaces the Observation status with final. Medplum
+      returns 204 No Content on a successful patch.
+    operationId: patchResource
+    parameters:
+    - name: resourceType
+      in: path
+      value: Observation
+    - name: id
+      in: path
+      value: $steps.findObservation.outputs.matchedId
+    requestBody:
+      contentType: application/json-patch+json
+      payload:
+      - op: replace
+        path: /status
+        value: final
+    successCriteria:
+    - condition: $statusCode == 204
+    outputs:
+      patchedId: $steps.findObservation.outputs.matchedId
+  - stepId: confirmStatus
+    description: >-
+      Read the patched Observation back by id to confirm its status is now final.
+    operationId: readResource
+    parameters:
+    - name: resourceType
+      in: path
+      value: Observation
+    - name: id
+      in: path
+      value: $steps.findObservation.outputs.matchedId
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      observationStatus: $response.body#/status
+  outputs:
+    patchedId: $steps.patchStatus.outputs.patchedId
+    observationStatus: $steps.confirmStatus.outputs.observationStatus

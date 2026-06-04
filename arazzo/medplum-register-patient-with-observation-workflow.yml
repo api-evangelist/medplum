@@ -1,0 +1,128 @@
+arazzo: 1.0.1
+info:
+  title: Medplum Register Patient With Observation
+  summary: Create a Patient, then record a vital-sign Observation that references that patient.
+  description: >-
+    A foundational clinical onboarding flow. The workflow creates a FHIR Patient
+    resource, captures the generated patient id from the create response, and
+    then creates an Observation whose subject reference points back at the new
+    patient. Finally it reads the Observation back to confirm it persisted.
+    Every step spells out its FHIR request inline so the flow can be read and
+    executed without opening the underlying OpenAPI description.
+  version: 1.0.0
+sourceDescriptions:
+- name: medplumApi
+  url: ../openapi/medplum-openapi-original.yml
+  type: openapi
+workflows:
+- workflowId: register-patient-with-observation
+  summary: Create a Patient and an Observation that references it.
+  description: >-
+    Creates a Patient resource, reads back the assigned id, creates a vital-sign
+    Observation referencing Patient/{id}, and confirms the Observation by reading
+    it.
+  inputs:
+    type: object
+    required:
+    - familyName
+    - givenName
+    - observationCode
+    - observationDisplay
+    - observationValue
+    - observationUnit
+    properties:
+      familyName:
+        type: string
+        description: The patient's family (last) name.
+      givenName:
+        type: string
+        description: The patient's given (first) name.
+      birthDate:
+        type: string
+        description: The patient's date of birth in YYYY-MM-DD form.
+      observationCode:
+        type: string
+        description: The LOINC code for the observation (e.g. 8867-4 heart rate).
+      observationDisplay:
+        type: string
+        description: Human readable display for the observation code.
+      observationValue:
+        type: number
+        description: The numeric measured value of the observation.
+      observationUnit:
+        type: string
+        description: The UCUM unit of the measured value (e.g. /min).
+  steps:
+  - stepId: createPatient
+    description: >-
+      Create a FHIR Patient resource with the supplied name and birth date.
+      Medplum returns the persisted resource including the server assigned id.
+    operationId: createResource
+    parameters:
+    - name: resourceType
+      in: path
+      value: Patient
+    requestBody:
+      contentType: application/fhir+json
+      payload:
+        resourceType: Patient
+        name:
+        - family: $inputs.familyName
+          given:
+          - $inputs.givenName
+        birthDate: $inputs.birthDate
+    successCriteria:
+    - condition: $statusCode == 201
+    outputs:
+      patientId: $response.body#/id
+  - stepId: createObservation
+    description: >-
+      Create an Observation whose subject references the patient created in the
+      previous step.
+    operationId: createResource
+    parameters:
+    - name: resourceType
+      in: path
+      value: Observation
+    requestBody:
+      contentType: application/fhir+json
+      payload:
+        resourceType: Observation
+        status: final
+        code:
+          coding:
+          - system: http://loinc.org
+            code: $inputs.observationCode
+            display: $inputs.observationDisplay
+        subject:
+          reference: "Patient/$steps.createPatient.outputs.patientId"
+        valueQuantity:
+          value: $inputs.observationValue
+          unit: $inputs.observationUnit
+          system: http://unitsofmeasure.org
+          code: $inputs.observationUnit
+    successCriteria:
+    - condition: $statusCode == 201
+    outputs:
+      observationId: $response.body#/id
+  - stepId: confirmObservation
+    description: >-
+      Read the newly created Observation back by id to confirm it persisted and
+      to capture its current status.
+    operationId: readResource
+    parameters:
+    - name: resourceType
+      in: path
+      value: Observation
+    - name: id
+      in: path
+      value: $steps.createObservation.outputs.observationId
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      observationStatus: $response.body#/status
+      subjectReference: $response.body#/subject/reference
+  outputs:
+    patientId: $steps.createPatient.outputs.patientId
+    observationId: $steps.createObservation.outputs.observationId
+    observationStatus: $steps.confirmObservation.outputs.observationStatus

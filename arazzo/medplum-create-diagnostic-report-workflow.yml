@@ -1,0 +1,132 @@
+arazzo: 1.0.1
+info:
+  title: Medplum Create Diagnostic Report
+  summary: Create an Observation result, then assemble a DiagnosticReport that references it.
+  description: >-
+    Models lab result reporting. The workflow first creates an Observation that
+    carries a measured result for an existing Patient, then creates a
+    DiagnosticReport that references that Observation in its result array, and
+    finally reads the DiagnosticReport back to confirm it persisted. Every step
+    spells out its FHIR request inline so the flow can be read and executed
+    without opening the underlying OpenAPI description.
+  version: 1.0.0
+sourceDescriptions:
+- name: medplumApi
+  url: ../openapi/medplum-openapi-original.yml
+  type: openapi
+workflows:
+- workflowId: create-diagnostic-report
+  summary: Create an Observation and a DiagnosticReport that references it.
+  description: >-
+    Creates a result Observation for a Patient, then creates a DiagnosticReport
+    that references the Observation, then reads the report back to confirm it.
+  inputs:
+    type: object
+    required:
+    - patientId
+    - observationCode
+    - observationDisplay
+    - observationValue
+    - observationUnit
+    - reportCode
+    - reportDisplay
+    properties:
+      patientId:
+        type: string
+        description: The id of the existing Patient the result belongs to.
+      observationCode:
+        type: string
+        description: The LOINC code for the result Observation.
+      observationDisplay:
+        type: string
+        description: Human readable display for the observation code.
+      observationValue:
+        type: number
+        description: The numeric measured value of the result.
+      observationUnit:
+        type: string
+        description: The UCUM unit of the measured value.
+      reportCode:
+        type: string
+        description: The LOINC code identifying the diagnostic report panel.
+      reportDisplay:
+        type: string
+        description: Human readable display for the report code.
+  steps:
+  - stepId: createObservation
+    description: >-
+      Create a final Observation carrying the measured result for the supplied
+      Patient.
+    operationId: createResource
+    parameters:
+    - name: resourceType
+      in: path
+      value: Observation
+    requestBody:
+      contentType: application/fhir+json
+      payload:
+        resourceType: Observation
+        status: final
+        code:
+          coding:
+          - system: http://loinc.org
+            code: $inputs.observationCode
+            display: $inputs.observationDisplay
+        subject:
+          reference: "Patient/$inputs.patientId"
+        valueQuantity:
+          value: $inputs.observationValue
+          unit: $inputs.observationUnit
+          system: http://unitsofmeasure.org
+          code: $inputs.observationUnit
+    successCriteria:
+    - condition: $statusCode == 201
+    outputs:
+      observationId: $response.body#/id
+  - stepId: createReport
+    description: >-
+      Create a DiagnosticReport for the Patient that references the Observation
+      created in the previous step within its result array.
+    operationId: createResource
+    parameters:
+    - name: resourceType
+      in: path
+      value: DiagnosticReport
+    requestBody:
+      contentType: application/fhir+json
+      payload:
+        resourceType: DiagnosticReport
+        status: final
+        code:
+          coding:
+          - system: http://loinc.org
+            code: $inputs.reportCode
+            display: $inputs.reportDisplay
+        subject:
+          reference: "Patient/$inputs.patientId"
+        result:
+        - reference: "Observation/$steps.createObservation.outputs.observationId"
+    successCriteria:
+    - condition: $statusCode == 201
+    outputs:
+      reportId: $response.body#/id
+  - stepId: confirmReport
+    description: >-
+      Read the newly created DiagnosticReport back by id to confirm it persisted
+      and to capture its status.
+    operationId: readResource
+    parameters:
+    - name: resourceType
+      in: path
+      value: DiagnosticReport
+    - name: id
+      in: path
+      value: $steps.createReport.outputs.reportId
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      reportStatus: $response.body#/status
+  outputs:
+    observationId: $steps.createObservation.outputs.observationId
+    reportId: $steps.createReport.outputs.reportId
+    reportStatus: $steps.confirmReport.outputs.reportStatus
