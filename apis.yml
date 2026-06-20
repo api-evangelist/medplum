@@ -8,7 +8,7 @@ description: >-
   service at api.medplum.com and as a self-hostable monorepo on GitHub. Medplum is HIPAA,
   SOC 2 Type II, and ONC-certified.
 type: Index
-image: https://kinlane-productions2.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
 tags:
 - Healthcare
 - FHIR
