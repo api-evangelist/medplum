@@ -66,13 +66,13 @@ apis:
     url: json-schema/medplum-subscription-schema.json
   - type: JSONStructure
     url: json-structure/medplum-patient-structure.json
-  - type: Example
+  - type: Examples
     url: examples/medplum-patient-create-example.json
-  - type: Example
+  - type: Examples
     url: examples/medplum-observation-bloodpressure-example.json
-  - type: Example
+  - type: Examples
     url: examples/medplum-subscription-webhook-example.json
-  - type: NaftikoCapability
+  - type: X-NaftikoCapability
     url: capabilities/medplum-fhir-rest.yaml
 
 - aid: medplum:medplum-graphql-api
@@ -90,9 +90,9 @@ apis:
   properties:
   - type: Documentation
     url: https://www.medplum.com/docs/graphql
-  - type: Example
+  - type: Examples
     url: examples/medplum-graphql-patient-query-example.json
-  - type: NaftikoCapability
+  - type: X-NaftikoCapability
     url: capabilities/medplum-graphql.yaml
 
   - url: graphql/medplum-graphql.md
@@ -115,9 +115,9 @@ apis:
     url: https://www.medplum.com/docs/bots
   - type: JSONSchema
     url: json-schema/medplum-bot-schema.json
-  - type: Example
+  - type: Examples
     url: examples/medplum-bot-hl7-to-fhir-example.json
-  - type: NaftikoCapability
+  - type: X-NaftikoCapability
     url: capabilities/medplum-bots.yaml
 
 - aid: medplum:medplum-subscriptions
@@ -136,39 +136,36 @@ apis:
   properties:
   - type: Documentation
     url: https://www.medplum.com/docs/subscriptions
-  - type: Example
+  - type: Examples
     url: examples/medplum-subscription-webhook-example.json
 
 common:
 - type: PostmanWorkspace
   url: https://www.postman.com/kinlaneapi/medplum/overview
-- type: ArazzoWorkflows
-  url: arazzo/
-  workflows:
-  - url: arazzo/medplum-amend-resource-with-history-workflow.yml
-    name: Medplum Amend Resource With History
-    summary: Read a resource, update it, then inspect its version history and prior version.
-  - url: arazzo/medplum-create-diagnostic-report-workflow.yml
-    name: Medplum Create Diagnostic Report
-    summary: Create an Observation result, then assemble a DiagnosticReport that references it.
-  - url: arazzo/medplum-deploy-and-run-bot-workflow.yml
-    name: Medplum Deploy Bot
-    summary: Create a Bot resource, then create a Subscription that invokes the Bot on resource changes.
-  - url: arazzo/medplum-finalize-observation-workflow.yml
-    name: Medplum Finalize Observation
-    summary: Find a preliminary Observation, patch its status to final, and read it back to confirm.
-  - url: arazzo/medplum-find-and-delete-resource-workflow.yml
-    name: Medplum Find And Delete Resource
-    summary: Search a resource type, and if a match is found read it for audit then delete it.
-  - url: arazzo/medplum-register-patient-with-observation-workflow.yml
-    name: Medplum Register Patient With Observation
-    summary: Create a Patient, then record a vital-sign Observation that references that patient.
-  - url: arazzo/medplum-schedule-encounter-workflow.yml
-    name: Medplum Schedule Encounter
-    summary: Create a Practitioner, create an Encounter linking the patient and practitioner, then read it back.
-  - url: arazzo/medplum-upsert-patient-workflow.yml
-    name: Medplum Upsert Patient
-    summary: Search for a Patient by identifier and update it if found, otherwise create it.
+- type: Arazzo
+  url: arazzo/medplum-amend-resource-with-history-workflow.yml
+  name: Medplum Amend Resource With History
+- type: Arazzo
+  url: arazzo/medplum-create-diagnostic-report-workflow.yml
+  name: Medplum Create Diagnostic Report
+- type: Arazzo
+  url: arazzo/medplum-deploy-and-run-bot-workflow.yml
+  name: Medplum Deploy Bot
+- type: Arazzo
+  url: arazzo/medplum-finalize-observation-workflow.yml
+  name: Medplum Finalize Observation
+- type: Arazzo
+  url: arazzo/medplum-find-and-delete-resource-workflow.yml
+  name: Medplum Find And Delete Resource
+- type: Arazzo
+  url: arazzo/medplum-register-patient-with-observation-workflow.yml
+  name: Medplum Register Patient With Observation
+- type: Arazzo
+  url: arazzo/medplum-schedule-encounter-workflow.yml
+  name: Medplum Schedule Encounter
+- type: Arazzo
+  url: arazzo/medplum-upsert-patient-workflow.yml
+  name: Medplum Upsert Patient
 - type: Website
   url: https://www.medplum.com
 - type: Documentation
@@ -179,11 +176,11 @@ common:
   url: https://www.medplum.com/docs/api
 - type: Authentication
   url: https://www.medplum.com/docs/auth
-- type: SDK
+- type: SDKs
   url: https://www.medplum.com/docs/sdk/core
-- type: SDK
+- type: SDKs
   url: https://www.npmjs.com/package/@medplum/core
-- type: SDK
+- type: SDKs
   url: https://www.npmjs.com/package/@medplum/react
 - type: CLI
   url: https://www.medplum.com/docs/cli
@@ -211,7 +208,7 @@ common:
   url: rules/medplum-rules.yml
 - type: Vocabulary
   url: vocabulary/medplum-vocabulary.yml
-- type: JSON-LD
+- type: JSONLD
   url: json-ld/medplum-context.jsonld
 - type: Plans
   url: plans/medplum-plans-pricing.yml
