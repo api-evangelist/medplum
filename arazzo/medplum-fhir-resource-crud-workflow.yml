@@ -1,0 +1,100 @@
+arazzo: 1.0.1
+info:
+  title: Medplum FHIR Resource CRUD
+  summary: Create a FHIR R4 resource, read it back by id, update it, then search the resource type for it.
+  description: >-
+    A generic FHIR RESTful API lifecycle against the Medplum FHIR R4 backend. A
+    resource of any type is created with the generic resource-type create
+    operation, read back by id, updated by id, and finally located through a
+    type-level search. This exercises the core HL7 FHIR R4 create, read, update,
+    and search interactions that underpin US Core and any other FHIR profile.
+    Every step inlines its request so the flow is self-contained.
+  version: 1.0.0
+sourceDescriptions:
+- name: medplumFhir
+  url: ../openapi/medplum-openapi-original.yml
+  type: openapi
+workflows:
+- workflowId: fhir-resource-crud
+  summary: Create, read, update, and search a FHIR resource of a given type.
+  description: >-
+    Creates a FHIR R4 resource of the requested type, reads it by id, updates it,
+    and searches the resource type to confirm it is present.
+  inputs:
+    type: object
+    required:
+    - resourceType
+    - resource
+    - updatedResource
+    properties:
+      resourceType:
+        type: string
+        description: The FHIR resource type to operate on (e.g. Patient, Observation).
+      resource:
+        type: object
+        description: The FHIR R4 resource body to create.
+      updatedResource:
+        type: object
+        description: The FHIR R4 resource body to write on update.
+  steps:
+  - stepId: createResource
+    description: Create the FHIR resource of the requested type.
+    operationId: createResource
+    parameters:
+    - name: resourceType
+      in: path
+      value: $inputs.resourceType
+    requestBody:
+      contentType: application/fhir+json
+      payload: $inputs.resource
+    successCriteria:
+    - condition: $statusCode == 201
+    outputs:
+      resourceId: $response.body#/id
+  - stepId: readResource
+    description: Read the created resource back by id.
+    operationId: readResource
+    parameters:
+    - name: resourceType
+      in: path
+      value: $inputs.resourceType
+    - name: id
+      in: path
+      value: $steps.createResource.outputs.resourceId
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      created: $response.body
+  - stepId: updateResource
+    description: Update the resource by id.
+    operationId: updateResource
+    parameters:
+    - name: resourceType
+      in: path
+      value: $inputs.resourceType
+    - name: id
+      in: path
+      value: $steps.createResource.outputs.resourceId
+    requestBody:
+      contentType: application/fhir+json
+      payload: $inputs.updatedResource
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      updated: $response.body
+  - stepId: searchResources
+    description: Search the resource type to confirm the resource is present.
+    operationId: search
+    parameters:
+    - name: resourceType
+      in: path
+      value: $inputs.resourceType
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      bundle: $response.body
+  outputs:
+    resourceId: $steps.createResource.outputs.resourceId
+    created: $steps.readResource.outputs.created
+    updated: $steps.updateResource.outputs.updated
+    bundle: $steps.searchResources.outputs.bundle

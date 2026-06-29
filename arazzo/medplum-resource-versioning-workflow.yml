@@ -1,0 +1,106 @@
+arazzo: 1.0.1
+info:
+  title: Medplum FHIR Resource Versioning
+  summary: Create a FHIR resource, update it to mint a new version, read its history, then read a specific version.
+  description: >-
+    A FHIR R4 resource history and versioning flow against the Medplum FHIR R4
+    backend. A resource is created and then updated to produce a new versionId,
+    the versioned resource history is read, and a specific historical version is
+    read back by versionId. This exercises the FHIR RESTful API vread and history
+    interactions and the resource meta.versionId that drives optimistic
+    concurrency. Every step inlines its request so the flow is self-contained.
+  version: 1.0.0
+sourceDescriptions:
+- name: medplumFhir
+  url: ../openapi/medplum-openapi-original.yml
+  type: openapi
+workflows:
+- workflowId: resource-versioning
+  summary: Create and update a FHIR resource, then read its history and a specific version.
+  description: >-
+    Creates a FHIR R4 resource, updates it to mint a new versionId, reads the
+    resource history, and reads the specific version by versionId.
+  inputs:
+    type: object
+    required:
+    - resourceType
+    - resource
+    - updatedResource
+    properties:
+      resourceType:
+        type: string
+        description: The FHIR resource type to operate on (e.g. Patient, Observation).
+      resource:
+        type: object
+        description: The FHIR R4 resource body to create.
+      updatedResource:
+        type: object
+        description: The FHIR R4 resource body to write on update.
+  steps:
+  - stepId: createResource
+    description: Create the FHIR resource of the requested type.
+    operationId: createResource
+    parameters:
+    - name: resourceType
+      in: path
+      value: $inputs.resourceType
+    requestBody:
+      contentType: application/fhir+json
+      payload: $inputs.resource
+    successCriteria:
+    - condition: $statusCode == 201
+    outputs:
+      resourceId: $response.body#/id
+  - stepId: updateResource
+    description: Update the resource by id to mint a new version.
+    operationId: updateResource
+    parameters:
+    - name: resourceType
+      in: path
+      value: $inputs.resourceType
+    - name: id
+      in: path
+      value: $steps.createResource.outputs.resourceId
+    requestBody:
+      contentType: application/fhir+json
+      payload: $inputs.updatedResource
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      versionId: $response.body#/meta/versionId
+  - stepId: readHistory
+    description: Read the versioned history for the resource.
+    operationId: readResourceHistory
+    parameters:
+    - name: resourceType
+      in: path
+      value: $inputs.resourceType
+    - name: id
+      in: path
+      value: $steps.createResource.outputs.resourceId
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      history: $response.body
+  - stepId: readVersion
+    description: Read the specific historical version by versionId.
+    operationId: readVersion
+    parameters:
+    - name: resourceType
+      in: path
+      value: $inputs.resourceType
+    - name: id
+      in: path
+      value: $steps.createResource.outputs.resourceId
+    - name: versionId
+      in: path
+      value: $steps.updateResource.outputs.versionId
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      version: $response.body
+  outputs:
+    resourceId: $steps.createResource.outputs.resourceId
+    versionId: $steps.updateResource.outputs.versionId
+    history: $steps.readHistory.outputs.history
+    version: $steps.readVersion.outputs.version

@@ -1,0 +1,77 @@
+arazzo: 1.0.1
+info:
+  title: Medplum Clinical Data Query
+  summary: Locate a patient by name, read the Patient resource, then pull that patient's Observations.
+  description: >-
+    A US Core clinical-data read flow against the Medplum FHIR R4 backend. A
+    patient is located by name through a type-level search, read by id, and then
+    that patient's Observations (US Core vital signs and laboratory results) are
+    retrieved by patient reference. This follows the FHIR RESTful API search and
+    read interactions used to assemble a patient's clinical summary. Every step
+    inlines its request so the flow is self-contained.
+  version: 1.0.0
+sourceDescriptions:
+- name: medplumFhir
+  url: ../openapi/medplum-openapi-original.yml
+  type: openapi
+workflows:
+- workflowId: clinical-data-query
+  summary: Find a patient and retrieve that patient's clinical Observations.
+  description: >-
+    Searches Patient by name, reads the matched Patient by id, and searches
+    Observation for that patient.
+  inputs:
+    type: object
+    required:
+    - patientName
+    properties:
+      patientName:
+        type: string
+        description: Patient name used to locate the patient.
+  steps:
+  - stepId: findPatients
+    description: Locate the patient by name.
+    operationId: search
+    parameters:
+    - name: resourceType
+      in: path
+      value: Patient
+    - name: name
+      in: query
+      value: $inputs.patientName
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      patientId: $response.body#/entry/0/resource/id
+  - stepId: readPatient
+    description: Read the matched Patient resource by id.
+    operationId: readResource
+    parameters:
+    - name: resourceType
+      in: path
+      value: Patient
+    - name: id
+      in: path
+      value: $steps.findPatients.outputs.patientId
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      patient: $response.body
+  - stepId: findObservations
+    description: Retrieve the patient's US Core Observations by patient reference.
+    operationId: search
+    parameters:
+    - name: resourceType
+      in: path
+      value: Observation
+    - name: patient
+      in: query
+      value: $steps.findPatients.outputs.patientId
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      observations: $response.body
+  outputs:
+    patientId: $steps.findPatients.outputs.patientId
+    patient: $steps.readPatient.outputs.patient
+    observations: $steps.findObservations.outputs.observations
