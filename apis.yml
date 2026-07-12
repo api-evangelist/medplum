@@ -140,6 +140,14 @@ apis:
     url: examples/medplum-subscription-webhook-example.json
 
 common:
+- type: TrustCenter
+  url: security/medplum-trust-center.yml
+- type: VulnerabilityDisclosure
+  url: security/medplum-vulnerability-disclosure.yml
+- type: DomainSecurity
+  url: security/medplum-domain-security.yml
+- type: Authentication
+  url: authentication/medplum-authentication.yml
 - type: PostmanWorkspace
   url: https://www.postman.com/kinlaneapi/medplum/overview
 - type: Arazzo

@@ -1,0 +1,18 @@
+generated: '2026-07-11'
+method: searched
+probe: true
+source: https://www.medplum.com/security
+url: https://www.medplum.com/security
+certifications:
+- SOC 2
+- HIPAA
+- GDPR
+- CSA STAR
+evidence:
+- source: https://www.medplum.com/security
+  keywords:
+  - soc 2
+  - hipaa
+  - compliance certification
+  - gdpr
+  - csa star
