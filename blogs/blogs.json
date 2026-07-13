@@ -5,7 +5,7 @@
       "source": "https://www.medplum.com/blog/rss.xml",
       "feed_url": "https://www.medplum.com/blog/rss.xml",
       "title": "",
-      "saved": 3,
+      "saved": 0,
       "method": "feed"
     },
     {
@@ -16,6 +16,6 @@
       "method": "none"
     }
   ],
-  "post_count": 4,
-  "fetched": "2026-06-27T12:03:07Z"
+  "post_count": 9,
+  "fetched": "2026-07-11T11:50:51Z"
 }
