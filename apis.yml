@@ -140,6 +140,8 @@ apis:
     url: examples/medplum-subscription-webhook-example.json
 
 common:
+- type: AgenticAccess
+  url: agentic-access/medplum-agentic-access.yml
 - type: TrustCenter
   url: security/medplum-trust-center.yml
 - type: VulnerabilityDisclosure
