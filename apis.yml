@@ -8,7 +8,20 @@ description: >-
   service at api.medplum.com and as a self-hostable monorepo on GitHub. Medplum is HIPAA,
   SOC 2 Type II, and ONC-certified.
 type: Index
-image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+accessModel:
+  pricing: freemium
+  onboarding: self-serve
+  trial: false
+  try_now: true
+  public: false
+  label: Freemium · Self-serve signup
+  confidence: high
+  source:
+  - plans
+  - authentication
+  generated: '2026-07-22'
+  method: derived
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/medplum.png
 tags:
 - Healthcare
 - FHIR
@@ -20,34 +33,86 @@ tags:
 - Interoperability
 url: https://raw.githubusercontent.com/api-evangelist/medplum/refs/heads/main/apis.yml
 created: '2026-05-25'
-modified: '2026-05-25'
+modified: '2026-07-27'
 specificationVersion: '0.19'
 apis:
-- aid: medplum:medplum-fhir-rest-api
-  name: Medplum FHIR REST API
+- aid: medplum:medplum-graphql-api
+  name: Medplum GraphQL API
   description: >-
-    FHIR R4 REST API exposed at https://api.medplum.com/fhir/R4. Supports the full
-    generic FHIR resource surface — create, read, update, patch, delete, search, history,
-    and version-read — across every FHIR R4 resource type, with US Core, SMART App Launch,
-    and Bulk Data 2.0 conformance.
+    FHIR-aware GraphQL endpoint at https://api.medplum.com/fhir/R4/$graphql. Supports typed nested queries,
+    reverse-reference traversal (_reference), FHIRPath-style array filtering, and access-policy enforcement
+    at the field level.
+  humanURL: https://www.medplum.com/docs/graphql
+  baseURL: https://api.medplum.com/fhir/R4/$graphql
+  tags:
+  - GraphQL
+  - FHIR
+  - Healthcare
+  properties:
+  - type: Documentation
+    url: https://www.medplum.com/docs/graphql
+  - type: Examples
+    url: examples/medplum-graphql-patient-query-example.json
+  - url: graphql/medplum-graphql.md
+    type: GraphQL
+- aid: medplum:medplum-bots
+  name: Medplum Bots
+  description: >-
+    Bots are TypeScript serverless functions (AWS Lambda-style) executed in response to FHIR Subscriptions,
+    HTTP triggers, or scheduled cron. Bots are the backbone of Medplum integrations — HL7v2 to FHIR conversion,
+    document generation, webhook fan-out, and questionnaire-driven workflow automation.
+  humanURL: https://www.medplum.com/docs/bots
+  tags:
+  - Bots
+  - Automation
+  - Serverless
+  - Integration
+  properties:
+  - type: Documentation
+    url: https://www.medplum.com/docs/bots
+  - type: JSONSchema
+    url: json-schema/medplum-bot-schema.json
+  - type: Examples
+    url: examples/medplum-bot-hl7-to-fhir-example.json
+- aid: medplum:medplum-subscriptions
+  name: Medplum Subscriptions
+  description: >-
+    FHIR Subscription resources that match a search criteria and dispatch real-time notifications via
+    REST hooks (webhooks) or Websockets when matching resources are created or updated. Subscriptions
+    are the primary trigger for Bots and external system integrations.
+  humanURL: https://www.medplum.com/docs/subscriptions
+  tags:
+  - Subscriptions
+  - Webhooks
+  - FHIR
+  - Events
+  properties:
+  - type: Documentation
+    url: https://www.medplum.com/docs/subscriptions
+  - type: Examples
+    url: examples/medplum-subscription-webhook-example.json
+- aid: medplum:medplum-fhir-api
+  name: Medplum Fhir API
+  description: The Fhir API from Medplum — 4 operation(s) for fhir.
   humanURL: https://www.medplum.com/docs/api
   baseURL: https://api.medplum.com/fhir/R4
   tags:
-  - FHIR
-  - REST
-  - Healthcare
-  - Clinical
+  - Fhir
   properties:
+  - type: OpenAPI
+    url: openapi/medplum-fhir-api-openapi.yml
   - type: Documentation
     url: https://www.medplum.com/docs/api
   - type: APIReference
     url: https://www.medplum.com/docs/api
-  - type: OpenAPI
-    url: openapi/medplum-openapi-original.yml
   - type: Authentication
     url: https://www.medplum.com/docs/auth
   - type: RateLimits
     url: https://www.medplum.com/docs/rate-limits
+  - type: MCPServer
+    url: mcp/medplum-mcp.yml
+  - type: Documentation
+    url: https://www.medplum.com/docs/ai/mcp
   - type: JSONSchema
     url: json-schema/medplum-patient-schema.json
   - type: JSONSchema
@@ -72,74 +137,9 @@ apis:
     url: examples/medplum-observation-bloodpressure-example.json
   - type: Examples
     url: examples/medplum-subscription-webhook-example.json
-  - type: X-NaftikoCapability
-    url: capabilities/medplum-fhir-rest.yaml
-
-- aid: medplum:medplum-graphql-api
-  name: Medplum GraphQL API
-  description: >-
-    FHIR-aware GraphQL endpoint at https://api.medplum.com/fhir/R4/$graphql. Supports
-    typed nested queries, reverse-reference traversal (_reference), FHIRPath-style array
-    filtering, and access-policy enforcement at the field level.
-  humanURL: https://www.medplum.com/docs/graphql
-  baseURL: https://api.medplum.com/fhir/R4/$graphql
-  tags:
-  - GraphQL
-  - FHIR
-  - Healthcare
-  properties:
-  - type: Documentation
-    url: https://www.medplum.com/docs/graphql
-  - type: Examples
-    url: examples/medplum-graphql-patient-query-example.json
-  - type: X-NaftikoCapability
-    url: capabilities/medplum-graphql.yaml
-
-  - url: graphql/medplum-graphql.md
-    type: GraphQL
-- aid: medplum:medplum-bots
-  name: Medplum Bots
-  description: >-
-    Bots are TypeScript serverless functions (AWS Lambda-style) executed in response to
-    FHIR Subscriptions, HTTP triggers, or scheduled cron. Bots are the backbone of Medplum
-    integrations — HL7v2 to FHIR conversion, document generation, webhook fan-out, and
-    questionnaire-driven workflow automation.
-  humanURL: https://www.medplum.com/docs/bots
-  tags:
-  - Bots
-  - Automation
-  - Serverless
-  - Integration
-  properties:
-  - type: Documentation
-    url: https://www.medplum.com/docs/bots
-  - type: JSONSchema
-    url: json-schema/medplum-bot-schema.json
-  - type: Examples
-    url: examples/medplum-bot-hl7-to-fhir-example.json
-  - type: X-NaftikoCapability
-    url: capabilities/medplum-bots.yaml
-
-- aid: medplum:medplum-subscriptions
-  name: Medplum Subscriptions
-  description: >-
-    FHIR Subscription resources that match a search criteria and dispatch real-time
-    notifications via REST hooks (webhooks) or Websockets when matching resources are
-    created or updated. Subscriptions are the primary trigger for Bots and external system
-    integrations.
-  humanURL: https://www.medplum.com/docs/subscriptions
-  tags:
-  - Subscriptions
-  - Webhooks
-  - FHIR
-  - Events
-  properties:
-  - type: Documentation
-    url: https://www.medplum.com/docs/subscriptions
-  - type: Examples
-    url: examples/medplum-subscription-webhook-example.json
-
 common:
+- type: MCPServer
+  url: mcp/medplum-mcp.yml
 - type: AgenticAccess
   url: agentic-access/medplum-agentic-access.yml
 - type: TrustCenter
