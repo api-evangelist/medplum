@@ -1,0 +1,17 @@
+{
+  "provider": "medplum",
+  "sources": [
+    "medplum-fhir-api-openapi.yml"
+  ],
+  "outputs": [
+    "medplum-fhir-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [
+    "medplum-fhir-api-openapi.yml: dangling $ref: #/components/schemas/Resource",
+    "medplum-fhir-api-openapi.yml: dangling $ref: #/components/schemas/integer64"
+  ],
+  "warnings": [],
+  "notes": [],
+  "skipped": []
+}

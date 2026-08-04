@@ -4,7 +4,7 @@ schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main
 provider: Medplum
 providerId: medplum
 created: '2026-05-25'
-modified: '2026-05-25'
+modified: '2026-07-27'
 tags:
   - Healthcare
   - FHIR
@@ -12,70 +12,90 @@ tags:
   - Quotas
   - Throttling
 description: >-
-  Machine-readable rate limit definitions for Medplum's hosted FHIR developer platform.
-  Captures the limits published in the Medplum documentation at
-  https://www.medplum.com/docs/rate-limits as well as scaffold values for higher tiers.
+  Machine-readable rate limit definitions for Medplum's hosted FHIR developer platform,
+  transcribed from Medplum's published documentation at https://www.medplum.com/docs/rate-limits.
+  Medplum enforces two independent limits: a request-count limit per IP address per minute, and
+  a weighted "FHIR interaction load" limit that prices operations by cost.
+x-provenance:
+  reviewed: '2026-07-27'
+  origin: provider-published
+  source: https://www.medplum.com/docs/rate-limits
+  note: >-
+    Corrected 2026-07-27. The prior version of this file was largely scaffold: it asserted
+    X-RateLimit-* response headers (Medplum uses the RFC-style `RateLimit` header), a 600/min
+    free tier (actually 6,000/min), invented "production"/"premium"/"enterprise" tiers with
+    18,000 and 120,000-burst values Medplum does not publish, scoped the limits to project
+    (they are per IP address), and omitted the FHIR interaction load model entirely. Everything
+    below is now transcribed from the provider's own documentation.
 headers:
-  limit: X-RateLimit-Limit
-  remaining: X-RateLimit-Remaining
-  reset: X-RateLimit-Reset
+  policy: RateLimit
   retryAfter: Retry-After
-  policy: RateLimit-Policy
+  format: 'RateLimit: "requests";r=59999;t=60, "fhirInteractions";r=49894;t=60'
+  note: >-
+    Medplum reports remaining units (r) and seconds until reset (t) per named bucket in a single
+    `RateLimit` header. It does NOT emit X-RateLimit-Limit / X-RateLimit-Remaining /
+    X-RateLimit-Reset.
 responseCodes:
   throttled: 429
-  quotaExceeded: 429
-  serviceUnavailable: 503
 limits:
-  - tier: free
-    name: Free Tier Request Rate
-    scope: project
+  - tier: all
+    name: Login Endpoints
+    scope: ip
     metric: requests_per_minute
-    limit: 600
+    limit: 5
     timeFrame: minute
     applies:
-      - Medplum FHIR REST API
-      - Medplum GraphQL API
-  - tier: production
-    name: Production Tier Request Rate
-    scope: project
+      - /auth/login
+      - /auth/newuser
+      - /auth/newproject
+  - tier: all
+    name: Auth and OAuth2 Endpoints
+    scope: ip
+    metric: requests_per_minute
+    limit: 160
+    timeFrame: minute
+    applies:
+      - /auth/*
+      - /oauth2/*
+  - tier: free
+    name: Default Request Rate — Free
+    scope: ip
     metric: requests_per_minute
     limit: 6000
     timeFrame: minute
     applies:
       - Medplum FHIR REST API
       - Medplum GraphQL API
-      - Medplum Bots
-  - tier: premium
-    name: Premium Tier Request Rate
-    scope: project
-    metric: requests_per_minute
-    limit: 18000
-    timeFrame: minute
-    applies:
-      - Medplum FHIR REST API
-      - Medplum GraphQL API
-      - Medplum Bots
-  - tier: enterprise
-    name: Enterprise Negotiated Rate
-    scope: contract
+  - tier: paid
+    name: Default Request Rate — Paid
+    scope: ip
     metric: requests_per_minute
     limit: 60000
-    burst: 120000
     timeFrame: minute
     applies:
       - Medplum FHIR REST API
       - Medplum GraphQL API
-      - Medplum Bots
-  - tier: all
-    name: Bot Execution Limit
-    scope: project
-    metric: bot_executions_per_minute
-    limit: 60
-    timeFrame: minute
-    applies:
-      - Medplum Bots
+fhirInteractionLoad:
+  description: >-
+    A second, independent limit. Rather than counting requests, Medplum weights each FHIR
+    interaction by cost and caps total points per minute, per user and per project. This is what
+    keeps a single expensive search from consuming the platform — a notably more honest model
+    than flat request counting, and worth calling out when profiling Medplum.
+  bucket: fhirInteractions
+  timeFrame: minute
+  scopes:
+    - user
+    - project
+  weights:
+    read: 1
+    search: 20
+    history: 10
+    create: 100
+    update: 100
+    delete: 100
+    patch: 100
 notes: >-
-  Free tier limits are derived from publicly published Medplum rate-limit documentation;
-  Production, Premium, and Enterprise rate values are scaffold projections aligned with the
-  commercial tier structure and should be reconciled with the contractually agreed limits
-  documented in each customer's plan.
+  Two limits apply simultaneously and are reported as separate buckets in the `RateLimit` header:
+  `requests` (count per IP) and `fhirInteractions` (weighted load per user and project). Medplum
+  publishes only free and paid tiers for the default request rate; no premium or enterprise rate
+  values are published, so none are asserted here.
