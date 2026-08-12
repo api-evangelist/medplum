@@ -138,6 +138,12 @@ apis:
   - type: Examples
     url: examples/medplum-subscription-webhook-example.json
 common:
+- type: IssueTracker
+  url: https://github.com/medplum/medplum/issues
+- type: Releases
+  url: https://github.com/medplum/medplum/releases
+- type: SecurityPolicy
+  url: https://github.com/medplum/medplum/blob/main/SECURITY.md
 - type: MCPServer
   url: mcp/medplum-mcp.yml
 - type: AgenticAccess
