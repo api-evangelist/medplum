@@ -1,0 +1,34 @@
+generated: '2026-08-14'
+method: searched
+source: https://www.medplum.com/docs/react, https://storybook.medplum.com
+description: >-
+  Medplum maintains an open-source React component library (used internally in the Medplum App
+  and app.medplum.com), distinct from the server-side/client SDK packages captured in
+  packages/medplum-packages.yml. Distributed as npm packages, not a CDN script tag.
+loader_libraries:
+  - name: "@medplum/react"
+    npm: https://www.npmjs.com/package/@medplum/react
+    peer_dependencies:
+      - 'react / react-dom (React 18+)'
+      - '@mantine/core, @mantine/hooks, @mantine/notifications (Mantine 7+)'
+      - 'postcss, postcss-preset-mantine'
+      - 'react-router 6+ (recommended, not strictly required)'
+  - name: "@medplum/react-hooks"
+    npm: https://www.npmjs.com/package/@medplum/react-hooks
+    description: React hooks (useSubscription, useMedplum, etc.) split out from @medplum/react.
+component_families:
+  - family: Clinical resource display/editing
+    examples: [Patient timeline, resource tables/forms, questionnaire renderer]
+    note: Exact component names are enumerated on Storybook, not in the crawled docs text; not
+      itemized here to avoid inventing names not directly observed.
+  - family: Auth/session
+    examples: [SignInForm-driven auth flow components]
+demo_apps:
+  - name: Medplum Hello World
+  - name: Medplum Next.js Demo
+  - name: Foo Medical (full-featured patient demo)
+storybook: https://storybook.medplum.com
+source_code: https://github.com/medplum/medplum (packages/react, packages/react-hooks)
+distinct_from: >-
+  packages/medplum-packages.yml (server-side/client SDK libraries: core, cli, fhirtypes, agent,
+  mock, definitions) — this file covers only the client-side UI layer.

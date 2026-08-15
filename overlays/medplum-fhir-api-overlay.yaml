@@ -1,0 +1,47 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements for Medplum FHIR API
+  version: 1.0.0
+extends: openapi/medplum-fhir-api-openapi.yml
+actions:
+  - target: $.info
+    update:
+      x-apievangelist-rating: 4
+      x-apievangelist-notes: >-
+        Medplum's own OpenAPI models the four generic FHIR REST path templates
+        (/fhir/R4/{resourceType}, .../{id}, .../{id}/_history, .../{id}/_history/{versionId}) with
+        eight operations (search, createResource, readResource, updateResource, deleteResource,
+        patchResource, readResourceHistory, readVersion). It declares no 4xx/5xx responses and no
+        per-resource-type schemas in the paths object, even though 726 FHIR R4 component schemas
+        are defined and reused elsewhere. Our error catalog (errors/medplum-problem-types.yml) and
+        data model (data-model/medplum-data-model.yml) fill those two gaps from the docs and the
+        json-schema/ resource captures rather than the raw spec.
+  - target: $.paths['/fhir/R4/{resourceType}'].get
+    update:
+      tags:
+        - Fhir
+        - Search
+      x-apievangelist-conventions: conventions/medplum-conventions.yml
+  - target: $.paths['/fhir/R4/{resourceType}'].post
+    update:
+      tags:
+        - Fhir
+        - Create
+      x-apievangelist-idempotency: >-
+        Conditional create via the ifNoneExist parameter (FHIR standard) makes createResource
+        safely retryable. See conventions/medplum-conventions.yml.
+  - target: $.paths['/fhir/R4/{resourceType}/{id}'].put
+    update:
+      tags:
+        - Fhir
+        - Update
+      x-apievangelist-idempotency: >-
+        updateResource (HTTP PUT with a known id) is naturally idempotent — repeating the same
+        request with the same body produces the same resulting resource state.
+  - target: $.components.securitySchemes
+    update:
+      x-apievangelist-note: >-
+        The spec declares BasicAuth, BearerAuth, and openIdConnect, but Medplum's real production
+        auth surface is OAuth 2.0 / SMART App Launch 2.0.0 (confirmed live at
+        /.well-known/oauth-authorization-server). See authentication/medplum-authentication.yml
+        and scopes/medplum-scopes.yml for the fuller picture the raw securitySchemes block omits.

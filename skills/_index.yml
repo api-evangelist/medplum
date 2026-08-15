@@ -1,0 +1,20 @@
+generated: '2026-08-14'
+method: generated
+description: >-
+  Agent Skills generated from real operationIds in openapi/medplum-fhir-api-openapi.yml, mirroring
+  three of the marquee flows already modeled as arazzo/ native workflows. No provider-published
+  skills or AGENTS.md file was found on medplum.com or in the medplum/medplum GitHub repo during
+  this pass, so all three are generated rather than harvested.
+skills:
+  - file: medplum-register-patient-with-observation.md
+    name: Register a patient and record a vital-sign observation
+    api: openapi/medplum-fhir-api-openapi.yml
+    operations: [createResource]
+  - file: medplum-upsert-patient.md
+    name: Upsert a patient by identifier
+    api: openapi/medplum-fhir-api-openapi.yml
+    operations: [search, updateResource, createResource]
+  - file: medplum-amend-resource-with-history.md
+    name: Amend a resource and inspect its version history
+    api: openapi/medplum-fhir-api-openapi.yml
+    operations: [readResource, updateResource, readResourceHistory, readVersion]

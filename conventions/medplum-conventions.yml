@@ -1,0 +1,65 @@
+generated: '2026-08-14'
+method: searched
+source: >-
+  https://www.medplum.com/docs/fhir-datastore/fhir-batch-requests, https://www.medplum.com/docs/search,
+  https://www.medplum.com/docs/rate-limits, live x-evidence probes (this repo)
+authentication:
+  style: 'Bearer JWT (OAuth 2.0 / SMART App Launch 2.0.0); see authentication/medplum-authentication.yml'
+idempotency:
+  supported: true
+  mechanism: >-
+    Two FHIR-native mechanisms, not a dedicated Idempotency-Key header: (1) updateResource is an
+    HTTP PUT against a known resource id — repeating the identical request yields the identical
+    resulting state; (2) conditional create via the `ifNoneExist` parameter (or an
+    `If-None-Exist` header on a batch entry) lets a client safely retry a createResource call
+    without risking a duplicate — the server returns the existing resource instead of creating a
+    second one when the search criteria already match.
+  scope: per-resource (id-scoped for PUT; search-criteria-scoped for conditional create)
+  retention: not documented — conditional-create matching is evaluated at request time against
+    current data, not a cached idempotency-key ledger with a TTL (contrast with Stripe's
+    Idempotency-Key header + 24h retention window).
+  transaction_limits: >-
+    A Bundle containing conditional operations (conditional create/update/delete) runs under
+    serializable database isolation and is capped at 8 entries; a transaction may contain at
+    most 50 update operations overall. Exceeding either limit returns 400 Bad Request.
+  docs: https://www.medplum.com/docs/fhir-datastore/fhir-batch-requests
+pagination:
+  style: cursor-like via FHIR Bundle links
+  params: ['_count']
+  response_fields: ['Bundle.link (relation=self|next|previous|first|last)', 'Bundle.total']
+  docs: https://www.medplum.com/docs/search
+field_expansion:
+  include: '_include / _revinclude — pull linked resources into the same search response Bundle (docs/search "Including Linked Resources")'
+  chaining: 'Chained search parameters across references (docs/search "Chaining Searches")'
+  sparse_fields: not confirmed — no _elements-parameter documentation found in this pass.
+metadata:
+  fields: ['Resource.meta.versionId', 'Resource.meta.lastUpdated', 'Resource.meta.profile']
+  note: Every FHIR resource carries meta.versionId/lastUpdated natively; history is queryable via
+    readResourceHistory / readVersion operations.
+request_tracing:
+  header: not a conventional request-id HTTP request header — Medplum instead ATTACHES tracing as
+    a response-body FHIR extension.
+  mechanism: >-
+    Error responses (OperationOutcome) carry an extension at
+    https://medplum.com/fhir/StructureDefinition/tracing with requestId + traceId sub-extensions,
+    live-observed on a 401 response from the MCP endpoint (see errors/medplum-problem-types.yml
+    x-evidence). This is a body-embedded correlation id, not a response header.
+versioning:
+  api_path: /fhir/R4/ (URI-path FHIR version segment)
+  platform_scheme: semver, released in lockstep across all components — see
+    lifecycle/medplum-lifecycle.yml
+error_envelope:
+  format: FHIR OperationOutcome (NOT RFC 9457 application/problem+json)
+  shape: 'issue[] each with severity, code, details.text; extended with an x-tracing extension carrying requestId/traceId'
+  docs: https://www.medplum.com/docs/api/fhir/resources/operationoutcome
+  full_catalog: errors/medplum-problem-types.yml
+rate_limit_signaling:
+  header: 'RateLimit (single structured header, not X-RateLimit-*)'
+  format: 'RateLimit: "requests";r=59999;t=60, "fhirInteractions";r=49894;t=60'
+  exhaustion_status: 429
+  full_detail: rate-limits/medplum-rate-limits.yml
+cross_links:
+  errors: errors/medplum-problem-types.yml
+  lifecycle: lifecycle/medplum-lifecycle.yml
+  authentication: authentication/medplum-authentication.yml
+  rate_limits: rate-limits/medplum-rate-limits.yml

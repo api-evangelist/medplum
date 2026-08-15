@@ -1,0 +1,79 @@
+generated: '2026-08-14'
+method: searched
+source: probed https://api.medplum.com/.well-known/oauth-authorization-server + https://api.medplum.com/.well-known/openid-configuration
+docs: https://www.medplum.com/docs/access/smart-scopes
+description: >-
+  Medplum's OpenAPI does not declare an oauth2 securityScheme with a scopes map (only http
+  basic/bearer + openIdConnect are declared), so no baseline could be mechanically derived by
+  derive-oauth-scopes.py (0 providers with oauth2 schemes found). This file is built entirely
+  from two live, provider-served surfaces: the RFC 8414 authorization-server metadata document
+  (probed) and the SMART Scopes documentation page (searched).
+schemes:
+  - name: Medplum OAuth2 / OIDC
+    source: probed https://api.medplum.com/.well-known/oauth-authorization-server
+    issuer: https://api.medplum.com/
+    flows:
+      - flow: authorizationCode
+        authorizationUrl: https://api.medplum.com/oauth2/authorize
+        tokenUrl: https://api.medplum.com/oauth2/token
+        userinfoUrl: https://api.medplum.com/oauth2/userinfo
+        introspectionUrl: https://api.medplum.com/oauth2/introspect
+        registrationUrl: https://api.medplum.com/oauth2/register
+      - flow: clientCredentials
+        tokenUrl: https://api.medplum.com/oauth2/token
+grant_types_supported:
+  - client_credentials
+  - authorization_code
+  - refresh_token
+  - "urn:ietf:params:oauth:grant-type:token-exchange"
+scopes:
+  # OIDC scopes advertised live by the authorization-server metadata document.
+  - scope: openid
+    description: OpenID Connect base scope; required to obtain an id_token.
+    sources: [probed oauth-authorization-server]
+  - scope: profile
+    description: Access to the authenticated user's profile claims.
+    sources: [probed oauth-authorization-server]
+  - scope: email
+    description: Access to the authenticated user's email claim.
+    sources: [probed oauth-authorization-server]
+  - scope: phone
+    description: Access to the authenticated user's phone claim.
+    sources: [probed oauth-authorization-server]
+  - scope: address
+    description: Access to the authenticated user's address claim.
+    sources: [probed oauth-authorization-server]
+  # SMART App Launch 2.0.0 scopes documented at docs/access/smart-scopes.
+  - scope: "patient/*.rs"
+    description: >-
+      Read and search any FHIR resource type within the launch-context patient's compartment
+      (SMART v2 fine-grained scope syntax).
+    sources: [docs]
+  - scope: "user/*.cruds"
+    description: >-
+      Create, read, update, delete, and search any FHIR resource type as the authenticated user
+      (SMART v2 fine-grained scope syntax; e.g. user/Encounter.cu grants write-only access to
+      Encounter).
+    sources: [docs]
+  - scope: fhirUser
+    description: Grants the client the authenticated user's FHIR resource reference (fhirUser claim).
+    sources: [docs]
+  - scope: launch
+    description: EHR-launch context scope (SMART App Launch, provider/EHR-initiated launch).
+    sources: [docs]
+  - scope: launch/patient
+    description: Standalone-launch context scope that resolves the launch patient context.
+    sources: [docs]
+  - scope: offline_access
+    description: Requests a refresh token so the client can obtain new access tokens without re-authentication.
+    sources: [docs]
+  - scope: online_access
+    description: Requests an access token valid only for the current session (no refresh token).
+    sources: [docs]
+notes: >-
+  Medplum documents SMART App Launch 2.0.0 support with the fine-grained (v2) scope syntax
+  ("patient/Observation.r", "user/*.cruds", etc.) rather than only the coarse v1 syntax
+  ("patient/*.read"). ClientApplication.signInForm.showScopeSelection controls whether the
+  end-user sees a scope-consent screen; ONC 170.315(g)(10) requires granular scope selection be
+  offered to patient-facing apps.
+standard: SMART App Launch 2.0.0

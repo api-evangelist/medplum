@@ -1,0 +1,103 @@
+generated: '2026-08-14'
+method: searched
+description: >-
+  Medplum ships every first-party component of its platform in lockstep, at the same semver tag,
+  per the published version policy (docs/compliance/versions): API server, client SDKs, React
+  component library, CLI, and the on-prem Agent are all released together. All packages below
+  are @medplum/* scoped npm packages, published by the medplum GitHub org. No official Python,
+  Java, Go, Ruby, .NET, or PHP SDK was found on PyPI/Maven/pkg.go.dev/RubyGems/NuGet/Packagist —
+  the platform is TypeScript/JavaScript-first, matching what the docs/sdk section documents.
+packages:
+  - language: typescript
+    registry: npm
+    name: "@medplum/core"
+    url: https://www.npmjs.com/package/@medplum/core
+    install: npm install @medplum/core
+    official: true
+    version: '5.1.30'
+    published: '2026-08-13'
+    description: Core Medplum TypeScript/JavaScript client library — FHIR client, auth, GraphQL helpers.
+  - language: typescript
+    registry: npm
+    name: "@medplum/react"
+    url: https://www.npmjs.com/package/@medplum/react
+    install: npm install @medplum/react
+    official: true
+    version: '5.1.30'
+    published: '2026-08-13'
+    description: React component library (built on Mantine 7+) for clinical UI — see components/medplum-components.yml.
+  - language: typescript
+    registry: npm
+    name: "@medplum/react-hooks"
+    url: https://www.npmjs.com/package/@medplum/react-hooks
+    install: npm install @medplum/react-hooks
+    official: true
+    version: '5.1.30'
+    published: '2026-08-13'
+    description: React hooks (useSubscription, useMedplum, etc.) split out from @medplum/react.
+  - language: typescript
+    registry: npm
+    name: "@medplum/cli"
+    url: https://www.npmjs.com/package/@medplum/cli
+    install: npm install --global @medplum/cli
+    official: true
+    version: '5.1.30'
+    published: '2026-08-13'
+    description: Medplum command-line interface — see cli/medplum-cli.yml for the command surface.
+  - language: typescript
+    registry: npm
+    name: "@medplum/fhirtypes"
+    url: https://www.npmjs.com/package/@medplum/fhirtypes
+    install: npm install @medplum/fhirtypes
+    official: true
+    version: '5.1.30'
+    published: '2026-08-13'
+    description: Generated TypeScript type definitions for every FHIR R4 resource.
+  - language: typescript
+    registry: npm
+    name: "@medplum/agent"
+    url: https://www.npmjs.com/package/@medplum/agent
+    install: npm install @medplum/agent
+    official: true
+    version: '5.1.30'
+    published: '2026-08-13'
+    description: On-premise Agent that bridges local clinical systems (HL7v2, DICOM, MLLP) to the Medplum cloud.
+  - language: typescript
+    registry: npm
+    name: "@medplum/mock"
+    url: https://www.npmjs.com/package/@medplum/mock
+    install: npm install --save-dev @medplum/mock
+    official: true
+    version: '5.1.30'
+    published: '2026-08-13'
+    description: In-memory mock Medplum client for unit testing consumer applications.
+  - language: typescript
+    registry: npm
+    name: "@medplum/definitions"
+    url: https://www.npmjs.com/package/@medplum/definitions
+    install: npm install @medplum/definitions
+    official: true
+    version: '5.1.30'
+    published: '2026-08-13'
+    description: FHIR R4 StructureDefinition / ValueSet / CodeSystem data bundled for offline validation.
+  - language: typescript
+    registry: npm
+    name: "@medplum/eslint-config"
+    url: https://www.npmjs.com/package/@medplum/eslint-config
+    install: npm install --save-dev @medplum/eslint-config
+    official: true
+    version: '5.1.30'
+    published: '2026-08-13'
+    description: Shared ESLint configuration used across Medplum first-party projects.
+currency_note: >-
+  All nine packages are pinned to the exact same version (5.1.30) published the exact same day
+  (2026-08-13, matching the GitHub v5.1.30 release published 2026-08-13T18:52:23Z) — direct,
+  provider-published confirmation of the lockstep release policy documented at
+  docs/compliance/versions. This is a strong freshness signal, not an abandonment one.
+not_found:
+  - registry: PyPI
+    checked: [medplum, medplum-sdk]
+    result: no package found (404)
+  - registry: Maven Central / pkg.go.dev / RubyGems / NuGet / Packagist / crates.io
+    result: not checked individually — docs/sdk only documents a TypeScript SDK, so a non-JS
+      SDK would be a genuine surprise; no evidence of one exists in the docs nav.

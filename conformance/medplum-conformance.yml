@@ -1,0 +1,128 @@
+generated: '2026-08-14'
+method: searched
+source: https://www.medplum.com/docs/compliance (+ sub-pages), openapi/medplum-fhir-api-openapi.yml, well-known/ probes
+standards:
+  - id: fhir-r4
+    conforms: true
+    evidence: >-
+      OpenAPI paths are the generic FHIR R4 REST surface (/fhir/R4/{resourceType}...); 726
+      component schemas in openapi/medplum-fhir-api-openapi.yml are FHIR R4 resource shapes; 9
+      resource schemas separately captured under json-schema/.
+  - id: smart-app-launch-2.0.0
+    conforms: true
+    evidence: >-
+      "Medplum supports the SMART App Launch 2.0.0 standard" — https://www.medplum.com/docs/access/smart-scopes.
+      Fine-grained (v2) scope syntax (patient/*.rs, user/*.cruds, launch, launch/patient,
+      offline_access, online_access) confirmed on that page; see scopes/medplum-scopes.yml.
+  - id: oauth2
+    conforms: true
+    evidence: >-
+      RFC 8414 authorization-server metadata live at
+      /.well-known/oauth-authorization-server (probed 200); authorizationCode + clientCredentials
+      grant types advertised.
+  - id: oidc
+    conforms: true
+    evidence: >-
+      /.well-known/openid-configuration live (probed 200); scopes_supported includes openid,
+      profile, email, phone, address; id_token_signing_alg_values_supported ES256/ES384/HS256/RS256.
+  - id: rfc9728-protected-resource-metadata
+    conforms: true
+    evidence: /.well-known/oauth-protected-resource live (probed 200).
+  - id: rfc9457-problem-details
+    conforms: false
+    evidence: >-
+      Errors are returned as FHIR OperationOutcome resources (resourceType, issue[].severity/code/
+      details), not application/problem+json — confirmed by a live 401 response from the MCP
+      endpoint. See errors/medplum-problem-types.yml.
+  - id: fhir-operationoutcome-errors
+    conforms: true
+    evidence: >-
+      Live-observed: POST to the MCP endpoint without auth returned
+      {"resourceType":"OperationOutcome","issue":[{"severity":"error","code":"login",...}]}].
+      Documented at https://www.medplum.com/docs/api/fhir/resources/operationoutcome.
+  - id: fhir-batch-transaction-bundles
+    conforms: true
+    evidence: >-
+      Bundle.type batch/transaction documented at
+      https://www.medplum.com/docs/fhir-datastore/fhir-batch-requests, including transaction
+      atomicity, a 50-entry limit, and an 8-entry serializable-mode limit for bundles containing
+      conditional operations.
+  - id: fhir-conditional-create
+    conforms: true
+    evidence: >-
+      ifNoneExist conditional-create parameter documented on the same FHIR Batch Requests page —
+      the FHIR-native idempotency mechanism. See conventions/medplum-conventions.yml.
+  - id: cds-hooks
+    conforms: true
+    evidence: "\"CDS Hooks\" listed under Standards in the docs left-nav (docs/standards section)."
+  - id: c-cda
+    conforms: true
+    evidence: "\"C-CDA\" listed under Standards in the docs left-nav."
+  - id: fhircast
+    conforms: true
+    evidence: FHIRcast documented as a supported real-time clinical-context sync protocol
+      (apis.yml Integrations + docs left-nav "FHIRcast").
+  - id: hl7v2
+    conforms: true
+    evidence: >-
+      On-Prem Agent bridges HL7v2 ADT/ORU/SIU messages to FHIR — documented at docs left-nav
+      "HL7 Interface" and confirmed in apis.yml Integrations/UseCases.
+  - id: bulk-data-2.0
+    conforms: true
+    evidence: >-
+      CLI docs (docs/cli) document `medplum bulk export`/`medplum bulk import`, explicitly citing
+      the HL7 Bulk Data Access IG (build.fhir.org/ig/HL7/bulk-data/export.html).
+  - id: json-api
+    conforms: false
+    evidence: FHIR+JSON resource representation, not the JSON:API media-type convention.
+  - id: odata
+    conforms: false
+    evidence: No OData query syntax found; FHIR search parameters are used instead.
+  - id: scim-2.0
+    conforms: false
+    evidence: No SCIM-shaped user-provisioning endpoints found in the OpenAPI or docs; user
+      management is Medplum-proprietary (ProjectMembership, ClientApplication).
+  - id: psd2
+    conforms: false
+    evidence: Not applicable — healthcare platform, no payments-initiation surface.
+compliance_program:
+  published: true
+  url: https://www.medplum.com/docs/compliance
+  certifications:
+    - name: ONC Certification
+      detail: >-
+        Certified under 21st Century Cures Act criteria; Unique Certification Number
+        15.04.04.3147.Medp.05.03.1.251231, certified 12/31/2025. Adopted HL7 FHIR US Core IG
+        STU 5.0.1 for 170.315(g)(10) via ONC's SVAP process. Criteria list published at
+        docs/compliance/onc.
+      url: https://www.medplum.com/docs/compliance/onc
+    - name: SOC 2 Type II
+      url: https://www.medplum.com/docs/compliance/soc2
+    - name: HIPAA
+      url: https://www.medplum.com/docs/compliance/hipaa
+    - name: HITRUST e1 Certification
+      url: https://www.medplum.com/docs/compliance/hitrust
+    - name: CLIA/CAP
+      url: https://www.medplum.com/docs/compliance/clia-cap
+    - name: CFR Part 11
+      url: https://www.medplum.com/docs/compliance/cfr11
+    - name: ISO 9001
+      url: https://www.medplum.com/docs/compliance/iso9001
+    - name: HTI-4 / CMS-0057-F
+      url: https://www.medplum.com/docs/compliance/hti-4
+    - name: Good Manufacturing Practices (GMP)
+      url: https://www.medplum.com/docs/compliance/gmp
+    - name: ISO 27001
+      status: coming soon
+      note: Listed on docs/compliance as "ISO 27001 Certification (coming soon)" — not yet achieved.
+  version_policy:
+    url: https://www.medplum.com/docs/compliance/versions
+    scheme: semver
+    lockstep: true
+    note: >-
+      API server, client SDKs, React component library, Agent, and tooling all ship at the
+      identical version number per release. See lifecycle/medplum-lifecycle.yml.
+notes: >-
+  Compliance program is unusually well-documented for a mid-size platform: every certification
+  has its own docs page with a "Materials and Usage" access-request table (BAA, MSA, audit
+  reports, security overview) rather than a marketing-only trust badge.

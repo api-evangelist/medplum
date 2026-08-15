@@ -1,0 +1,60 @@
+# Medplum
+
+> Medplum is an Apache 2.0 open-source, FHIR-native developer platform for shipping clinical
+> software. It bundles a FHIR R4 datastore, REST and GraphQL APIs, a TypeScript SDK, React
+> component library, OAuth 2.0 / SMART on FHIR authentication, declarative Access Policies,
+> Subscriptions, and TypeScript-based serverless Bots — sold as a hosted service at
+> api.medplum.com and as a self-hostable monorepo on GitHub. Medplum is HIPAA, SOC 2 Type II,
+> and ONC-certified.
+
+No official /llms.txt was found on www.medplum.com (404) — this file is generated from the
+api-evangelist catalog entry for Medplum (apis.yml) and the artifacts harvested into this repo.
+
+## APIs
+
+- [Medplum FHIR API](https://www.medplum.com/docs/api): FHIR R4 REST API — search, create, read,
+  update, delete, and version-history on every FHIR resource type at
+  https://api.medplum.com/fhir/R4. OpenAPI 3.1.0: openapi/medplum-fhir-api-openapi.yml
+- [Medplum GraphQL API](https://www.medplum.com/docs/graphql): FHIR-aware GraphQL endpoint at
+  https://api.medplum.com/fhir/R4/$graphql — typed nested queries, reverse-reference traversal,
+  FHIRPath-style array filtering.
+- [Medplum Bots](https://www.medplum.com/docs/bots): TypeScript serverless functions
+  (AWS Lambda-style) triggered by Subscriptions, HTTP, or cron.
+- [Medplum Subscriptions](https://www.medplum.com/docs/subscriptions): FHIR Subscription
+  resources dispatch webhook/WebSocket notifications on resource create/update.
+
+## Agent surfaces
+
+- MCP server (hosted, remote, OAuth-gated): https://api.medplum.com/mcp/stream — see
+  mcp/medplum-mcp.yml and https://www.medplum.com/docs/ai/mcp
+- No A2A agent card found at /.well-known/agent-card.json or /.well-known/agent.json on any host.
+
+## Auth
+
+- OAuth 2.0 / OIDC discovery: https://api.medplum.com/.well-known/openid-configuration
+- SMART App Launch 2.0.0 scopes: https://www.medplum.com/docs/access/smart-scopes
+- Authentication overview: https://www.medplum.com/docs/auth
+
+## Docs
+
+- Developer docs: https://www.medplum.com/docs
+- Getting started / tutorials: https://www.medplum.com/docs/tutorials
+- TypeScript SDK reference: https://www.medplum.com/docs/sdk/core
+- CLI: https://www.medplum.com/docs/cli
+- React components: https://www.medplum.com/docs/react
+- Rate limits: https://www.medplum.com/docs/rate-limits
+- Uptime / SLA: https://www.medplum.com/docs/uptime
+- Compliance: https://www.medplum.com/docs/compliance
+- Version policy: https://www.medplum.com/docs/compliance/versions
+
+## SDKs
+
+- npm: https://www.npmjs.com/package/@medplum/core (TypeScript/JavaScript core client)
+- npm: https://www.npmjs.com/package/@medplum/react (React component library)
+- Full list: packages/medplum-packages.yml
+
+## Source
+
+- GitHub: https://github.com/medplum/medplum (Apache 2.0)
+- Releases: https://github.com/medplum/medplum/releases
+- Security policy: https://github.com/medplum/medplum/blob/main/SECURITY.md

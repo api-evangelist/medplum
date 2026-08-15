@@ -1,24 +1,58 @@
-generated: '2026-07-11'
-method: derived
-source: openapi/medplum-openapi-original.yml
+generated: '2026-08-14'
+method: searched
+source: openapi/medplum-fhir-api-openapi.yml
+docs: https://www.medplum.com/docs/auth
 summary:
   types:
   - http
   - openIdConnect
+  - oauth2 (SMART App Launch 2.0.0, not declared in OpenAPI securitySchemes)
+  api_key_in: []
+  oauth2_flows:
+  - authorizationCode
+  - clientCredentials
 schemes:
 - name: BasicAuth
   type: http
   scheme: basic
   sources:
-  - openapi/medplum-openapi-original.yml
+  - openapi/medplum-fhir-api-openapi.yml
 - name: BearerAuth
   type: http
   scheme: bearer
   bearerFormat: JWT
   sources:
-  - openapi/medplum-openapi-original.yml
+  - openapi/medplum-fhir-api-openapi.yml
 - name: OpenID
   type: openIdConnect
   openIdConnectUrl: https://api.medplum.com/.well-known/openid-configuration
   sources:
-  - openapi/medplum-openapi-original.yml
+  - openapi/medplum-fhir-api-openapi.yml
+- name: Medplum OAuth2 (SMART App Launch 2.0.0)
+  type: oauth2
+  note: >-
+    Not declared as an oauth2 securityScheme in the OpenAPI (only http basic/bearer +
+    openIdConnect are declared there), but confirmed live at the RFC 8414 authorization-server
+    metadata endpoint and documented at docs/auth and docs/access/smart-scopes. Full detail in
+    scopes/medplum-scopes.yml.
+  authorizationUrl: https://api.medplum.com/oauth2/authorize
+  tokenUrl: https://api.medplum.com/oauth2/token
+  userinfoUrl: https://api.medplum.com/oauth2/userinfo
+  sources:
+  - probed https://api.medplum.com/.well-known/oauth-authorization-server
+  - https://www.medplum.com/docs/access/smart-scopes
+x-evidence:
+  well_known:
+  - path: /.well-known/openid-configuration
+    host: api.medplum.com
+    status: 200
+    file: well-known/medplum-openid-configuration.json
+  - path: /.well-known/oauth-authorization-server
+    host: api.medplum.com
+    status: 200
+    file: well-known/medplum-oauth-authorization-server.json
+  - path: /.well-known/oauth-protected-resource
+    host: api.medplum.com
+    status: 200
+    file: well-known/medplum-oauth-protected-resource.json
+  fetched: '2026-08-14'

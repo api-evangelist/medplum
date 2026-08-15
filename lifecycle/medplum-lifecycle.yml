@@ -1,0 +1,71 @@
+generated: '2026-08-14'
+method: searched
+source: https://www.medplum.com/docs/compliance/versions, https://www.medplum.com/docs/compliance/alpha-beta, https://status.medplum.com, https://www.medplum.com/docs/uptime
+versioning:
+  scheme: semver
+  current: '5.1.30'
+  current_source: probed https://api.github.com/repos/medplum/medplum/releases (v5.1.30, published 2026-08-13T18:52:23Z)
+  docs: https://www.medplum.com/docs/compliance/versions
+  lockstep: true
+  lockstep_note: >-
+    API server, client SDKs, React component library, Agent, and supporting tools are all
+    released at the identical semver tag — every deliverable (Docker images, npm packages, Helm
+    charts, Terraform modules) is published with the same version tag for a given release.
+  major_release_schedule:
+    cadence: annual (Q4)
+    active_support: 1 year
+    maintenance_support: 1 year (critical updates only)
+    enterprise_extension: additional 12 months security-only patches (licensed Enterprise customers only; not offered to free/open-source users) — 36 months total from GA
+    current_lifecycle: 'Medplum 4: past. Medplum 5: ACTIVE. Medplum 6: expected ~Q4 2026 (UNSTABLE/preview per the version-policy timeline chart).'
+  minor_release_schedule:
+    cadence: 2-3 times per year
+    breaking_changes: possible in features tagged Alpha or Beta
+    upgrade_tooling: 'medplum upgrade / medplum aws upgrade chains sequential minors (e.g. 5.0 -> 5.3) with transactional rollback'
+  patch_release_schedule:
+    cadence: approximately weekly
+    breaking_changes: possible in Alpha-tagged features only
+  security_patch_sla:
+    critical_cvss_9_plus: 7 calendar days
+    high_cvss_7_to_8_9: 14 calendar days
+deprecation:
+  policy_url: https://www.medplum.com/docs/compliance/alpha-beta
+  sunset_header: false
+  sunset_header_note: No RFC 8594 Sunset/Deprecation HTTP headers documented; deprecation is
+    communicated via a 3-stage stability model instead.
+  stability_stages:
+    - stage: Alpha
+      breaking_changes: may occur in any release without advance notice; not covered by the
+        deprecation policy
+      marker: ':::info[Alpha] admonition in docs; @experimental TSDoc tag'
+    - stage: Beta
+      breaking_changes: possible, noted in release notes with a migration path where practical
+      marker: ':::info[Beta] admonition in docs, or a (Beta) label'
+    - stage: GA (Stable)
+      breaking_changes: concentrated into major releases, announced in advance; full semver
+        guarantees apply
+      marker: '@deprecated TSDoc tag = scheduled for removal in next major'
+  graduation_path: 'Alpha -> Beta -> GA, or retirement without reaching GA (announced in GitHub
+    release notes and the #announcements Discord channel)'
+  feedback_channel: https://github.com/medplum/medplum/issues
+deprecated_operations: []
+deprecated_operations_note: >-
+  The OpenAPI's 8 operationIds carry no `deprecated: true` flag; nothing to list.
+sla:
+  url: https://www.medplum.com/docs/uptime
+  uptime_target: '99.99%'
+  measurement_period: monthly
+  coverage: authentication, FHIR API, Subscriptions and webhooks, WebSocket connections, Bot execution
+  note: >-
+    99.99% is the contractual SLA figure; the docs state Medplum has "historically operated above
+    that level" in production, and are explicit that exact credit terms live in the customer
+    agreement, not the docs page.
+status_page: https://status.medplum.com
+status_page_note: >-
+  Publicly embeds two independent third-party monitors (Pingdom public stats page + StatusCake
+  public uptime test), rather than hosting a first-party status page.
+dependency_support:
+  nodejs: Supports current Active + Maintenance Node.js LTS releases (even-numbered LTS schedule, e.g. 22.x, 24.x)
+  postgresql: Supports all PostgreSQL LTS versions overlapping a Medplum Active release (typically ~4 major versions)
+  other: >-
+    Dependencies without their own release schedule (Redis, React, Mantine) keep the major version
+    supported at the start of a Medplum major version for that major's full lifecycle.

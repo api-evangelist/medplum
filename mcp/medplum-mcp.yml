@@ -8,15 +8,12 @@ transport: streamable-http
 url: https://api.medplum.com/mcp/stream
 auth: OAuth 2.0 (MCP authorization spec, 2025-06-18 revision)
 operator: Medplum (Orangebot, Inc.)
-description: >-
-  Official hosted Medplum MCP server. Exposes the Medplum FHIR API to AI clients through a single
-  general-purpose tool, authenticated with OAuth 2.0 against the user's own Medplum login, so the
+description: Official hosted Medplum MCP server. Exposes the Medplum FHIR API to AI clients through a
+  single general-purpose tool, authenticated with OAuth 2.0 against the user's own Medplum login, so the
   agent inherits that user's existing FHIR permissions rather than a separate service credential.
 tools:
 - name: fhir-request
-  description: >-
-    Make a request against the Medplum FHIR API. Full CRUD — the tool is annotated as
-    data-modifying.
+  description: Make a request against the Medplum FHIR API. Full CRUD — the tool is annotated as data-modifying.
   methods:
   - GET
   - POST
@@ -38,18 +35,28 @@ clients:
   - name: Claude.ai
     path: Settings → Organization Integrations → Add integration
     requires: paid Claude.ai plan
-  note: >-
-    Claude.ai is the only client Medplum documents step-by-step, but the server speaks standard
-    MCP, so other MCP clients should connect.
+  note: Claude.ai is the only client Medplum documents step-by-step, but the server speaks standard MCP,
+    so other MCP clients should connect.
 x-notes:
   write_capable: true
-  significance: >-
-    Notable for healthcare: this is an agent-facing WRITE path into a FHIR server. One tool
-    (fhir-request) covers the entire FHIR surface rather than enumerating per-resource tools —
-    a deliberately lean design that hands the agent the API instead of a curated tool list.
-    Contrast with MEDITECH, whose developer program exposes no write surface at all.
-  governance_gaps: >-
-    Medplum does not publish granular OAuth scopes for the MCP server — the docs say only that
-    the user authorizes the client to access their data. With a single data-modifying tool
-    spanning all of FHIR, authorization granularity rests entirely on the authenticated user's
-    Medplum permissions. Worth flagging in any agent-readiness or governance review.
+  significance: 'Notable for healthcare: this is an agent-facing WRITE path into a FHIR server. One tool
+    (fhir-request) covers the entire FHIR surface rather than enumerating per-resource tools — a deliberately
+    lean design that hands the agent the API instead of a curated tool list. Contrast with MEDITECH, whose
+    developer program exposes no write surface at all.'
+  governance_gaps: Medplum does not publish granular OAuth scopes for the MCP server — the docs say only
+    that the user authorizes the client to access their data. With a single data-modifying tool spanning
+    all of FHIR, authorization granularity rests entirely on the authenticated user's Medplum permissions.
+    Worth flagging in any agent-readiness or governance review.
+deployment:
+  mode: remote
+  endpoint: https://api.medplum.com/mcp/stream
+  auth: oauth
+  verified: probed
+  tools: 1
+  checked: '2026-08-14'
+  source: >-
+    POST tools/list against https://api.medplum.com/mcp/stream returned HTTP 401 with a FHIR
+    OperationOutcome ({"resourceType":"OperationOutcome","id":"unauthorized",...}) — confirms the
+    endpoint is live and OAuth-gated exactly as docs/ai/mcp describes; live tool schema requires
+    an authenticated session so the single fhir-request tool above is taken from the docs, not a
+    live introspection dump.

@@ -1,0 +1,41 @@
+generated: '2026-08-14'
+method: searched
+source: https://www.medplum.com/docs/subscriptions
+spec_type: Webhooks
+note: >-
+  No AsyncAPI document was found (checked /asyncapi.yaml and /asyncapi.json on www.medplum.com and
+  api.medplum.com — all 404) and no GitHub code-search was possible (API requires auth). Medplum's
+  event surface is NOT a fixed catalog of named webhook event types (contrast with a payments
+  provider's charge.succeeded-style catalog) — it is a generic FHIR Subscription mechanism: the
+  event "types" are whatever FHIR search-criteria the subscriber configures, not a fixed enum, so
+  the catalog below documents the MECHANISM rather than an event-name list.
+mechanism:
+  resource: Subscription (FHIR R4)
+  trigger: >-
+    A Subscription resource with a `criteria` field (a FHIR search-criteria string, e.g.
+    "Observation?status=final") fires whenever a resource create/update matches that criteria.
+  channels:
+    - type: rest-hook
+      description: HTTP POST webhook delivery to the Subscription's configured endpoint URL.
+    - type: websocket
+      description: >-
+        Real-time delivery over WebSocket, consumed client-side via the @medplum/react-hooks
+        useSubscription hook.
+  manual_trigger:
+    operation: $resend
+    description: Manually re-fires a webhook for troubleshooting/replay ("Resending Webhooks" doc page).
+  server_scoped:
+    description: >-
+      Self-hosted-only feature letting a super admin create a single Subscription that fires
+      across every Project on the server, rather than per-project.
+    docs: https://www.medplum.com/docs/subscriptions (see "Server-Scoped Subscriptions")
+  auditing:
+    resource: AuditEvent
+    description: AuditEvents record a history of Subscription triggers, used for troubleshooting.
+  standard: FHIR Subscriptions (HL7.org) — https://www.medplum.com links out to the HL7 Subscription spec.
+  extensions_doc: https://www.medplum.com/docs/subscriptions (see "Subscription Extensions" for advanced fine-grained-control/security options)
+downstream_use: >-
+  Subscriptions are the primary trigger for Bots (TypeScript serverless functions) — a Subscription
+  match invokes a Bot, which is how most Medplum integrations (HL7v2 conversion, document
+  generation, external webhook fan-out) are built. See apis.yml's Medplum Bots / Medplum
+  Subscriptions API entries.

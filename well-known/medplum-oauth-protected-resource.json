@@ -1,0 +1,18 @@
+{
+  "resource": "https://api.medplum.com/",
+  "issuer": "https://api.medplum.com/",
+  "authorization_servers": [
+    "https://api.medplum.com/"
+  ],
+  "scopes_supported": [
+    "openid",
+    "profile",
+    "email",
+    "phone",
+    "address"
+  ],
+  "bearer_methods_supported": [
+    "header"
+  ],
+  "introspection_endpoint": "https://api.medplum.com/oauth2/introspect"
+}

@@ -1,0 +1,149 @@
+generated: '2026-08-14'
+method: derived
+source: >-
+  json-schema/medplum-{patient,observation,encounter,practitioner,organization,condition,
+  medicationrequest,subscription}-schema.json — the 9 FHIR R4 resource JSON Schemas already
+  captured in this repo. openapi/medplum-fhir-api-openapi.yml models 4 generic path templates
+  rather than per-resource paths, so relationships below are derived from each captured schema's
+  `Reference`-typed properties, not from OpenAPI $ref graphs.
+description: >-
+  Partial entity-relationship graph covering the 8 FHIR R4 resource types already captured as
+  JSON Schema in this repo (of Medplum's full ~140-resource FHIR R4 surface — 726 component
+  schemas exist in the OpenAPI, but only these 8 have a standalone json-schema/ file to derive
+  from). Target types for each Reference field are assigned from FHIR R4's own resource
+  definitions (a standard, not a Medplum-specific guess) where the field name makes the target
+  unambiguous.
+entities:
+  - name: Patient
+    relationships:
+      - field: generalPractitioner
+        type: has_many
+        target: Practitioner
+        via: generalPractitioner
+      - field: managingOrganization
+        type: belongs_to
+        target: Organization
+        via: managingOrganization
+  - name: Observation
+    relationships:
+      - field: subject
+        type: belongs_to
+        target: Patient
+        via: subject
+      - field: encounter
+        type: belongs_to
+        target: Encounter
+        via: encounter
+      - field: performer
+        type: has_many
+        target: Practitioner
+        via: performer
+      - field: basedOn
+        type: has_many
+        target: (ServiceRequest | MedicationRequest | ...)
+        via: basedOn
+      - field: partOf
+        type: belongs_to
+        target: Observation
+        via: partOf
+      - field: hasMember
+        type: has_many
+        target: Observation
+        via: hasMember
+      - field: derivedFrom
+        type: has_many
+        target: Observation
+        via: derivedFrom
+  - name: Encounter
+    relationships:
+      - field: subject
+        type: belongs_to
+        target: Patient
+        via: subject
+      - field: serviceProvider
+        type: belongs_to
+        target: Organization
+        via: serviceProvider
+      - field: partOf
+        type: belongs_to
+        target: Encounter
+        via: partOf
+      - field: episodeOfCare
+        type: has_many
+        target: EpisodeOfCare
+        via: episodeOfCare
+      - field: appointment
+        type: has_many
+        target: Appointment
+        via: appointment
+  - name: Practitioner
+    relationships: []
+    note: No Reference-typed top-level properties in the captured schema — a leaf entity, referenced
+      by Patient/Observation/Condition/MedicationRequest rather than referencing them.
+  - name: Organization
+    relationships:
+      - field: partOf
+        type: belongs_to
+        target: Organization
+        via: partOf
+      - field: endpoint
+        type: has_many
+        target: Endpoint
+        via: endpoint
+  - name: Condition
+    relationships:
+      - field: subject
+        type: belongs_to
+        target: Patient
+        via: subject
+      - field: encounter
+        type: belongs_to
+        target: Encounter
+        via: encounter
+      - field: recorder
+        type: belongs_to
+        target: Practitioner
+        via: recorder
+      - field: asserter
+        type: belongs_to
+        target: Practitioner
+        via: asserter
+  - name: MedicationRequest
+    relationships:
+      - field: subject
+        type: belongs_to
+        target: Patient
+        via: subject
+      - field: encounter
+        type: belongs_to
+        target: Encounter
+        via: encounter
+      - field: medicationReference
+        type: belongs_to
+        target: Medication
+        via: medicationReference
+      - field: requester
+        type: belongs_to
+        target: Practitioner
+        via: requester
+      - field: performer
+        type: belongs_to
+        target: Practitioner
+        via: performer
+      - field: recorder
+        type: belongs_to
+        target: Practitioner
+        via: recorder
+      - field: priorPrescription
+        type: belongs_to
+        target: MedicationRequest
+        via: priorPrescription
+  - name: Subscription
+    relationships: []
+    note: No Reference-typed top-level properties in the captured schema; Subscription.criteria is
+      a FHIRPath-style search-criteria string, not a resource reference.
+render: no subway/ visual exists in this repo to reference.
+not_covered: >-
+  The remaining ~132 FHIR R4 resource types Medplum supports (only these 8 are captured as
+  standalone JSON Schema files under json-schema/) are not modeled here — extending this file
+  would require harvesting additional per-resource schemas first.

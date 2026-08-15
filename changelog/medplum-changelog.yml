@@ -1,0 +1,45 @@
+generated: '2026-08-14'
+method: searched
+source: https://github.com/medplum/medplum/releases (probed via GitHub API)
+scheme: semver
+current_version: '5.1.30'
+release_cadence: 'patch ~weekly, minor 2-3x/year, major annually (Q4) — see lifecycle/medplum-lifecycle.yml'
+entries:
+  - version: '5.1.30'
+    date: '2026-08-13'
+    breaking: false
+    highlights:
+      - 'DICOM: de-dupe stored instances + search pagination (#10154)'
+      - 'Fix CORS Access-Control-Max-Age (#10149)'
+      - 'Dependency upgrades 2026-08-10 (#10156)'
+  - version: '5.1.29'
+    date: '2026-08-09'
+    breaking: false
+    highlights:
+      - 'Order medications by GCN and routed med ID when RxNorm/NDC absent (#10104)'
+      - 'feat(react): Include medplum modal (#10106)'
+      - 'Guard against WebSocket subscription message races'
+  - version: '5.1.28'
+    date: '2026-08-05'
+    breaking: false
+    highlights:
+      - 'Additional database configuration options (#9943)'
+      - 'fix(server): coalesce missing meta.project in data warehouse sync (#9953)'
+  - version: '5.1.27'
+    date: '2026-07-24'
+    breaking: false
+    highlights:
+      - 'Make "View Password" toggle keyboard accessible (#9803)'
+      - 'Co-locate all mutable state (#9813)'
+      - 'Change deprecated default ElastiCache node type to cache.t4g.medium (#9810)'
+  - version: '5.1.26'
+    date: '2026-07-10'
+    breaking: false
+    highlights:
+      - 'fix(ci): pin npm@11 in publish workflow to restore provenance (#9814)'
+      - 'fix(server): honor target type in _include and _revinclude (#9785)'
+notes: >-
+  Releases stay within the 5.1.x patch train across this window — no minor/major bump observed in
+  the last 5 releases (2026-07-10 through 2026-08-13), consistent with the documented "minors
+  2-3x/year" cadence. Every npm package in packages/medplum-packages.yml is published at the same
+  tag the same day as the matching GitHub release.

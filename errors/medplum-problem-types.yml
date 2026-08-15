@@ -1,0 +1,72 @@
+generated: '2026-08-14'
+method: searched
+format: fhir-operationoutcome
+source: https://www.medplum.com/docs/api/fhir/resources/operationoutcome
+note: >-
+  openapi/medplum-fhir-api-openapi.yml declares NO 4xx/5xx responses on any of its 8 operations
+  (derive-from-OpenAPI yielded nothing), so this catalog is built from the docs' OperationOutcome
+  reference plus a live-observed error response, not from spec content. Medplum returns errors as
+  FHIR OperationOutcome resources, NOT RFC 9457 application/problem+json — a genuine divergence
+  from the RFC 9457 convention this pipeline otherwise favors, called out rather than mislabeled.
+envelope:
+  resourceType: OperationOutcome
+  shape: 'issue[] each with severity (fatal|error|warning|information), code, details.text'
+  schema_doc: https://www.medplum.com/docs/api/fhir/resources/operationoutcome
+x-evidence:
+  live_sample:
+    fetched: '2026-08-14'
+    request: 'POST https://api.medplum.com/mcp/stream {"jsonrpc":"2.0","id":1,"method":"tools/list"}'
+    http_status: 401
+    body: |
+      {"resourceType":"OperationOutcome","id":"unauthorized","issue":[{"severity":"error","code":"login","details":{"text":"Unauthorized"}}],"extension":[{"url":"https://medplum.com/fhir/StructureDefinition/tracing","extension":[{"url":"requestId","valueId":"..."},{"url":"traceId","valueId":"..."}]}]}
+    note: >-
+      Confirms Medplum's REST/MCP surfaces return the same OperationOutcome envelope, extended
+      with a Medplum-specific x-tracing extension carrying requestId/traceId for support
+      correlation — useful for the request-tracing convention captured in conventions/.
+problems:
+  - status: 400
+    title: Bad Request
+    detail: Malformed FHIR resource, invalid search parameter, or a transaction exceeding the
+      50-entry / 8-entry-with-conditionals bundle limits (docs/fhir-datastore/fhir-batch-requests).
+    source_operation: openapi/medplum-fhir-api-openapi.yml#createResource
+  - status: 401
+    title: Unauthorized
+    detail: Missing or invalid bearer token / expired session. Live-observed on the MCP endpoint
+      (see x-evidence above); applies identically to the FHIR REST API per BearerAuth.
+    source_operation: openapi/medplum-fhir-api-openapi.yml#search
+  - status: 403
+    title: Forbidden
+    detail: Authenticated but the caller's Access Policy does not grant access to the requested
+      resource type/field (docs/access/access-policies).
+    source_operation: openapi/medplum-fhir-api-openapi.yml#readResource
+  - status: 404
+    title: Not Found
+    detail: Resource id does not exist, or the resourceType is not a recognized FHIR R4 type.
+    source_operation: openapi/medplum-fhir-api-openapi.yml#readResource
+  - status: 405
+    title: Method Not Allowed
+    detail: HTTP verb not supported for the given FHIR interaction/resource combination.
+    source_operation: openapi/medplum-fhir-api-openapi.yml#search
+  - status: 409
+    title: Conflict
+    detail: Version conflict on updateResource (If-Match precondition failure) or a conditional
+      create matching more than one existing resource.
+    source_operation: openapi/medplum-fhir-api-openapi.yml#updateResource
+  - status: 410
+    title: Gone
+    detail: Resource has been deleted; FHIR history is retained (readResourceHistory still
+      resolves prior versions).
+    source_operation: openapi/medplum-fhir-api-openapi.yml#deleteResource
+  - status: 412
+    title: Precondition Failed
+    detail: ETag / If-Match version check failed on updateResource.
+    source_operation: openapi/medplum-fhir-api-openapi.yml#updateResource
+  - status: 422
+    title: Unprocessable Entity
+    detail: Resource fails FHIR structural or profile validation ($validate-style checks).
+    source_operation: openapi/medplum-fhir-api-openapi.yml#createResource
+  - status: 429
+    title: Too Many Requests
+    detail: Rate limit exceeded — see rate-limits/medplum-rate-limits.yml (per-IP request-count
+      and per-user/project weighted FHIR interaction load).
+    source_operation: openapi/medplum-fhir-api-openapi.yml#search

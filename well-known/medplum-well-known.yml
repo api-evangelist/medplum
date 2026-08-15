@@ -1,0 +1,86 @@
+generated: '2026-08-14'
+method: searched
+hosts:
+  - host: https://www.medplum.com
+    documents:
+      - path: /.well-known/security.txt
+        status: 404
+      - path: /.well-known/openid-configuration
+        status: 404
+      - path: /.well-known/oauth-authorization-server
+        status: 404
+      - path: /.well-known/oauth-protected-resource
+        status: 404
+      - path: /.well-known/api-catalog
+        status: 404
+      - path: /.well-known/ai-plugin.json
+        status: 404
+      - path: /.well-known/agent-card.json
+        status: 404
+      - path: /.well-known/agent.json
+        status: 404
+  - host: https://api.medplum.com
+    documents:
+      - path: /.well-known/security.txt
+        status: 404
+      - path: /.well-known/openid-configuration      # OIDC discovery
+        status: 200
+        file: medplum-openid-configuration.json
+      - path: /.well-known/oauth-authorization-server  # RFC 8414
+        status: 200
+        file: medplum-oauth-authorization-server.json
+      - path: /.well-known/oauth-protected-resource    # RFC 9728
+        status: 200
+        file: medplum-oauth-protected-resource.json
+      - path: /.well-known/api-catalog
+        status: 404
+      - path: /.well-known/ai-plugin.json
+        status: 404
+      - path: /.well-known/agent-card.json
+        status: 404
+      - path: /.well-known/agent.json
+        status: 404
+  - host: https://app.medplum.com
+    note: >-
+      Single-page-app catch-all: EVERY /.well-known/* path probed here returns HTTP 200 with an
+      HTML shell (the app's index.html), not a real document. Treated as a miss for every path on
+      this host per the pipeline's SPA-false-positive rule; none of these 200s are recorded as
+      hits.
+    documents:
+      - path: /.well-known/security.txt
+        status: 200
+        note: HTML SPA shell, not a document — rejected
+      - path: /.well-known/openid-configuration
+        status: 200
+        note: HTML SPA shell, not a document — rejected
+      - path: /.well-known/oauth-authorization-server
+        status: 200
+        note: HTML SPA shell, not a document — rejected
+      - path: /.well-known/oauth-protected-resource
+        status: 200
+        note: HTML SPA shell, not a document — rejected
+      - path: /.well-known/api-catalog
+        status: 200
+        note: HTML SPA shell, not a document — rejected
+      - path: /.well-known/ai-plugin.json
+        status: 200
+        note: HTML SPA shell, not a document — rejected
+      - path: /.well-known/agent-card.json
+        status: 200
+        note: HTML SPA shell, not a document — rejected
+      - path: /.well-known/agent.json
+        status: 200
+        note: HTML SPA shell, not a document — rejected
+summary: >-
+  Real hits are three JSON documents served by api.medplum.com: OIDC discovery, RFC 8414
+  authorization-server metadata, and RFC 9728 protected-resource metadata — all consistent with
+  each other (same issuer/endpoints). No security.txt is published on any host. No A2A agent
+  card, no /.well-known/api-catalog, and no ai-plugin.json anywhere. app.medplum.com is a
+  React SPA that answers 200 for any path, so its results are not counted as hits — this is the
+  documented false-positive pattern, not a real WellKnown surface on that host.
+x-notes:
+  agent_card: >-
+    No hit on /.well-known/agent-card.json or /.well-known/agent.json on any of the three hosts
+    (www, api, app — real 404s on www and api; app's 200s are the SPA shell, not a card). Per the
+    pipeline's A2A rule, this means NO a2a/ artifact is written for Medplum — an honest absence,
+    not a gap.

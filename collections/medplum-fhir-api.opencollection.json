@@ -1,0 +1,227 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Medplum - OpenAPI 3.0 Fhir API",
+    "version": "1.0.5"
+  },
+  "request": {
+    "auth": {
+      "type": "basic",
+      "username": "{{username}}",
+      "password": "{{password}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Fhir",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Search",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.medplum.com/fhir/R4/:resourceType",
+            "params": [
+              {
+                "name": "resourceType",
+                "value": "",
+                "type": "path",
+                "description": "Resource Type"
+              }
+            ]
+          },
+          "docs": "Search"
+        },
+        {
+          "info": {
+            "name": "Create Resource",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.medplum.com/fhir/R4/:resourceType",
+            "params": [
+              {
+                "name": "resourceType",
+                "value": "",
+                "type": "path",
+                "description": "Resource Type"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create Resource"
+        },
+        {
+          "info": {
+            "name": "Read Resource",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.medplum.com/fhir/R4/:resourceType/:id",
+            "params": [
+              {
+                "name": "resourceType",
+                "value": "",
+                "type": "path",
+                "description": "Resource Type"
+              },
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Resource ID"
+              }
+            ]
+          },
+          "docs": "Read Resource"
+        },
+        {
+          "info": {
+            "name": "Update Resource",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.medplum.com/fhir/R4/:resourceType/:id",
+            "params": [
+              {
+                "name": "resourceType",
+                "value": "",
+                "type": "path",
+                "description": "Resource Type"
+              },
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Resource ID"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update Resource"
+        },
+        {
+          "info": {
+            "name": "Patch Resource",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.medplum.com/fhir/R4/:resourceType/:id",
+            "params": [
+              {
+                "name": "resourceType",
+                "value": "",
+                "type": "path",
+                "description": "Resource Type"
+              },
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Resource ID"
+              }
+            ]
+          },
+          "docs": "Patch Resource"
+        },
+        {
+          "info": {
+            "name": "Delete Resource",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.medplum.com/fhir/R4/:resourceType/:id",
+            "params": [
+              {
+                "name": "resourceType",
+                "value": "",
+                "type": "path",
+                "description": "Resource Type"
+              },
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Resource ID"
+              }
+            ]
+          },
+          "docs": "Delete Resource"
+        },
+        {
+          "info": {
+            "name": "Read Resource History",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.medplum.com/fhir/R4/:resourceType/:id/_history",
+            "params": [
+              {
+                "name": "resourceType",
+                "value": "",
+                "type": "path",
+                "description": "Resource Type"
+              },
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Resource ID"
+              }
+            ]
+          },
+          "docs": "Read Resource History"
+        },
+        {
+          "info": {
+            "name": "Read Version",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.medplum.com/fhir/R4/:resourceType/:id/_history/:versionId",
+            "params": [
+              {
+                "name": "resourceType",
+                "value": "",
+                "type": "path",
+                "description": "Resource Type"
+              },
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Resource ID"
+              },
+              {
+                "name": "versionId",
+                "value": "",
+                "type": "path",
+                "description": "Version ID"
+              }
+            ]
+          },
+          "docs": "Read Version"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

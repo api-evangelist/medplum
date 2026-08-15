@@ -33,7 +33,7 @@ tags:
 - Interoperability
 url: https://raw.githubusercontent.com/api-evangelist/medplum/refs/heads/main/apis.yml
 created: '2026-05-25'
-modified: '2026-07-27'
+modified: '2026-08-14'
 specificationVersion: '0.19'
 apis:
 - aid: medplum:medplum-graphql-api
@@ -232,6 +232,48 @@ common:
   url: rate-limits/medplum-rate-limits.yml
 - type: FinOps
   url: finops/medplum-finops.yml
+- type: Packages
+  url: packages/medplum-packages.yml
+- type: WellKnown
+  url: well-known/medplum-well-known.yml
+- type: ToolCrosswalk
+  url: mcp/medplum-tool-crosswalk.yml
+- type: LLMsTxt
+  url: llms/medplum-llms.txt
+- type: Overlay
+  url: overlays/medplum-fhir-api-overlay.yaml
+- type: Conformance
+  url: conformance/medplum-conformance.yml
+- type: Compliance
+  url: https://www.medplum.com/docs/compliance
+- type: ErrorCatalog
+  url: errors/medplum-problem-types.yml
+- type: Lifecycle
+  url: lifecycle/medplum-lifecycle.yml
+- type: StatusPage
+  url: https://status.medplum.com
+- type: Deprecation
+  url: https://www.medplum.com/docs/compliance/alpha-beta
+- type: OAuthScopes
+  url: scopes/medplum-scopes.yml
+- type: Conventions
+  url: conventions/medplum-conventions.yml
+- type: Idempotency
+  url: conventions/medplum-conventions.yml
+- type: ChangeLog
+  url: changelog/medplum-changelog.yml
+- type: CLI
+  url: cli/medplum-cli.yml
+- type: Components
+  url: components/medplum-components.yml
+- type: DataModel
+  url: data-model/medplum-data-model.yml
+- type: AgentSkill
+  url: skills/_index.yml
+- type: Webhooks
+  url: asyncapi/medplum-webhooks.yml
+- type: Roadmap
+  url: https://github.com/orgs/medplum/projects/1
 
 - type: Features
   data:
@@ -343,3 +385,9 @@ common:
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
+
+x-enrichment:
+  date: '2026-08-14'
+  status: enriched
+  artifacts_added: 19
+  pass: local-v1
