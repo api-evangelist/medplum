@@ -1,16 +1,17 @@
-generated: '2026-08-14'
+generated: '2026-08-17'
 method: derived
 source:
   mcp: mcp/medplum-mcp.yml
   openapi: openapi/medplum-fhir-api-openapi.yml
   graphql: graphql/medplum-graphql.md
 description: >-
-  Medplum's MCP server exposes exactly ONE generalized tool (fhir-request) rather than one tool
-  per FHIR operation, so this crosswalk is a fan-out mapping: the single tool binds to every
-  REST operationId in the OpenAPI, because the tool's `method` + `url` parameters let the calling
-  agent construct any of the six underlying HTTP operations itself. This is a materially
-  different shape from a per-operation MCP tool list (compare all/harmonic-ai/), and is called
-  out explicitly rather than papered over.
+  Medplum's MCP server exposes THREE tools, but only ONE of them carries capability: fhir-request
+  is a single generalized tool covering the whole FHIR REST surface, while `search` and `fetch` are
+  client-compatibility shims Medplum implements because some clients (it names ChatGPT) require them
+  to connect. So this crosswalk is a fan-out mapping: one tool binds to every REST operationId in the
+  OpenAPI, because the tool's `method` + `path` parameters let the calling agent construct any of the
+  underlying HTTP operations itself. This is a materially different shape from a per-operation MCP
+  tool list (compare all/harmonic-ai/), and is called out explicitly rather than papered over.
 surfaces:
   openapi: openapi/medplum-fhir-api-openapi.yml
   graphql:
@@ -19,8 +20,8 @@ surfaces:
       captured only at prose level in graphql/medplum-graphql.md
   mcp:
     url: https://api.medplum.com/mcp/stream
-    tools_list: gated — POST tools/list returned HTTP 401 (OAuth required); tool descriptor below
-      is sourced from docs/ai/mcp, not a live introspection dump
+    tools_list: gated — POST tools/list returned HTTP 401 (OAuth required); tool descriptors below
+      are sourced from docs/ai/mcp (page last updated 2026-08-10), not a live introspection dump
 crosswalk:
   - tool: fhir-request
     category: fhir-generalized-crud
@@ -36,12 +37,30 @@ crosswalk:
     binding: rest
     confidence: high
     note: >-
-      The tool's `method` (GET/POST/PUT/PATCH/DELETE) + `url` (FHIR URL path) parameters let the
-      calling agent address any of the eight REST operationIds in openapi/medplum-fhir-api-openapi.yml
-      by constructing the matching HTTP verb + path; the tool has no separate inputSchema per
-      resource type. Confidence is high because the mapping is explicit in the docs (docs/ai/mcp
-      describes fhir-request as full CRUD over the FHIR API), not inferred by name/semantics.
-mcp_only: []
+      The tool's `method` (GET/POST/PUT/PATCH/DELETE) + `path` (FHIR path relative to the R4 base
+      URL, no leading slash, no /fhir/R4 prefix) parameters let the calling agent address any of the
+      eight REST operationIds in openapi/medplum-fhir-api-openapi.yml by constructing the matching
+      HTTP verb + path; the tool has no separate inputSchema per resource type. Confidence is high
+      because the published input schema is explicit in the docs (docs/ai/mcp gives the full JSON
+      Schema and describes fhir-request as full CRUD over the FHIR API), not inferred by name/semantics.
+mcp_only:
+  - tool: search
+    category: client-compatibility-shim
+    binding: none
+    confidence: high
+    note: >-
+      Not a Medplum capability. Medplum documents `search` as a lightweight standard tool implemented
+      only because some MCP clients (it names ChatGPT) require it to connect, and states the real work
+      is done through fhir-request. It binds to no distinct REST operation — searching is reachable
+      through fhir-request with method GET and a query path. Counted as mcp_only for honesty about the
+      tool list, NOT as MCP surface the REST API lacks.
+  - tool: fetch
+    category: client-compatibility-shim
+    binding: none
+    confidence: high
+    note: >-
+      Same as `search` — documented jointly with it, for the same client-connection reason. No distinct
+      REST binding; reads are reachable through fhir-request with method GET.
 rest_only: []
 graphql_only:
   - field: "$graphql query root"
@@ -51,11 +70,17 @@ graphql_only:
       fhir-request MCP tool, but is not exposed as a distinct MCP tool — an agent using MCP has
       no path to GraphQL's nested-query capability today.
 coverage:
-  mcp_tools_named: 1
+  mcp_tools_named: 3
+  mcp_tools_functional: 1
   mcp_tools_bound: 1
-  mcp_only_count: 0
+  mcp_only_count: 2
   rest_ops_total: 8
   rest_ops_with_a_tool: 8
   note: >-
-    "rest_ops_with_a_tool: 8" reflects that all 8 operations are reachable THROUGH the one
-    generalized tool, not that 8 distinct MCP tools exist — see the crosswalk row above.
+    Two numbers here need reading together, or they mislead in opposite directions.
+    "mcp_tools_named: 3" is Medplum's own count (fhir-request, search, fetch) and should not be
+    inflated into three capabilities — two are connection shims with no binding, so
+    mcp_tools_functional is 1. "rest_ops_with_a_tool: 8" reflects that all 8 operations are
+    reachable THROUGH the one generalized tool, not that 8 distinct MCP tools exist. Tool COUNT is a
+    bad proxy for agent capability on this provider in both directions: three tools understates
+    reach (one of them spans all of FHIR) and overstates surface (two of them do nothing for Medplum).

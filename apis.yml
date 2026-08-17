@@ -33,7 +33,7 @@ tags:
 - Interoperability
 url: https://raw.githubusercontent.com/api-evangelist/medplum/refs/heads/main/apis.yml
 created: '2026-05-25'
-modified: '2026-08-14'
+modified: '2026-08-17'
 specificationVersion: '0.19'
 apis:
 - aid: medplum:medplum-graphql-api
@@ -111,6 +111,8 @@ apis:
     url: https://www.medplum.com/docs/rate-limits
   - type: MCPServer
     url: mcp/medplum-mcp.yml
+  - type: ToolCrosswalk
+    url: mcp/medplum-tool-crosswalk.yml
   - type: Documentation
     url: https://www.medplum.com/docs/ai/mcp
   - type: JSONSchema

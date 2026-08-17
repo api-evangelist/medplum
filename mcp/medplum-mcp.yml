@@ -1,6 +1,7 @@
-generated: '2026-07-27'
+generated: '2026-08-17'
 method: searched
 source: https://www.medplum.com/docs/ai/mcp
+source_last_updated: '2026-08-10'
 name: Medplum MCP Server
 status: published
 status_raw: hosted
@@ -9,11 +10,27 @@ url: https://api.medplum.com/mcp/stream
 auth: OAuth 2.0 (MCP authorization spec, 2025-06-18 revision)
 operator: Medplum (Orangebot, Inc.)
 description: Official hosted Medplum MCP server. Exposes the Medplum FHIR API to AI clients through a
-  single general-purpose tool, authenticated with OAuth 2.0 against the user's own Medplum login, so the
-  agent inherits that user's existing FHIR permissions rather than a separate service credential.
+  single general-purpose FHIR request tool plus two client-compatibility shims, authenticated with
+  OAuth 2.0 against the user's own Medplum login, so the agent inherits that user's existing FHIR
+  permissions rather than a separate service credential.
+design_rationale: >-
+  Medplum documents the small tool surface as a deliberate choice, not an unfinished one. Their
+  argument: FHIR is a widely published open standard with abundant public specification, implementation
+  guides and worked examples, so modern LLMs already know FHIR resource types, search syntax and
+  reference traversal without vendor-specific instruction. Rather than hand-writing dozens of narrow
+  tools (scheduling, labs, medications), they expose one low-level tool that maps directly onto the
+  FHIR REST API and let the model bring its existing FHIR knowledge to bear. This is a standards-leverage
+  bet — the value of publishing to a well-known standard is that the agent arrives already trained on it.
 tools:
 - name: fhir-request
-  description: Make a request against the Medplum FHIR API. Full CRUD — the tool is annotated as data-modifying.
+  title: Perform a FHIR API Request
+  role: primary
+  description: >-
+    Low-level tool that performs a direct FHIR API request against the server's FHIR R4 base URL.
+    Full CRUD — create, read, update, delete. Medplum annotates the tool as data-modifying. This is
+    the tool behind nearly every interaction.
+  annotations:
+    modifies_data: true
   methods:
   - GET
   - POST
@@ -22,41 +39,120 @@ tools:
   - DELETE
   parameters:
   - name: method
+    type: string
     required: true
-    description: HTTP method
-  - name: url
+    enum: [GET, POST, PUT, PATCH, DELETE]
+    description: The HTTP method for the request.
+  - name: path
+    type: string
     required: true
-    description: FHIR URL path
+    description: >-
+      The FHIR path, relative to the server's FHIR R4 base URL (e.g. 'Patient' or 'Patient?name=Smith').
+      No leading slash and no '/fhir/R4' prefix.
   - name: body
+    type: object
     required: false
-    description: JSON request body
+    description: The JSON body of the FHIR resource to be created or updated.
+- name: search
+  role: compatibility
+  description: >-
+    Lightweight standard tool that some MCP clients (Medplum names ChatGPT) expect every server to
+    implement in order to connect. Exists for client compatibility; Medplum states the real work is
+    done through fhir-request, which performs searches directly against the FHIR API.
+  parameters: not published in docs/ai/mcp; live schema requires an authenticated session
+- name: fetch
+  role: compatibility
+  description: >-
+    Second client-compatibility shim, documented jointly with `search` and for the same reason —
+    connection requirements of clients that assume a search/fetch pair on every MCP server.
+  parameters: not published in docs/ai/mcp; live schema requires an authenticated session
 clients:
   documented:
   - name: Claude.ai
-    path: Settings → Organization Integrations → Add integration
+    path: Settings → Organization Integrations → Add Integration (name "Medplum", URL https://api.medplum.com/mcp/stream) → Connect → OAuth redirect to Medplum
     requires: paid Claude.ai plan
+    verify: Medplum suggests confirming with "Can you please confirm you have access to the 'fhir-request' MCP tool?"
+    caveat: Docs warn that LLM clients can cache sessions; disconnect and reconnect in a new chat if the integration misbehaves.
+  - name: ChatGPT
+    documented_as: named only as the motivating example for the `search`/`fetch` compatibility tools — no step-by-step setup published
   note: Claude.ai is the only client Medplum documents step-by-step, but the server speaks standard MCP,
     so other MCP clients should connect.
+  directory: Docs state the published example use cases are intended to be visible in the Anthropic Directory listing.
+examples_documented:
+- prompt: Names of all patients with a systolic blood pressure observation over 140 in the last year
+  path: GET Observation filtered by LOINC code and value, then follow references to Patient
+- prompt: Create an appointment for a named patient with a named practitioner at a given time
+  path: POST Appointment with a JSON body
+- prompt: Most recent cholesterol lab results for a named patient
+  path: GET Patient by name for the ID, then GET Observation filtered by patient and cholesterol code
+support:
+  discord: https://discord.gg/medplum
+  email: support@medplum.com
+  privacy: https://www.medplum.com/privacy
 x-notes:
   write_capable: true
   significance: 'Notable for healthcare: this is an agent-facing WRITE path into a FHIR server. One tool
     (fhir-request) covers the entire FHIR surface rather than enumerating per-resource tools — a deliberately
     lean design that hands the agent the API instead of a curated tool list. Contrast with MEDITECH, whose
     developer program exposes no write surface at all.'
-  governance_gaps: Medplum does not publish granular OAuth scopes for the MCP server — the docs say only
-    that the user authorizes the client to access their data. With a single data-modifying tool spanning
-    all of FHIR, authorization granularity rests entirely on the authenticated user's Medplum permissions.
-    Worth flagging in any agent-readiness or governance review.
+  tool_count_is_three_but_surface_is_one: >-
+    Medplum says "exactly three tools," and that is the honest count, but only fhir-request carries
+    capability — `search` and `fetch` are connection shims for clients that require them. Any coverage
+    math should treat the functional surface as one generalized tool; see mcp/medplum-tool-crosswalk.yml.
+  governance_gaps: >-
+    State this precisely, because the easy version of it is wrong. Medplum DOES have granular
+    authorization: it supports SMART App Launch 2.0.0 scopes (patient/*.rs, user/*.cruds,
+    patient/Observation.r and so on) with a scope-selection screen at authorization time, documented at
+    https://www.medplum.com/docs/access/smart-scopes, layered on top of declarative Access Policies.
+    The gap is not that the machinery is missing — it is that the MCP path is not documented as wired
+    to it, in either direction. docs/ai/mcp never mentions scopes; the SMART scopes page never mentions
+    MCP; and the RFC 9728 protected-resource metadata the MCP client actually discovers advertises only
+    OIDC identity scopes (openid, profile, email, phone, address), with no SMART scope among them. So a
+    connecting agent has nothing machine-discoverable telling it that a narrower grant is available or
+    how to request one. Combined with a single data-modifying tool spanning all of FHIR, the practical
+    default is that a connected agent's blast radius equals the authorizing user's — which for a
+    clinician account is broad. Whether Medplum's authorize endpoint would honor a SMART scope on the
+    MCP flow is UNVERIFIED here: confirming it needs an authenticated OAuth run, which this pass did
+    not perform. Frame it in any agent-readiness or governance review as a discovery/documentation gap
+    over working scope infrastructure, not as absent authorization.
+  auth_discovery_observation: >-
+    The 401 from the MCP endpoint returns `www-authenticate: Bearer realm="https://api.medplum.com/"`
+    without the `resource_metadata` parameter that the MCP 2025-06-18 authorization spec expects for
+    discovery. The protected-resource document is still reachable at the root well-known path, and its
+    `resource` is the whole API ("https://api.medplum.com/"), not the MCP endpoint; the RFC 9728
+    path-suffixed form /.well-known/oauth-protected-resource/mcp returns 404. Clients that rely strictly
+    on the WWW-Authenticate hint to locate metadata get less than the spec describes. Recorded as
+    observed behavior, not as a scored defect.
 deployment:
   mode: remote
   endpoint: https://api.medplum.com/mcp/stream
   auth: oauth
   verified: probed
-  tools: 1
-  checked: '2026-08-14'
+  tools: 3
+  tools_functional: 1
+  checked: '2026-08-17'
   source: >-
     POST tools/list against https://api.medplum.com/mcp/stream returned HTTP 401 with a FHIR
-    OperationOutcome ({"resourceType":"OperationOutcome","id":"unauthorized",...}) — confirms the
-    endpoint is live and OAuth-gated exactly as docs/ai/mcp describes; live tool schema requires
-    an authenticated session so the single fhir-request tool above is taken from the docs, not a
-    live introspection dump.
+    OperationOutcome ({"resourceType":"OperationOutcome","id":"unauthorized",...}) and
+    www-authenticate: Bearer realm="https://api.medplum.com/" — confirms the endpoint is live and
+    OAuth-gated exactly as docs/ai/mcp describes. Live tool schemas require an authenticated session,
+    so the three tools and the fhir-request input schema above are transcribed from docs/ai/mcp
+    (last updated 2026-08-10), NOT from a live introspection dump. Provenance is documented, not probed.
+  provenance:
+    endpoint_liveness: probed
+    oauth_gating: probed
+    oauth_metadata: probed
+    tool_list: documented
+    tool_schemas: documented
+history:
+- date: '2026-07-27'
+  note: Initial capture from docs/ai/mcp — recorded ONE tool (fhir-request) with a `url` parameter.
+- date: '2026-08-14'
+  note: Endpoint probed (401, OAuth-gated). Docs not re-read, so the tool list was not revisited.
+- date: '2026-08-17'
+  note: >-
+    Re-read docs/ai/mcp after Medplum updated the page on 2026-08-10. Corrected two errors carried
+    since the initial capture — the server exposes THREE tools (fhir-request, search, fetch), not one,
+    and fhir-request's second parameter is `path` (relative, no /fhir/R4 prefix), not `url`. Added the
+    published input schema, the documented design rationale, example use cases, client caveats, support
+    channels, and OAuth discovery observations from live well-known probes.
