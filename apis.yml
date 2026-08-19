@@ -34,7 +34,7 @@ tags:
 url: https://raw.githubusercontent.com/api-evangelist/medplum/refs/heads/main/apis.yml
 created: '2026-05-25'
 modified: '2026-08-17'
-specificationVersion: '0.19'
+specificationVersion: '0.23'
 apis:
 - aid: medplum:medplum-graphql-api
   name: Medplum GraphQL API
