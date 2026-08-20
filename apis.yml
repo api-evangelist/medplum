@@ -25,6 +25,15 @@ image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/medplum.pn
 tags:
 - Healthcare
 - FHIR
+- Open-Source
+- Developer Platform
+- HIPAA
+- SMART on FHIR
+- Clinical
+- Interoperability
+tags_raw:
+- Healthcare
+- FHIR
 - Open Source
 - Developer Platform
 - HIPAA
@@ -82,6 +91,11 @@ apis:
     are the primary trigger for Bots and external system integrations.
   humanURL: https://www.medplum.com/docs/subscriptions
   tags:
+  - Subscription
+  - Webhook
+  - FHIR
+  - Event
+  tags_raw:
   - Subscriptions
   - Webhooks
   - FHIR
@@ -97,6 +111,8 @@ apis:
   humanURL: https://www.medplum.com/docs/api
   baseURL: https://api.medplum.com/fhir/R4
   tags:
+  - FHIR
+  tags_raw:
   - Fhir
   properties:
   - type: OpenAPI
