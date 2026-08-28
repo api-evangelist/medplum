@@ -11,8 +11,8 @@ info:
     without opening the underlying OpenAPI description.
   version: 1.0.0
 sourceDescriptions:
-- name: medplumApi
-  url: ../openapi/medplum-openapi-original.yml
+- name: fhirApi
+  url: ../openapi/medplum-fhir-api-openapi.yml
   type: openapi
 workflows:
 - workflowId: create-diagnostic-report

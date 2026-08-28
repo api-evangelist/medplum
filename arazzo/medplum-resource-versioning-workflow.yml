@@ -11,8 +11,8 @@ info:
     concurrency. Every step inlines its request so the flow is self-contained.
   version: 1.0.0
 sourceDescriptions:
-- name: medplumFhir
-  url: ../openapi/medplum-openapi-original.yml
+- name: fhirApi
+  url: ../openapi/medplum-fhir-api-openapi.yml
   type: openapi
 workflows:
 - workflowId: resource-versioning

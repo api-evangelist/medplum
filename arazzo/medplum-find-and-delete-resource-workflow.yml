@@ -12,8 +12,8 @@ info:
     declared query parameter. Every step spells out its FHIR request inline.
   version: 1.0.0
 sourceDescriptions:
-- name: medplumApi
-  url: ../openapi/medplum-openapi-original.yml
+- name: fhirApi
+  url: ../openapi/medplum-fhir-api-openapi.yml
   type: openapi
 workflows:
 - workflowId: find-and-delete-resource
