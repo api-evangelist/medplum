@@ -19,9 +19,9 @@ edges:
   capability_id_l1: BC-2900
   capability_name: Healthcare Interoperability Operations
   confidence: 0.7
-  evidence: GET /fhir/R4/{resourceType} "Search"; POST /fhir/R4/{resourceType} "Create Resource"; schemas
-    include Coverage_Class, Subscription_Channel
-  reason: Generic FHIR R4 resource CRUD/versioned read endpoints constitute operation of a FHIR endpoint
-    for clinical data exchange, matching Healthcare Interoperability Operations. Confidence held moderate
-    because the surface is a generic datastore API spanning all resource types rather than a named business
-    process.
+  evidence: GET /fhir/R4/{resourceType} search; POST /fhir/R4/{resourceType} createResource; 'Read Resource
+    History'; schemas include Coverage_Class, CoverageEligibilityRequest_SupportingInfo, ImplementationGuide_Resource1
+  reason: Generic FHIR R4 RESTful CRUD/versioning surface over clinical resource types — the operation
+    of a FHIR endpoint, which is what Healthcare Interoperability Operations covers ('FHIR endpoints').
+    Confidence moderated to 0.7 because the operations are resource-type-agnostic datastore primitives
+    rather than named exchange workflows.
