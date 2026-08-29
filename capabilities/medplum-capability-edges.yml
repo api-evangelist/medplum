@@ -1,0 +1,27 @@
+slug: medplum
+provider: Medplum
+generated_by: planning/capability-mapping/scripts/classify_capabilities.py
+model: claude-opus-5
+frame:
+- Healthcare Providers
+min_confidence: 0.7
+capability_model:
+  source: https://github.com/vincentmakes/turbo-ea-capabilities
+  license: CC-BY-4.0
+  attribution: Turbo EA Capabilities by Vincent Verdet — Turbo EA, https://github.com/vincentmakes/turbo-ea-capabilities,
+    CC BY 4.0
+  notice: NOTICE
+edge_count: 1
+edges:
+- tag: Fhir
+  spec_file: medplum-fhir-api-openapi.yml
+  capability_id: BC-2900.60
+  capability_id_l1: BC-2900
+  capability_name: Healthcare Interoperability Operations
+  confidence: 0.7
+  evidence: GET /fhir/R4/{resourceType} "Search"; POST /fhir/R4/{resourceType} "Create Resource"; schemas
+    include Coverage_Class, Subscription_Channel
+  reason: Generic FHIR R4 resource CRUD/versioned read endpoints constitute operation of a FHIR endpoint
+    for clinical data exchange, matching Healthcare Interoperability Operations. Confidence held moderate
+    because the surface is a generic datastore API spanning all resource types rather than a named business
+    process.

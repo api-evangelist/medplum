@@ -169,6 +169,9 @@ apis:
   - type: Examples
     url: examples/medplum-subscription-webhook-example.json
 common:
+- type: CapabilityMap
+  url: capabilities/medplum-capability-edges.yml
+  name: Medplum Business Capability Map
 - type: IssueTracker
   url: https://github.com/medplum/medplum/issues
 - type: Releases
