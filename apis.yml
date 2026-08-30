@@ -124,7 +124,7 @@ apis:
   humanURL: https://www.medplum.com/docs/api
   baseURL: https://api.medplum.com/fhir/R4
   tags:
-  - FHIR
+  - Fhir
   tags_raw:
   - Fhir
   properties:
