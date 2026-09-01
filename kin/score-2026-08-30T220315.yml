@@ -1,0 +1,61 @@
+# Kin Score artifact — medplum — 2026-08-30T220315
+# The API Evangelist rating (https://github.com/api-evangelist/kin-score). Generated; do not edit.
+---
+kin_score:
+  slug: medplum
+  schema_version: 0.17.2
+  scored_at: '2026-08-30'
+  run_ts: 2026-08-30T220315
+  composite: 87.3
+  band: exemplar
+  facets:
+    discoverability: 66.7
+    contract_quality: 80.3
+    governance: 47.0
+    operational_transparency: 97.4
+    developer_ergonomics: 78.0
+    commercial_clarity: 86.8
+    contract_governance: 47.0
+    access_clarity: 86.8
+  agent_readiness:
+    score: 52.0
+    band: agent-native
+    dimensions:
+      spec_presence: true
+      agentic_access: derived
+      reversibility_documented: false
+      mcp_server: documented
+      auth_clarity: served
+      idempotency: documented
+      error_semantics: documented
+      openapi_examples: documented
+      rate_limit_signal: documented
+      event_surface_described: true
+      agent_skills: derived
+      well_known_catalog: false
+      consent_identity: false
+      agent_card: false
+      dry_run_mode: false
+      delegated_identity: served
+      protected_resource_metadata: verified
+      dynamic_client_registration: true
+      agentic_commerce: false
+  regulatory:
+    applies: true
+    regime: Health
+    regime_id: health
+    score: 92.5
+    matched_via: tags
+  open_source:
+    applies: true
+    score: 60.0
+  provenance:
+    mcp: first-party
+    skills: derived
+    agentic_access: derived
+    conformance: first-party
+    contracts:
+      total: 1
+      derived: 0
+      coverage: 0.0
+      callable: 100.0
