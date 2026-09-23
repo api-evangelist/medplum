@@ -1,17 +1,32 @@
 {
   "provider": "medplum",
   "sources": [
-    "medplum-fhir-api-openapi.yml"
+    "_original/medplum-openapi-original.yml"
   ],
   "outputs": [
     "medplum-fhir-api-openapi.yml"
   ],
   "archived": [],
   "errors": [
-    "medplum-fhir-api-openapi.yml: dangling $ref: #/components/schemas/Resource",
-    "medplum-fhir-api-openapi.yml: dangling $ref: #/components/schemas/integer64"
+    "medplum-openapi-original.yml: dangling $ref: #/components/schemas/Resource",
+    "medplum-openapi-original.yml: dangling $ref: #/components/schemas/integer64"
   ],
   "warnings": [],
-  "notes": [],
-  "skipped": []
+  "notes": [
+    "sourced from openapi/_original/ (1 archived document(s)); previously refined output at the top level was skipped rather than re-split",
+    "medplum-openapi-original.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "medplum-openapi-original.yml: tagged paths GET /fhir/R4/{resourceType} -> Fhir",
+    "medplum-openapi-original.yml: tagged paths POST /fhir/R4/{resourceType} -> Fhir",
+    "medplum-openapi-original.yml: tagged paths GET /fhir/R4/{resourceType}/{id} -> Fhir",
+    "medplum-openapi-original.yml: tagged paths PUT /fhir/R4/{resourceType}/{id} -> Fhir",
+    "medplum-openapi-original.yml: tagged paths DELETE /fhir/R4/{resourceType}/{id} -> Fhir",
+    "medplum-openapi-original.yml: tagged paths PATCH /fhir/R4/{resourceType}/{id} -> Fhir",
+    "medplum-openapi-original.yml: tagged paths GET /fhir/R4/{resourceType}/{id}/_history -> Fhir",
+    "medplum-openapi-original.yml: tagged paths GET /fhir/R4/{resourceType}/{id}/_history/{versionId} -> Fhir",
+    "medplum-openapi-original.yml: declared missing tag: Fhir",
+    "apis.yml register: already-registered"
+  ],
+  "skipped": [
+    "medplum-fhir-api-openapi.yml: previously refined output, superseded by openapi/_original/"
+  ]
 }
