@@ -9,17 +9,22 @@ description: >-
   SOC 2 Type II, and ONC-certified.
 type: Index
 deliveryModel:
-  model: unknown
-  open_source: unknown
+  model: open-core
+  license: Apache-2.0
+  license_evidence:
+    repo: medplum/medplum
+    spdx: Apache-2.0
+    stars: 2703
+  open_source: true
   commercial: true
   callable_host: true
-  label: Delivery model not determined — needs a product licence on record
-  confidence: low
+  label: Open core · an OSS project plus a commercial hosted product
+  confidence: medium
   source:
   - openapi
   - pricing
-  - repository-unlicensed
-  generated: '2026-08-28'
+  - repository-license
+  generated: '2026-09-25'
   method: derived
 accessModel:
   pricing: freemium
@@ -38,7 +43,7 @@ image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/medplum.pn
 tags:
 - Healthcare
 - FHIR
-- Open-Source
+- Open Source
 - Developer Platform
 - HIPAA
 - SMART on FHIR
@@ -53,6 +58,7 @@ tags_raw:
 - SMART on FHIR
 - Clinical
 - Interoperability
+- Open-Source
 url: https://raw.githubusercontent.com/api-evangelist/medplum/refs/heads/main/apis.yml
 created: '2026-05-25'
 modified: '2026-08-17'
