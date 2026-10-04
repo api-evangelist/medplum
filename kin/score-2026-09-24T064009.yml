@@ -1,21 +1,19 @@
-# Kin Score artifact — medplum — 2026-08-29T230545
+# Kin Score artifact — medplum — 2026-09-24T064009
 # The API Evangelist rating (https://github.com/api-evangelist/kin-score). Generated; do not edit.
 ---
 kin_score:
   slug: medplum
-  schema_version: 0.16.0
-  scored_at: '2026-08-29'
-  run_ts: 2026-08-29T230545
-  composite: 89.6
+  schema_version: 0.22.0
+  scored_at: '2026-09-24'
+  run_ts: 2026-09-24T064009
+  composite: 86.4
   band: exemplar
   facets:
-    discoverability: 72.2
-    contract_quality: 80.3
-    governance: 47.0
-    operational_transparency: 97.4
-    developer_ergonomics: 78.0
-    commercial_clarity: 86.8
+    discoverability: 66.7
+    contract_quality: 75.2
     contract_governance: 47.0
+    operational_transparency: 97.4
+    developer_ergonomics: 74.4
     access_clarity: 86.8
   agent_readiness:
     score: 52.0
