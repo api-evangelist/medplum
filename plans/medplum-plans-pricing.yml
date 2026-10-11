@@ -3,6 +3,7 @@
 # dated, verbatim transcription; every figure below is unverified until it does.
 method: generated
 generated: '2026-05-25'
+name: Medplum API Plans
 specification: API Commons Plans
 specificationVersion: '0.1'
 schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/Plans

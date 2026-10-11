@@ -3,6 +3,7 @@
 # dated, verbatim transcription; every figure below is unverified until it does.
 method: generated
 generated: '2026-05-25'
+name: Medplum API Rate Limits
 specification: API Commons Rate Limits
 specificationVersion: '0.1'
 schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/RateLimits

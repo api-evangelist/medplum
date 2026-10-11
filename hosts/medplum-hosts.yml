@@ -1,0 +1,116 @@
+generated: '2026-10-11'
+method: derived
+source: the pre-flight dossier, apis.yml pointers, spec servers, well-known, vendors -- nothing fetched here
+generator: derive-hosts.py
+summary:
+  hosts: 9
+  own: 4
+  other_domain: 1
+  platform: 4
+  roles:
+  - api
+  - other
+  - source
+  - status
+  - website
+hosts:
+- host: api.medplum.com
+  found_by:
+  - apis[]
+  types: []
+  serves:
+  - api
+  registrable_domain: medplum.com
+  role: api
+  relation: own
+- host: app.medplum.com
+  found_by:
+  - pointer
+  types:
+  - Console
+  serves: []
+  registrable_domain: medplum.com
+  role: other
+  relation: own
+- host: discord.gg
+  found_by:
+  - pointer
+  types:
+  - Discord
+  serves: []
+  registrable_domain: discord.gg
+  role: other
+  relation: platform
+- host: github.com
+  found_by:
+  - pointer
+  types:
+  - IssueTracker
+  - Releases
+  - SecurityPolicy
+  - GitHubOrganization
+  - GitHubRepository
+  - Roadmap
+  serves: []
+  registrable_domain: github.com
+  role: source
+  relation: platform
+- host: status.medplum.com
+  found_by:
+  - pointer
+  types:
+  - StatusPage
+  serves: []
+  registrable_domain: medplum.com
+  role: status
+  relation: own
+- host: www.apache.org
+  found_by:
+  - pointer
+  types:
+  - License
+  serves: []
+  registrable_domain: apache.org
+  role: other
+  relation: other-domain
+- host: www.medplum.com
+  found_by:
+  - pointer
+  - apis[]
+  types:
+  - Website
+  - Documentation
+  - GettingStarted
+  - APIReference
+  - Authentication
+  - SDKs
+  - CLI
+  - Pricing
+  - TermsOfService
+  - PrivacyPolicy
+  - Blog
+  - Compliance
+  - Deprecation
+  serves:
+  - docs
+  registrable_domain: medplum.com
+  role: website
+  relation: own
+- host: www.npmjs.com
+  found_by:
+  - pointer
+  types:
+  - SDKs
+  serves: []
+  registrable_domain: npmjs.com
+  role: other
+  relation: platform
+- host: www.postman.com
+  found_by:
+  - pointer
+  types:
+  - PostmanWorkspace
+  serves: []
+  registrable_domain: postman.com
+  role: other
+  relation: platform

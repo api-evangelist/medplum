@@ -1,0 +1,6 @@
+generated: '2026-10-11'
+method: probed
+generator: harvest-llms.py
+source: https://www.medplum.com/llms.txt
+bytes: 444466
+note: saved verbatim; the provider's own document

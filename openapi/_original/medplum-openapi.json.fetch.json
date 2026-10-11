@@ -1,0 +1,11 @@
+{
+ "url": "https://api.medplum.com/openapi.json",
+ "requested_url": "https://api.medplum.com/openapi.json",
+ "status": 200,
+ "content_type": "application/json; charset=utf-8",
+ "bytes": 2797991,
+ "sha256": "2ee112db7111046b41414e80df84846a1e5754a5b79e47cbc1ad98839a6c1429",
+ "fetched_at": "2026-10-11",
+ "match": "verbatim",
+ "note": "Saved verbatim from the provider at its request (api-evangelist/medplum#1); listed in https://api.medplum.com/.well-known/api-catalog as service-desc for https://api.medplum.com/fhir/R4."
+}

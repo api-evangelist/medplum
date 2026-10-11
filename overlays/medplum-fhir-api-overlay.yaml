@@ -8,14 +8,13 @@ actions:
     update:
       x-apievangelist-rating: 4
       x-apievangelist-notes: >-
-        Medplum's own OpenAPI models the four generic FHIR REST path templates
-        (/fhir/R4/{resourceType}, .../{id}, .../{id}/_history, .../{id}/_history/{versionId}) with
-        eight operations (search, createResource, readResource, updateResource, deleteResource,
-        patchResource, readResourceHistory, readVersion). It declares no 4xx/5xx responses and no
-        per-resource-type schemas in the paths object, even though 726 FHIR R4 component schemas
-        are defined and reused elsewhere. Our error catalog (errors/medplum-problem-types.yml) and
-        data model (data-model/medplum-data-model.yml) fill those two gaps from the docs and the
-        json-schema/ resource captures rather than the raw spec.
+        Medplum's own OpenAPI (https://api.medplum.com/openapi.json, saved verbatim 2026-10-11) models the
+        generic FHIR R4 REST path templates with eleven operations: batch/transaction, search,
+        createResource (conditional create via If-None-Exist), conditionalUpdate (upsert, 200/201/412),
+        validateResource ($validate), readResource, updateResource, patchResource, deleteResource,
+        readResourceHistory and readVersion, with 400/412 responses and OAuth2 / OpenID Connect
+        securitySchemes. Per-resource shapes live in the FHIR R4 component schemas; the server's
+        CapabilityStatement is saved at fhir/medplum-fhir-r4-capabilitystatement.json.
   - target: $.paths['/fhir/R4/{resourceType}'].get
     update:
       tags:

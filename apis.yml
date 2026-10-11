@@ -1,5 +1,7 @@
 aid: medplum
+
 name: Medplum
+
 description: >-
   Medplum is an Apache 2.0 open-source, FHIR-native developer platform for shipping
   clinical software. It bundles a FHIR R4 datastore, REST and GraphQL APIs, a TypeScript
@@ -7,13 +9,16 @@ description: >-
   Access Policies, Subscriptions, and TypeScript-based serverless Bots — sold as a hosted
   service at api.medplum.com and as a self-hostable monorepo on GitHub. Medplum is HIPAA,
   SOC 2 Type II, and ONC-certified.
+
 type: Index
+
 deliveryModel:
   model: open-core
   license: Apache-2.0
   license_evidence:
     repo: medplum/medplum
     spdx: Apache-2.0
+    url: https://github.com/medplum/medplum/blob/main/LICENSE.txt
     stars: 2703
   open_source: true
   commercial: true
@@ -26,6 +31,7 @@ deliveryModel:
   - repository-license
   generated: '2026-09-25'
   method: derived
+
 accessModel:
   pricing: freemium
   onboarding: self-serve
@@ -39,7 +45,9 @@ accessModel:
   - authentication
   generated: '2026-07-22'
   method: derived
+
 image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/medplum.png
+
 tags:
 - Healthcare
 - FHIR
@@ -49,6 +57,7 @@ tags:
 - SMART on FHIR
 - Clinical
 - Interoperability
+
 tags_raw:
 - Healthcare
 - FHIR
@@ -59,122 +68,28 @@ tags_raw:
 - Clinical
 - Interoperability
 - Open-Source
+
 url: https://raw.githubusercontent.com/api-evangelist/medplum/refs/heads/main/apis.yml
+
 created: '2026-05-25'
-modified: '2026-08-17'
+
+modified: '2026-10-11'
+
 specificationVersion: '0.23'
-apis:
-- aid: medplum:medplum-graphql-api
-  name: Medplum GraphQL API
-  description: >-
-    FHIR-aware GraphQL endpoint at https://api.medplum.com/fhir/R4/$graphql. Supports typed nested queries,
-    reverse-reference traversal (_reference), FHIRPath-style array filtering, and access-policy enforcement
-    at the field level.
-  humanURL: https://www.medplum.com/docs/graphql
-  baseURL: https://api.medplum.com/fhir/R4/$graphql
-  tags:
-  - GraphQL
-  - FHIR
-  - Healthcare
-  properties:
-  - type: Documentation
-    url: https://www.medplum.com/docs/graphql
-  - type: Examples
-    url: examples/medplum-graphql-patient-query-example.json
-  - url: graphql/medplum-graphql.md
-    type: GraphQL
-- aid: medplum:medplum-bots
-  name: Medplum Bots
-  description: >-
-    Bots are TypeScript serverless functions (AWS Lambda-style) executed in response to FHIR Subscriptions,
-    HTTP triggers, or scheduled cron. Bots are the backbone of Medplum integrations — HL7v2 to FHIR conversion,
-    document generation, webhook fan-out, and questionnaire-driven workflow automation.
-  humanURL: https://www.medplum.com/docs/bots
-  tags:
-  - Bots
-  - Automation
-  - Serverless
-  - Integration
-  properties:
-  - type: Documentation
-    url: https://www.medplum.com/docs/bots
-  - type: JSONSchema
-    url: json-schema/medplum-bot-schema.json
-  - type: Examples
-    url: examples/medplum-bot-hl7-to-fhir-example.json
-- aid: medplum:medplum-subscriptions
-  name: Medplum Subscriptions
-  description: >-
-    FHIR Subscription resources that match a search criteria and dispatch real-time notifications via
-    REST hooks (webhooks) or Websockets when matching resources are created or updated. Subscriptions
-    are the primary trigger for Bots and external system integrations.
-  humanURL: https://www.medplum.com/docs/subscriptions
-  tags:
-  - Subscription
-  - Webhook
-  - FHIR
-  - Event
-  tags_raw:
-  - Subscriptions
-  - Webhooks
-  - FHIR
-  - Events
-  properties:
-  - type: Documentation
-    url: https://www.medplum.com/docs/subscriptions
-  - type: Examples
-    url: examples/medplum-subscription-webhook-example.json
-- aid: medplum:medplum-fhir-api
-  name: Medplum Fhir API
-  description: The Fhir API from Medplum — 4 operation(s) for fhir.
-  humanURL: https://www.medplum.com/docs/api
-  baseURL: https://api.medplum.com/fhir/R4
-  tags:
-  - FHIR
-  tags_raw:
-  - Fhir
-  properties:
-  - type: OpenAPI
-    url: openapi/medplum-fhir-api-openapi.yml
-  - type: Documentation
-    url: https://www.medplum.com/docs/api
-  - type: APIReference
-    url: https://www.medplum.com/docs/api
-  - type: Authentication
-    url: https://www.medplum.com/docs/auth
-  - type: RateLimits
-    url: https://www.medplum.com/docs/rate-limits
-  - type: MCPServer
-    url: mcp/medplum-mcp.yml
-  - type: ToolCrosswalk
-    url: mcp/medplum-tool-crosswalk.yml
-  - type: Documentation
-    url: https://www.medplum.com/docs/ai/mcp
-  - type: JSONSchema
-    url: json-schema/medplum-patient-schema.json
-  - type: JSONSchema
-    url: json-schema/medplum-observation-schema.json
-  - type: JSONSchema
-    url: json-schema/medplum-encounter-schema.json
-  - type: JSONSchema
-    url: json-schema/medplum-practitioner-schema.json
-  - type: JSONSchema
-    url: json-schema/medplum-organization-schema.json
-  - type: JSONSchema
-    url: json-schema/medplum-condition-schema.json
-  - type: JSONSchema
-    url: json-schema/medplum-medicationrequest-schema.json
-  - type: JSONSchema
-    url: json-schema/medplum-subscription-schema.json
-  - type: JSONStructure
-    url: json-structure/medplum-patient-structure.json
-  - type: Examples
-    url: examples/medplum-patient-create-example.json
-  - type: Examples
-    url: examples/medplum-observation-bloodpressure-example.json
-  - type: Examples
-    url: examples/medplum-subscription-webhook-example.json
+
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com
+
 common:
+- type: Spectral
+  url: rules/medplum-rules.yml
+- type: Spectral
+  url: rules/medplum-jsonschema-spectral-rules.yml
+- type: Hosts
+  url: hosts/medplum-hosts.yml
+- type: Vendors
+  url: vendors/medplum-vendors.yml
 - type: CapabilityMap
   url: capabilities/medplum-capability-edges.yml
   name: Medplum Business Capability Map
@@ -280,6 +195,12 @@ common:
   url: mcp/medplum-tool-crosswalk.yml
 - type: LLMsTxt
   url: llms/medplum-llms.txt
+- type: APICatalog
+  url: well-known/medplum-api-catalog.json
+- type: CapabilityStatement
+  url: fhir/medplum-fhir-r4-capabilitystatement.json
+- type: SMARTConfiguration
+  url: fhir/medplum-smart-configuration.json
 - type: Overlay
   url: overlays/medplum-fhir-api-overlay.yaml
 - type: Conformance
@@ -422,9 +343,125 @@ common:
   - url: arazzo/medplum-upsert-patient-workflow.yml
     name: Medplum Upsert Patient
     summary: "Search for a Patient by identifier and update it if found, otherwise create it."
-maintainers:
-- FN: Kin Lane
-  email: kin@apievangelist.com
+
+apis:
+- aid: medplum:medplum-graphql-api
+  name: Medplum GraphQL API
+  description: >-
+    FHIR-aware GraphQL endpoint at https://api.medplum.com/fhir/R4/$graphql. Supports typed nested queries,
+    reverse-reference traversal (_reference), FHIRPath-style array filtering, and access-policy enforcement
+    at the field level.
+  humanURL: https://www.medplum.com/docs/graphql
+  baseURL: https://api.medplum.com/fhir/R4/$graphql
+  tags:
+  - GraphQL
+  - FHIR
+  - Healthcare
+  properties:
+  - type: Documentation
+    url: https://www.medplum.com/docs/graphql
+  - type: Examples
+    url: examples/medplum-graphql-patient-query-example.json
+  - url: graphql/medplum-graphql.md
+    type: GraphQL
+- aid: medplum:medplum-bots
+  name: Medplum Bots
+  description: >-
+    Bots are TypeScript serverless functions (AWS Lambda-style) executed in response to FHIR Subscriptions,
+    HTTP triggers, or scheduled cron. Bots are the backbone of Medplum integrations — HL7v2 to FHIR conversion,
+    document generation, webhook fan-out, and questionnaire-driven workflow automation.
+  humanURL: https://www.medplum.com/docs/bots
+  tags:
+  - Bots
+  - Automation
+  - Serverless
+  - Integration
+  properties:
+  - type: Documentation
+    url: https://www.medplum.com/docs/bots
+  - type: JSONSchema
+    url: json-schema/medplum-bot-schema.json
+  - type: Examples
+    url: examples/medplum-bot-hl7-to-fhir-example.json
+- aid: medplum:medplum-subscriptions
+  name: Medplum Subscriptions
+  description: >-
+    FHIR Subscription resources that match a search criteria and dispatch real-time notifications via
+    REST hooks (webhooks) or Websockets when matching resources are created or updated. Subscriptions
+    are the primary trigger for Bots and external system integrations.
+  humanURL: https://www.medplum.com/docs/subscriptions
+  tags:
+  - Subscription
+  - Webhook
+  - FHIR
+  - Event
+  tags_raw:
+  - Subscriptions
+  - Webhooks
+  - FHIR
+  - Events
+  properties:
+  - type: Documentation
+    url: https://www.medplum.com/docs/subscriptions
+  - type: Examples
+    url: examples/medplum-subscription-webhook-example.json
+- aid: medplum:medplum-fhir-api
+  name: Medplum Fhir API
+  description: >-
+    Medplum's FHIR R4 REST API, as described by its own OpenAPI (https://api.medplum.com/openapi.json): batch/transaction,
+    search, create (incl. conditional create via If-None-Exist), conditional update (upsert), $validate, read, update,
+    patch, delete and history; OAuth2 / OpenID Connect, bearer and basic security schemes.
+  humanURL: https://www.medplum.com/docs/api
+  baseURL: https://api.medplum.com/fhir/R4
+  tags:
+  - FHIR
+  tags_raw:
+  - Fhir
+  properties:
+  - type: OpenAPI
+    url: openapi/medplum-fhir-api-openapi.yml
+  - type: CapabilityStatement
+    url: fhir/medplum-fhir-r4-capabilitystatement.json
+  - type: SMARTConfiguration
+    url: fhir/medplum-smart-configuration.json
+  - type: Documentation
+    url: https://www.medplum.com/docs/api
+  - type: APIReference
+    url: https://www.medplum.com/docs/api
+  - type: Authentication
+    url: https://www.medplum.com/docs/auth
+  - type: RateLimits
+    url: https://www.medplum.com/docs/rate-limits
+  - type: MCPServer
+    url: mcp/medplum-mcp.yml
+  - type: ToolCrosswalk
+    url: mcp/medplum-tool-crosswalk.yml
+  - type: Documentation
+    url: https://www.medplum.com/docs/ai/mcp
+  - type: JSONSchema
+    url: json-schema/medplum-patient-schema.json
+  - type: JSONSchema
+    url: json-schema/medplum-observation-schema.json
+  - type: JSONSchema
+    url: json-schema/medplum-encounter-schema.json
+  - type: JSONSchema
+    url: json-schema/medplum-practitioner-schema.json
+  - type: JSONSchema
+    url: json-schema/medplum-organization-schema.json
+  - type: JSONSchema
+    url: json-schema/medplum-condition-schema.json
+  - type: JSONSchema
+    url: json-schema/medplum-medicationrequest-schema.json
+  - type: JSONSchema
+    url: json-schema/medplum-subscription-schema.json
+  - type: JSONStructure
+    url: json-structure/medplum-patient-structure.json
+  - type: Examples
+    url: examples/medplum-patient-create-example.json
+  - type: Examples
+    url: examples/medplum-observation-bloodpressure-example.json
+  - type: Examples
+    url: examples/medplum-subscription-webhook-example.json
 
 x-enrichment:
   date: '2026-08-14'

@@ -4,6 +4,7 @@
 # Coverage demoted 2026-10-07 (roadmap#942, PLAN.md Stage A): this file was written by an API Evangelist
 # sweep and names no billing unit, meters or pricing category read from the provider — it restates the
 # FinOps framework. It is `x-coverage: unmeasured`, and the FOCUS alignment it claimed has been removed.
+name: Medplum API FinOps
 x-coverage: unmeasured
 method: generated
 generated: '2026-05-25'

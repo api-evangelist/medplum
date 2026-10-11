@@ -1,16 +1,16 @@
 arazzo: 1.0.1
 info:
   title: Medplum Upsert Patient
-  summary: Search for a Patient by identifier and update it if found, otherwise create it.
+  summary: Update a Patient matched by identifier, or create it, in one FHIR conditional update.
   description: >-
-    A common master-patient-index pattern. The workflow searches the Patient
-    resource type, inspects the returned FHIR Bundle, and branches: when an entry
-    is present it updates the existing Patient by id, and when the Bundle is empty
-    it creates a new Patient. Because the Medplum search operation exposes only
-    the resourceType path parameter, the flow filters on the returned Bundle
-    entries client side rather than via a declared query parameter. Every step
-    spells out its FHIR request inline.
-  version: 1.0.0
+    A common master-patient-index pattern, done in a single call. FHIR conditional
+    update (PUT /fhir/R4/Patient?identifier=...) updates the one Patient that
+    matches the search criteria, or creates it when nothing matches. Medplum's
+    OpenAPI declares it as operationId conditionalUpdate on
+    PUT /fhir/R4/{resourceType} with a form-exploded `criteria` query parameter:
+    200 when a match was updated, 201 when the resource was created, 412 when the
+    criteria match more than one resource (nothing is written).
+  version: 2.0.0
   x-realizes-capability-ids:
   - BC-2900.60
   x-capability-derivation:
@@ -28,16 +28,24 @@ sourceDescriptions:
   type: openapi
 workflows:
 - workflowId: upsert-patient
-  summary: Upsert a Patient resource keyed on the returned search Bundle.
+  summary: Upsert a Patient keyed on a business identifier with FHIR conditional update.
   description: >-
-    Searches the Patient resource type, then either updates the first matched
-    Patient or creates a new one when the search Bundle is empty.
+    Sends PUT /fhir/R4/Patient?identifier=<system>|<value>. Medplum updates the
+    matching Patient (200) or creates a new one (201); multiple matches return 412.
   inputs:
     type: object
     required:
+    - identifierSystem
+    - identifierValue
     - familyName
     - givenName
     properties:
+      identifierSystem:
+        type: string
+        description: The identifier system URI (for example an MRN namespace).
+      identifierValue:
+        type: string
+        description: The identifier value within that system.
       familyName:
         type: string
         description: The patient's family (last) name to write.
@@ -48,85 +56,35 @@ workflows:
         type: string
         description: The patient's date of birth in YYYY-MM-DD form.
   steps:
-  - stepId: findPatient
+  - stepId: upsertPatient
     description: >-
-      Search the Patient resource type. Medplum returns a FHIR Bundle whose
-      entry array holds any matching Patient resources.
-    operationId: search
+      Conditional update of Patient on identifier. The body carries the same
+      identifier so a created Patient matches the criteria next time.
+    operationId: conditionalUpdate
     parameters:
     - name: resourceType
       in: path
       value: Patient
-    successCriteria:
-    - condition: $statusCode == 200
-    outputs:
-      matchedPatientId: $response.body#/entry/0/resource/id
-    onSuccess:
-    - name: patientExists
-      type: goto
-      stepId: updateExisting
-      criteria:
-      - context: $response.body
-        condition: $.entry.length > 0
-        type: jsonpath
-    - name: patientMissing
-      type: goto
-      stepId: createNew
-      criteria:
-      - context: $response.body
-        condition: $.entry.length == 0
-        type: jsonpath
-  - stepId: updateExisting
-    description: >-
-      Replace the matched Patient with the supplied name and birth date. FHIR
-      update is a full resource PUT, so the resource id is echoed in the body.
-    operationId: updateResource
-    parameters:
-    - name: resourceType
-      in: path
-      value: Patient
-    - name: id
-      in: path
-      value: $steps.findPatient.outputs.matchedPatientId
+    - name: criteria
+      in: query
+      value:
+        identifier: '{$inputs.identifierSystem}|{$inputs.identifierValue}'
     requestBody:
       contentType: application/fhir+json
       payload:
         resourceType: Patient
-        id: $steps.findPatient.outputs.matchedPatientId
+        identifier:
+        - system: $inputs.identifierSystem
+          value: $inputs.identifierValue
         name:
         - family: $inputs.familyName
           given:
           - $inputs.givenName
         birthDate: $inputs.birthDate
     successCriteria:
-    - condition: $statusCode == 200
+    - condition: $statusCode == 200 || $statusCode == 201
     outputs:
       patientId: $response.body#/id
-    onSuccess:
-    - name: done
-      type: end
-  - stepId: createNew
-    description: >-
-      Create a new Patient resource when the search Bundle returned no matching
-      entries.
-    operationId: createResource
-    parameters:
-    - name: resourceType
-      in: path
-      value: Patient
-    requestBody:
-      contentType: application/fhir+json
-      payload:
-        resourceType: Patient
-        name:
-        - family: $inputs.familyName
-          given:
-          - $inputs.givenName
-        birthDate: $inputs.birthDate
-    successCriteria:
-    - condition: $statusCode == 201
-    outputs:
-      patientId: $response.body#/id
+      created: $statusCode == 201
   outputs:
-    updatedPatientId: $steps.updateExisting.outputs.patientId
-    createdPatientId: $steps.createNew.outputs.patientId
+    patientId: $steps.upsertPatient.outputs.patientId
