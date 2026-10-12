@@ -1,4 +1,4 @@
-generated: '2026-10-11'
+generated: '2026-10-12'
 method: probed
 source: pre-flight dossier (docs platform, portal detections) + CNAME chains and response headers of the hosts apis.yml names
 registry: all/0-working/vendors.yml
@@ -40,3 +40,4 @@ checked:
 - www.medplum.com (APIReference)
 - status.medplum.com (StatusPage)
 - api.medplum.com (baseURL)
+- api.medplum.com (mcp)

@@ -1,8 +1,11 @@
 ---
-name: Register a patient and record a vital-sign observation
-description: Create a FHIR Patient resource, then create an Observation referencing that patient — the core Medplum intake-to-vitals flow.
+name: medplum-register-patient-with-observation
+description: Create a FHIR Patient resource, then create an Observation referencing
+  that patient — the core Medplum intake-to-vitals flow.
 api: openapi/medplum-fhir-api-openapi.yml
-operations: [createResource]
+operations:
+- createResource
+title: Register a patient and record a vital-sign observation
 ---
 
 # Register a patient and record a vital-sign observation

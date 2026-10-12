@@ -82,6 +82,8 @@ maintainers:
   email: kin@apievangelist.com
 
 common:
+- type: IntegrationEdges
+  url: integrations/medplum-integration-edges.yml
 - type: Spectral
   url: rules/medplum-rules.yml
 - type: Spectral
@@ -462,9 +464,8 @@ apis:
     url: examples/medplum-observation-bloodpressure-example.json
   - type: Examples
     url: examples/medplum-subscription-webhook-example.json
-
 x-enrichment:
-  date: '2026-08-14'
+  date: 2026-10-12
   status: enriched
-  artifacts_added: 19
-  pass: local-v1
+  artifacts_added: 3
+  pass: local-v5

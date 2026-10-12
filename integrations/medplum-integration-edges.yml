@@ -1,0 +1,68 @@
+generated: '2026-10-12'
+method: searched
+source:
+- https://zapier.com/apps/medplum/integrations
+- https://n8n.io/integrations/medplum/
+- https://composio.dev/toolkits/medplum
+- https://monid.ai/tools/medplum
+checked:
+- https://composio.dev/toolkits/medplum
+- https://monid.ai/tools/medplum
+- https://n8n.io/integrations/medplum/
+- https://www.medplum.com/docs/integration
+- https://www.medplum.com/llms.txt
+- https://zapier.com/apps/medplum/integrations
+summary: Medplum documents first-party integrations under the Integrate section of its docs (e-prescribe, labs,
+  billing/RCM, fax, SMS).
+marketplace_apps: []
+edges:
+- partner_name: ScriptSure
+  partner: null
+  type: claimed
+  evidence: https://www.medplum.com/docs/integration
+  marketplace: null
+  direction: provider-built
+  category: e-prescribe
+- partner_name: DoseSpot
+  partner: dosespot
+  type: claimed
+  evidence: https://www.medplum.com/docs/integration
+  marketplace: null
+  direction: provider-built
+  category: e-prescribe
+- partner_name: Health Gorilla
+  partner: health-gorilla
+  type: claimed
+  evidence: https://www.medplum.com/docs/integration
+  marketplace: null
+  direction: provider-built
+  category: labs
+- partner_name: Stedi
+  partner: stedi
+  type: claimed
+  evidence: https://www.medplum.com/docs/integration
+  marketplace: null
+  direction: provider-built
+  category: billing-rcm
+- partner_name: Candid Health
+  partner: candid-health
+  type: claimed
+  evidence: https://www.medplum.com/docs/integration
+  marketplace: null
+  direction: provider-built
+  category: billing-rcm
+- partner_name: eFax
+  partner: null
+  type: claimed
+  evidence: https://www.medplum.com/docs/integration
+  marketplace: null
+  direction: provider-built
+  category: fax
+- partner_name: Twilio
+  partner: twilio
+  type: claimed
+  evidence: https://www.medplum.com/docs/integration
+  marketplace: null
+  direction: provider-built
+  category: sms
+templates: []

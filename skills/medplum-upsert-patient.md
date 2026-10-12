@@ -1,8 +1,13 @@
 ---
-name: Upsert a patient by identifier
-description: Search for a Patient by a business identifier and update it if found, otherwise create it — the safe re-run pattern for integrations.
+name: medplum-upsert-patient
+description: Search for a Patient by a business identifier and update it if found,
+  otherwise create it — the safe re-run pattern for integrations.
 api: openapi/medplum-fhir-api-openapi.yml
-operations: [search, updateResource, createResource]
+operations:
+- search
+- updateResource
+- createResource
+title: Upsert a patient by identifier
 ---
 
 # Upsert a patient by identifier

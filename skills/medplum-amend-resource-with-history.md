@@ -1,8 +1,14 @@
 ---
-name: Amend a resource and inspect its version history
-description: Read a FHIR resource, update it, then read its version history and a specific prior version — the audit-friendly amendment pattern.
+name: medplum-amend-resource-with-history
+description: Read a FHIR resource, update it, then read its version history and a
+  specific prior version — the audit-friendly amendment pattern.
 api: openapi/medplum-fhir-api-openapi.yml
-operations: [readResource, updateResource, readResourceHistory, readVersion]
+operations:
+- readResource
+- updateResource
+- readResourceHistory
+- readVersion
+title: Amend a resource and inspect its version history
 ---
 
 # Amend a resource and inspect its version history

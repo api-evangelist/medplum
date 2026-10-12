@@ -1,4 +1,4 @@
-generated: '2026-10-11'
+generated: '2026-10-12'
 method: derived
 source: the pre-flight dossier, apis.yml pointers, spec servers, well-known, vendors -- nothing fetched here
 generator: derive-hosts.py
@@ -77,6 +77,7 @@ hosts:
   found_by:
   - pointer
   - apis[]
+  - vendor-detect
   types:
   - Website
   - Documentation
@@ -93,6 +94,8 @@ hosts:
   - Deprecation
   serves:
   - docs
+  - cdn
+  vendor: cloudfront
   registrable_domain: medplum.com
   role: website
   relation: own
