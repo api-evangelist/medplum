@@ -7,9 +7,11 @@ source:
 - https://monid.ai/tools/medplum
 checked:
 - https://composio.dev/toolkits/medplum
+- https://lantern.healthit.gov/api/daily/download
 - https://monid.ai/tools/medplum
 - https://n8n.io/integrations/medplum/
 - https://registry.modelcontextprotocol.io/v0/servers
+- https://www.fda.gov/medical-devices/software-medical-device-samd/artificial-intelligence-enabled-medical-devices
 - https://www.medplum.com/docs/integration
 - https://www.medplum.com/llms.txt
 - https://zapier.com/apps/medplum/integrations
@@ -97,4 +99,34 @@ edges:
   - namespace-domain
   detected_by: sweep-agent-tools.py
   first_seen: '2026-10-14'
+- partner_name: ONC Certified Health IT ((g)(10) FHIR API)
+  partner: null
+  partner_match: register
+  type: contract
+  channel: regulator-register
+  relationship: standard-participant
+  direction: partner-built
+  evidence: https://lantern.healthit.gov/api/daily/download
+  category: ONC certified health IT (FHIR API)
+  contract_reference:
+    register: ONC Lantern FHIR endpoint monitor (lantern.healthit.gov daily download, source CHPL)
+    standard: ONC Health IT Certification 170.315(g)(10)
+    spec_file: null
+    role: onc-g10-certified-developer
+    registered_name: Medplum
+    register_id: Medplum
+    matched_domain: medplum.com
+    matched_by: domain
+    domain_source: service-base-url list host
+    list_hosts:
+    - www.medplum.com
+    fhir_versions:
+    - 4.0.1
+    signal_note: 'participation only: Lantern lists developers publishing the service-base-URL list a (g)(10) certification
+      requires, but not the CHPL listing status, so no certified_products / lapsed are claimed; endpoint counts
+      are the developer''s customers, context only, never counted'
+    detected_by: sweep-medtech.py
+    detected: '2026-10-18'
+  detected_by: sweep-medtech.py
+  first_seen: '2026-10-18'
 templates: []
