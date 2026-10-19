@@ -6,11 +6,18 @@ source:
 - https://composio.dev/toolkits/medplum
 - https://monid.ai/tools/medplum
 checked:
+- https://api.nuget.org/v3
 - https://composio.dev/toolkits/medplum
+- https://crates.io/api/v1
 - https://lantern.healthit.gov/api/daily/download
 - https://monid.ai/tools/medplum
 - https://n8n.io/integrations/medplum/
+- https://proxy.golang.org
+- https://pypi.org/pypi
 - https://registry.modelcontextprotocol.io/v0/servers
+- https://registry.npmjs.org
+- https://repo1.maven.org/maven2
+- https://rubygems.org/api/v1
 - https://www.fda.gov/medical-devices/software-medical-device-samd/artificial-intelligence-enabled-medical-devices
 - https://www.medplum.com/docs/integration
 - https://www.medplum.com/llms.txt
@@ -128,5 +135,98 @@ edges:
     detected_by: sweep-medtech.py
     detected: '2026-10-18'
   detected_by: sweep-medtech.py
+  first_seen: '2026-10-18'
+- partner_name: npm registry
+  partner: npm
+  partner_match: register
+  type: register
+  direction: provider-built
+  category: official SDK (JavaScript/TypeScript)
+  evidence: https://www.npmjs.com/package/@medplum/agent
+  channel: package-registry
+  relationship: distribution-channel
+  contract_reference:
+    register: npm registry (public registry JSON)
+    spec_file: null
+    language: JavaScript/TypeScript
+    packages:
+    - name: '@medplum/agent'
+      version: 5.2.6
+      released: '2026-10-17'
+      released_field: modified
+      lapsed: false
+      page: https://www.npmjs.com/package/@medplum/agent
+      repo_leg: domain:medplum.com
+      publisher_leg: email:medplum.com
+      matched_by: domain
+    - name: '@medplum/cli'
+      version: 5.2.6
+      released: '2026-10-17'
+      released_field: modified
+      lapsed: false
+      page: https://www.npmjs.com/package/@medplum/cli
+      repo_leg: domain:medplum.com
+      publisher_leg: email:medplum.com
+      matched_by: domain
+    - name: '@medplum/core'
+      version: 5.2.6
+      released: '2026-10-17'
+      released_field: modified
+      lapsed: false
+      page: https://www.npmjs.com/package/@medplum/core
+      repo_leg: domain:medplum.com
+      publisher_leg: email:medplum.com
+      matched_by: domain
+    - name: '@medplum/definitions'
+      version: 5.2.6
+      released: '2026-10-17'
+      released_field: modified
+      lapsed: false
+      page: https://www.npmjs.com/package/@medplum/definitions
+      repo_leg: domain:medplum.com
+      publisher_leg: email:medplum.com
+      matched_by: domain
+    - name: '@medplum/fhirtypes'
+      version: 5.2.6
+      released: '2026-10-17'
+      released_field: modified
+      lapsed: false
+      page: https://www.npmjs.com/package/@medplum/fhirtypes
+      repo_leg: domain:medplum.com
+      publisher_leg: email:medplum.com
+      matched_by: domain
+    - name: '@medplum/mock'
+      version: 5.2.6
+      released: '2026-10-17'
+      released_field: modified
+      lapsed: false
+      page: https://www.npmjs.com/package/@medplum/mock
+      repo_leg: domain:medplum.com
+      publisher_leg: email:medplum.com
+      matched_by: domain
+    - name: '@medplum/react'
+      version: 5.2.6
+      released: '2026-10-17'
+      released_field: modified
+      lapsed: false
+      page: https://www.npmjs.com/package/@medplum/react
+      repo_leg: domain:medplum.com
+      publisher_leg: email:medplum.com
+      matched_by: domain
+    - name: '@medplum/react-hooks'
+      version: 5.2.6
+      released: '2026-10-17'
+      released_field: modified
+      lapsed: false
+      page: https://www.npmjs.com/package/@medplum/react-hooks
+      repo_leg: domain:medplum.com
+      publisher_leg: email:medplum.com
+      matched_by: domain
+    current: true
+    signal_note: 'an official package on the registry: distribution, not an integration; lapsed = no release in
+      24 months'
+    detected_by: sweep-official-sdks.py
+    detected: '2026-10-18'
+  detected_by: sweep-official-sdks.py
   first_seen: '2026-10-18'
 templates: []
