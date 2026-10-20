@@ -7,13 +7,8 @@ source:
 - https://monid.ai/tools/medplum
 checked:
 - https://api.nuget.org/v3
-- https://cdn.winget.microsoft.com/cache
 - https://composio.dev/toolkits/medplum
 - https://crates.io/api/v1
-- https://formulae.brew.sh/api/cask.json
-- https://formulae.brew.sh/api/formula.json
-- https://github.com/ScoopInstaller/Extras
-- https://github.com/ScoopInstaller/Main
 - https://lantern.healthit.gov/api/daily/download
 - https://monid.ai/tools/medplum
 - https://n8n.io/integrations/medplum/
@@ -27,6 +22,17 @@ checked:
 - https://www.medplum.com/docs/integration
 - https://www.medplum.com/llms.txt
 - https://zapier.com/apps/medplum/integrations
+- https://cdn.winget.microsoft.com/cache
+- https://formulae.brew.sh/api/cask.json
+- https://formulae.brew.sh/api/formula.json
+- https://github.com/ScoopInstaller/Extras
+- https://github.com/ScoopInstaller/Main
+- https://api.github.com
+- https://claude-plugins.dev/sitemap.xml
+- https://github.com/VoltAgent/awesome-agent-skills
+- https://officialskills.sh/sitemap.xml
+- https://skillsmp.com/sitemap.xml
+- https://www.skills.sh/sitemap.xml
 summary: Medplum documents first-party integrations under the Integrate section of its docs (e-prescribe, labs,
   billing/RCM, fax, SMS).
 marketplace_apps: []
@@ -173,6 +179,37 @@ edges:
     detected: '2026-10-18'
   detected_by: sweep-official-sdks.py
   first_seen: '2026-10-18'
+- partner_name: MCP Registry
+  partner: mcp
+  partner_match: register
+  type: register
+  channel: standard-directory
+  relationship: standard-participant
+  direction: partner-built
+  evidence: https://registry.modelcontextprotocol.io/v0/servers?search=com.medplum
+  contract_reference:
+    register: registry.modelcontextprotocol.io
+    spec_file: null
+    role: mcp-server-listing
+    registered_name: com.medplum/mcp
+    register_id: com.medplum/mcp
+    detected_by: sweep-agent-tools.py
+    detected: '2026-10-19'
+  mcp_registry:
+    servers:
+    - com.medplum/mcp
+    hosted_remote: 1
+    local_package: 0
+    transports:
+      streamable-http: 1
+    auth_declared: 0
+    catalog_declared: true
+    namespace_domains:
+    - medplum.com
+  matched_by:
+  - namespace-domain
+  detected_by: sweep-agent-tools.py
+  first_seen: '2026-10-14'
 - partner_name: ONC Certified Health IT ((g)(10) FHIR API)
   partner: null
   partner_match: register
@@ -233,35 +270,34 @@ edges:
     detected: '2026-10-20'
   detected_by: sweep-official-clis.py
   first_seen: '2026-10-20'
-- partner_name: MCP Registry
-  partner: mcp
+- partner_name: SkillsMP (skillsmp.com)
+  partner: null
   partner_match: register
   type: register
-  channel: standard-directory
-  relationship: standard-participant
   direction: partner-built
-  evidence: https://registry.modelcontextprotocol.io/v0/servers?search=com.medplum
+  category: Agent Skills register
+  evidence: https://skillsmp.com/creators/medplum
+  channel: standard-directory
+  relationship: compatible
+  shape: agent-skills
+  evidence_kind: register-listing
+  degree: listed
+  report_only: true
+  agent_skills_register:
+    repos:
+    - medplum
+    repo_verified: false
+    signal_note: the provider's own-org repos the register lists; skill / install counts never read
   contract_reference:
-    register: registry.modelcontextprotocol.io
+    register: SkillsMP (skillsmp.com) (public sitemap / list)
     spec_file: null
-    role: mcp-server-listing
-    registered_name: com.medplum/mcp
-    register_id: com.medplum/mcp
-    detected_by: sweep-agent-tools.py
-    detected: '2026-10-15'
-  mcp_registry:
-    servers:
-    - com.medplum/mcp
-    hosted_remote: 1
-    local_package: 0
-    transports:
-      streamable-http: 1
-    auth_declared: 0
-    catalog_declared: true
-    namespace_domains:
-    - medplum.com
-  matched_by:
-  - namespace-domain
-  detected_by: sweep-agent-tools.py
-  first_seen: '2026-10-14'
+    standard: Agent Skills (agentskills.io)
+    role: agent-skills-listing
+    matched_org: medplum
+    matched_by: org-profile-domain:medplum.com
+    sample_skills: []
+    detected_by: sweep-agent-skills.py
+    detected: '2026-10-20'
+  detected_by: sweep-agent-skills.py
+  first_seen: '2026-10-20'
 templates: []
