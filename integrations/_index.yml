@@ -235,3 +235,39 @@
     detected: '2026-10-20'
   status: not-a-workflow
   arazzo: null
+- slug: medplum-openssf-best-practices-badge
+  label: OpenSSF Best Practices Badge
+  partner_name: OpenSSF Best Practices Badge
+  category: OpenSSF Best Practices badge (open-source project security conformance)
+  type: register
+  channel: standard-directory
+  evidence: https://www.bestpractices.dev/en/projects/10900
+  source: edge
+  relationship: standard-participant
+  contract_reference:
+    register: OpenSSF Best Practices badge projects (bestpractices.dev/en/projects.json, paged)
+    standard: OpenSSF Best Practices Badge criteria (formerly CII Best Practices; bestpractices.dev)
+    spec_file: null
+    role: badge-holder
+    registered_name: Medplum
+    matched_by: github-org
+    matched_on: medplum
+    certified_products:
+    - product: open-source project
+      product_type: open-source project
+      standard: OpenSSF Best Practices Badge criteria (formerly CII Best Practices; bestpractices.dev)
+      lapsed: false
+      partner_tier: gold
+      projects:
+      - name: Medplum
+        id: 10900
+        url: https://www.bestpractices.dev/en/projects/10900
+        badge_level: gold
+    signal_note: 'certified_products = ONE entry (product type: open-source project) with the highest CURRENT badge
+      level in partner_tier; a provider whose projects only lost the badge is lapsed: true; project names are context,
+      never counted; in_progress entries are not conformance'
+    detected_by: sweep-openssf-best-practices-badges.py
+    detected: '2026-10-22'
+    identity_source: apis.yml GitHubOrganization pointer (provider's own declaration)
+  status: not-a-workflow
+  arazzo: null
