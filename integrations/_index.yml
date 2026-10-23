@@ -235,39 +235,39 @@
     detected: '2026-10-20'
   status: not-a-workflow
   arazzo: null
-- slug: medplum-openssf-best-practices-badge
-  label: OpenSSF Best Practices Badge
-  partner_name: OpenSSF Best Practices Badge
-  category: OpenSSF Best Practices badge (open-source project security conformance)
+- slug: medplum-openssf-best-practices-badge-bestpractices-dev
+  label: OpenSSF Best Practices Badge (bestpractices.dev)
+  partner_name: OpenSSF Best Practices Badge (bestpractices.dev)
+  category: OpenSSF Best Practices badge (open-source project security practices)
   type: register
   channel: standard-directory
   evidence: https://www.bestpractices.dev/en/projects/10900
   source: edge
   relationship: standard-participant
   contract_reference:
-    register: OpenSSF Best Practices badge projects (bestpractices.dev/en/projects.json, paged)
-    standard: OpenSSF Best Practices Badge criteria (formerly CII Best Practices; bestpractices.dev)
+    register: OpenSSF Best Practices Badge projects (www.bestpractices.dev/en/projects.json)
+    standard: OpenSSF Best Practices Badge criteria (passing / silver / gold)
     spec_file: null
-    role: badge-holder
+    role: badged-project-owner
     registered_name: Medplum
-    matched_by: github-org
-    matched_on: medplum
+    matched_domain: medplum.com
+    matched_by: domain
     certified_products:
     - product: open-source project
       product_type: open-source project
-      standard: OpenSSF Best Practices Badge criteria (formerly CII Best Practices; bestpractices.dev)
-      lapsed: false
+      standard: OpenSSF Best Practices Badge criteria (passing / silver / gold)
       partner_tier: gold
-      projects:
-      - name: Medplum
-        id: 10900
-        url: https://www.bestpractices.dev/en/projects/10900
-        badge_level: gold
-    signal_note: 'certified_products = ONE entry (product type: open-source project) with the highest CURRENT badge
-      level in partner_tier; a provider whose projects only lost the badge is lapsed: true; project names are context,
-      never counted; in_progress entries are not conformance'
+      lapsed: false
+      badge_date: '2025-08-05'
+    badged_projects:
+    - name: Medplum
+      id: 10900
+      badge: gold
+      url: https://www.bestpractices.dev/en/projects/10900
+    signal_note: 'certified_products = ONE entry per provider (product type open-source project): highest current
+      OpenSSF Best Practices badge level in partner_tier, earliest date at that level; lapsed: true when every linked
+      project lost its badge. badged_projects is context, never counted'
     detected_by: sweep-openssf-best-practices-badges.py
     detected: '2026-10-22'
-    identity_source: apis.yml GitHubOrganization pointer (provider's own declaration)
   status: not-a-workflow
   arazzo: null
