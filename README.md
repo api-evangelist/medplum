@@ -1,4 +1,4 @@
-# Medplum (medplum)
+# Medplum
 
 <!-- API-EVANGELIST-PROVENANCE:BEGIN -->
 > ### About this repository
@@ -64,139 +64,228 @@
 > Full detail: **[Where this data comes from](https://apievangelist.com/about/where-our-data-comes-from)**
 <!-- API-EVANGELIST-PROVENANCE:END -->
 
-Medplum is an Apache 2.0 open-source, FHIR-native developer platform for shipping clinical software. It bundles a FHIR R4 datastore, REST and GraphQL APIs, a TypeScript SDK, React component library, OAuth 2.0 / SMART on FHIR authentication, declarative Access Policies, Subscriptions, and TypeScript-based serverless Bots — sold as a hosted service at `api.medplum.com` and as a self-hostable monorepo on GitHub. Medplum is HIPAA, SOC 2 Type II, and ONC-certified.
+Medplum is an Apache 2.0 open-source, FHIR-native developer platform for shipping clinical software. It bundles a FHIR R4 datastore, REST and GraphQL APIs, a TypeScript SDK, React component library, OAuth 2.0 / SMART on FHIR authentication, declarative Access Policies, Subscriptions, and TypeScript-based serverless Bots — sold as a hosted service at api.medplum.com and as a self-hostable monorepo on GitHub. Medplum is HIPAA, SOC 2 Type II, and ONC-certified.
 
-**URL:** [Visit APIs.json URL](https://raw.githubusercontent.com/api-evangelist/medplum/refs/heads/main/apis.yml)
+**Areas:** Healthcare · FHIR · Open Source · Developer Platform · HIPAA · SMART on FHIR · Clinical · Interoperability
 
-## Scope
+## Medplum on APIs.io
 
-- **Type:** Index
-- **License:** Apache 2.0
-- **Governance:** Medplum Inc. (commercial-open-source)
-- **Primary Language:** TypeScript
+Everything profiled for Medplum is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/medplum/](https://apis.io/providers/medplum/)** — or go straight to one of the APIs or properties below.
 
-## Tags
+### APIs (4)
 
-Healthcare, FHIR, Open Source, Developer Platform, HIPAA, SMART on FHIR, Clinical, Interoperability
+- [Medplum GraphQL API](https://apis.io/apis/medplum/medplum-graphql-api/) — FHIR-aware GraphQL endpoint at https://api.medplum.com/fhir/R4/$graphql. Supports typed nested queries, reverse-reference traversal (_reference),…
+- [Medplum Bots](https://apis.io/apis/medplum/medplum-bots/) — Bots are TypeScript serverless functions (AWS Lambda-style) executed in response to FHIR Subscriptions, HTTP triggers, or scheduled cron. Bots are the…
+- [Medplum Subscriptions](https://apis.io/apis/medplum/medplum-subscriptions/) — FHIR Subscription resources that match a search criteria and dispatch real-time notifications via REST hooks (webhooks) or Websockets when matching…
+- [Medplum Fhir API](https://apis.io/apis/medplum/medplum-fhir-api/) — Medplum's FHIR R4 REST API, as described by its own OpenAPI (https://api.medplum.com/openapi.json): batch/transaction, search, create (incl. conditional…
 
-## Timestamps
+### Published properties
 
-- **Created:** 2026-05-25
-- **Modified:** 2026-05-25
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
 
-## APIs
+#### Arazzo workflows (11)
 
-### Medplum FHIR REST API
+Multi-step workflows that chain operations into a business task.
 
-FHIR R4 REST API exposed at `https://api.medplum.com/fhir/R4`. Supports the full generic FHIR resource surface — create, read, update, patch, delete, search, history, and version-read — across every FHIR R4 resource type, with US Core, SMART App Launch, and Bulk Data 2.0 conformance.
+- [Medplum Amend Resource With History](https://apis.io/arazzos/medplum/medplum-amend-resource-with-history-workflow/)
+- [Medplum Clinical Data Query](https://apis.io/arazzos/medplum/medplum-clinical-data-query-workflow/)
+- [Medplum Create Diagnostic Report](https://apis.io/arazzos/medplum/medplum-create-diagnostic-report-workflow/)
+- [Medplum Deploy Bot](https://apis.io/arazzos/medplum/medplum-deploy-and-run-bot-workflow/)
+- [Medplum FHIR Resource CRUD](https://apis.io/arazzos/medplum/medplum-fhir-resource-crud-workflow/)
+- [Medplum Finalize Observation](https://apis.io/arazzos/medplum/medplum-finalize-observation-workflow/)
+- [Medplum Find And Delete Resource](https://apis.io/arazzos/medplum/medplum-find-and-delete-resource-workflow/)
+- [Medplum Register Patient With Observation](https://apis.io/arazzos/medplum/medplum-register-patient-with-observation-workflow/)
+- [Medplum FHIR Resource Versioning](https://apis.io/arazzos/medplum/medplum-resource-versioning-workflow/)
+- [Medplum Schedule Encounter](https://apis.io/arazzos/medplum/medplum-schedule-encounter-workflow/)
+- [Medplum Upsert Patient](https://apis.io/arazzos/medplum/medplum-upsert-patient-workflow/)
 
-- **Human URL:** [https://www.medplum.com/docs/api](https://www.medplum.com/docs/api)
-- **Base URL:** `https://api.medplum.com/fhir/R4`
+#### AsyncAPI (1)
 
-#### Properties
+Event-driven and webhook contracts.
 
-- [Documentation](https://www.medplum.com/docs/api)
-- [APIReference](https://www.medplum.com/docs/api)
-- [OpenAPI](openapi/medplum-openapi-original.yml)
-- [Authentication](https://www.medplum.com/docs/auth)
-- [RateLimits](https://www.medplum.com/docs/rate-limits)
-- JSON Schema: [Patient](json-schema/medplum-patient-schema.json), [Observation](json-schema/medplum-observation-schema.json), [Encounter](json-schema/medplum-encounter-schema.json), [Practitioner](json-schema/medplum-practitioner-schema.json), [Organization](json-schema/medplum-organization-schema.json), [Condition](json-schema/medplum-condition-schema.json), [MedicationRequest](json-schema/medplum-medicationrequest-schema.json), [Subscription](json-schema/medplum-subscription-schema.json)
-- JSON Structure: [Patient](json-structure/medplum-patient-structure.json)
-- Examples: [Create Patient](examples/medplum-patient-create-example.json), [Blood Pressure Observation](examples/medplum-observation-bloodpressure-example.json), [Subscription Webhook](examples/medplum-subscription-webhook-example.json)
-- Naftiko Capability: [medplum-fhir-rest.yaml](capabilities/medplum-fhir-rest.yaml)
+- [Medplum Webhooks](https://apis.io/asyncapis/medplum/medplum-webhooks/)
 
-### Medplum GraphQL API
+#### GraphQL (1)
 
-FHIR-aware GraphQL endpoint at `https://api.medplum.com/fhir/R4/$graphql`. Supports typed nested queries, reverse-reference traversal (`_reference`), FHIRPath-style array filtering, and access-policy enforcement at the field level.
+GraphQL schemas.
 
-- **Human URL:** [https://www.medplum.com/docs/graphql](https://www.medplum.com/docs/graphql)
-- **Base URL:** `https://api.medplum.com/fhir/R4/$graphql`
+- [Medplum GraphQL API](https://apis.io/graphqls/medplum/medplum-graphql/)
 
-#### Properties
+#### MCP servers (1)
 
-- [Documentation](https://www.medplum.com/docs/graphql)
-- Example: [Patient query](examples/medplum-graphql-patient-query-example.json)
-- Naftiko Capability: [medplum-graphql.yaml](capabilities/medplum-graphql.yaml)
+Model Context Protocol servers that expose the API to agents.
 
-### Medplum Bots
+- [Medplum MCP Server](https://apis.io/servers/medplum/medplum-mcp-server/)
 
-TypeScript serverless functions (AWS Lambda-style) executed in response to FHIR Subscriptions, HTTP triggers, or scheduled cron. Bots are the backbone of Medplum integrations — HL7v2 to FHIR conversion, document generation, webhook fan-out, and questionnaire-driven workflow automation.
+#### Agentic access (1)
 
-- **Human URL:** [https://www.medplum.com/docs/bots](https://www.medplum.com/docs/bots)
+Which operations an agent can call, which act, and which need a human in the loop.
 
-#### Properties
+- [Medplum Agentic Access](https://apis.io/agentic-access/medplum/medplum-agentic-access/)
 
-- [Documentation](https://www.medplum.com/docs/bots)
-- [JSON Schema (Bot)](json-schema/medplum-bot-schema.json)
-- Example: [HL7v2 to FHIR Bot](examples/medplum-bot-hl7-to-fhir-example.json)
-- Naftiko Capability: [medplum-bots.yaml](capabilities/medplum-bots.yaml)
+#### JSON Schema (9)
 
-### Medplum Subscriptions
+The data models the API reads and writes.
 
-FHIR Subscription resources that match search criteria and dispatch real-time notifications via REST hooks (webhooks) or Websockets when matching resources change. Subscriptions are the primary trigger for Bots and external system integrations.
+- [Bot](https://apis.io/schemas/medplum/medplum-bot/)
+- [Condition](https://apis.io/schemas/medplum/medplum-condition/)
+- [Encounter](https://apis.io/schemas/medplum/medplum-encounter/)
+- [MedicationRequest](https://apis.io/schemas/medplum/medplum-medicationrequest/)
+- [Observation](https://apis.io/schemas/medplum/medplum-observation/)
+- [Organization](https://apis.io/schemas/medplum/medplum-organization/)
+- [Patient](https://apis.io/schemas/medplum/medplum-patient/)
+- [Practitioner](https://apis.io/schemas/medplum/medplum-practitioner/)
+- [Subscription](https://apis.io/schemas/medplum/medplum-subscription/)
 
-- **Human URL:** [https://www.medplum.com/docs/subscriptions](https://www.medplum.com/docs/subscriptions)
+#### JSON Structure (1)
 
-#### Properties
+Data models expressed in JSON Structure.
 
-- [Documentation](https://www.medplum.com/docs/subscriptions)
-- Example: [Subscription Webhook](examples/medplum-subscription-webhook-example.json)
+- [Medplum Patient Structure](https://apis.io/json-structure/medplum/medplum-patient-structure/)
 
-## Common Properties
+#### JSON-LD (1)
+
+Linked-data contexts for the provider's vocabulary.
+
+- [Medplum Context](https://apis.io/jsonld/medplum/medplum-context/)
+
+#### Vocabulary (1)
+
+The provider's domain terms, defined.
+
+- [Medplum Vocabulary](https://apis.io/vocabularies/medplum/medplum-vocabulary/)
+
+#### Examples (5)
+
+Example requests and responses.
+
+- [Medplum Bot Hl7 To Fhir Example](https://apis.io/examples/medplum/medplum-bot-hl7-to-fhir-example/)
+- [Medplum Graphql Patient Query Example](https://apis.io/examples/medplum/medplum-graphql-patient-query-example/)
+- [Medplum Observation Bloodpressure Example](https://apis.io/examples/medplum/medplum-observation-bloodpressure-example/)
+- [Medplum Patient Create Example](https://apis.io/examples/medplum/medplum-patient-create-example/)
+- [Medplum Subscription Webhook Example](https://apis.io/examples/medplum/medplum-subscription-webhook-example/)
+
+#### Collections (2)
+
+Postman and Open Collection request collections.
+
+- [Medplum - OpenAPI 3.0 Fhir API](https://apis.io/collections/medplum/open-medplum-fhir-api/)
+- [Medplum - OpenAPI 3.0](https://apis.io/collections/medplum/postman-medplum-openapi-original/)
+
+#### Overlays (2)
+
+OpenAPI overlays, including conversational phrasing for each operation.
+
+- [Medplum Fhir Api Overlay](https://apis.io/overlays/medplum/medplum-fhir-api-overlay/)
+- [Medplum Fhir Api Phrasing Overlay](https://apis.io/overlays/medplum/medplum-fhir-api-phrasing-overlay/)
+
+#### Governance rules (2)
+
+Spectral rulesets for the provider's contracts.
+
+- [Medplum — jsonschema rules](https://apis.io/rules/medplum/medplum-jsonschema-spectral-rules/)
+- [Medplum API Rules](https://apis.io/rules/medplum/medplum-rules/)
+
+#### Security (4)
+
+Authentication, trust centre, and vulnerability disclosure.
+
+- [Medplum Authentication](https://apis.io/security/medplum/medplum-authentication/)
+- [Medplum Domain Security](https://apis.io/security/medplum/medplum-domain-security/)
+- [Medplum Trust Center](https://apis.io/security/medplum/medplum-trust-center/)
+- [Medplum Vulnerability Disclosure](https://apis.io/security/medplum/medplum-vulnerability-disclosure/)
+
+#### OAuth scopes (1)
+
+The permissions the API asks for.
+
+- [Medplum Scopes](https://apis.io/scopes/medplum/medplum-scopes/)
+
+#### Plans and pricing (1)
+
+Published plans, tiers and prices.
+
+- [Medplum Plans Pricing](https://apis.io/plans/medplum/medplum-plans-pricing/)
+
+#### Rate limits (1)
+
+Published request limits.
+
+- [Medplum Rate Limits](https://apis.io/rate-limits/medplum/medplum-rate-limits/)
+
+#### FinOps (1)
+
+What the API costs to run, by operation.
+
+- [Medplum Finops](https://apis.io/finops/medplum/medplum-finops/)
+
+## Where to find this API
+
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
 
 - [Website](https://www.medplum.com)
 - [Documentation](https://www.medplum.com/docs)
-- [Getting Started](https://www.medplum.com/docs/tutorials)
-- [API Reference](https://www.medplum.com/docs/api)
-- [Authentication](https://www.medplum.com/docs/auth)
-- SDK: [@medplum/core](https://www.npmjs.com/package/@medplum/core), [@medplum/react](https://www.npmjs.com/package/@medplum/react), [Core SDK docs](https://www.medplum.com/docs/sdk/core)
-- [CLI](https://www.medplum.com/docs/cli)
-- [Console](https://app.medplum.com)
+- [Getting started](https://www.medplum.com/docs/tutorials)
+- [API reference](https://www.medplum.com/docs/api)
 - [Pricing](https://www.medplum.com/pricing)
-- [Terms of Service](https://www.medplum.com/terms)
-- [Privacy Policy](https://www.medplum.com/privacy)
 - [Blog](https://www.medplum.com/blog)
-- [GitHub Organization](https://github.com/medplum)
-- [GitHub Repository](https://github.com/medplum/medplum)
-- [Discord](https://discord.gg/medplum)
-- [License (Apache 2.0)](https://www.apache.org/licenses/LICENSE-2.0)
-- [Spectral Rules](rules/medplum-rules.yml)
-- [Vocabulary](vocabulary/medplum-vocabulary.yml)
-- [JSON-LD Context](json-ld/medplum-context.jsonld)
-- [Plans & Pricing](plans/medplum-plans-pricing.yml)
-- [Rate Limits](rate-limits/medplum-rate-limits.yml)
-- [FinOps](finops/medplum-finops.yml)
+- [Compliance](https://www.medplum.com/docs/compliance)
+- [Terms of service](https://www.medplum.com/terms)
+- [Privacy policy](https://www.medplum.com/privacy)
+- [GitHub](https://github.com/medplum)
+- [Status](https://status.medplum.com)
 
-## Features
+## API Evangelist rating
 
-- **FHIR-Native Datastore** — PostgreSQL-backed datastore that natively models FHIR R4 resources, including search, history, and versioning.
-- **REST + GraphQL APIs** — Dual API surface sharing the same authorization, schema, and access policies.
-- **Bots** — AWS Lambda-style TypeScript functions executed by Subscriptions, HTTP, or cron; the integration backbone of Medplum.
-- **Subscriptions** — FHIR Subscription resources dispatch real-time notifications when matching resources change.
-- **Access Policies** — Declarative resource- and field-level authorization rules attached to ProjectMembership.
-- **SMART on FHIR + OAuth 2.0** — Standards-based authentication; supports SMART App Launch 2.0.0 and Bulk Data 2.0.0.
-- **TypeScript SDK and React Components** — `@medplum/core`, `@medplum/react`, `@medplum/react-hooks`.
-- **On-Premise Agent** — Bridges local clinical systems (HL7v2, DICOM, MLLP) to Medplum cloud.
-- **AWS CDK Deployment** — First-class CDK constructs for self-hosting on AWS.
+**Kin Score 71.7** — exemplar · rubric 0.25.0 · scored 2026-10-23
 
-## Use Cases
+| Facet | Score |
+|---|---|
+| Discoverability | 66.7 |
+| Contract quality | 74.1 |
+| Contract governance | 35.6 |
+| Operational transparency | 73.7 |
+| Developer ergonomics | 74.4 |
+| Access clarity | 55.3 |
 
-- Custom EHR development
-- Patient engagement portals
-- AI scribe and clinical documentation
-- HL7v2 to FHIR integration
-- Population health and analytics
-- Care management workflows
-- Revenue cycle automation
+**Agent readiness 55.8** — agent-ready (gated down from agent-native)
 
-## Integrations
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | yes |
+| Agentic Access | derived (partial credit) |
+| Reversibility Documented | — |
+| MCP Server | documented (partial credit) |
+| Auth Clarity | served (partial credit) |
+| Idempotency | documented (partial credit) |
+| Error Semantics | verified |
+| OpenAPI Examples | documented (partial credit) |
+| Rate Limit Signal | documented (partial credit) |
+| Event Surface Described | yes |
+| Agent Skills | derived (partial credit) |
+| Well Known Catalog | — |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | — |
+| Delegated Identity | served (partial credit) |
+| Protected Resource Metadata | verified |
+| Dynamic Client Registration | yes |
+| Agentic Commerce | — |
+| Pagination Ratio | na |
+| Operation Distinctiveness | distinct |
 
-AWS, HL7v2, FHIRcast, Stripe, Twilio, DocuSeal / DocuSign, SendGrid / Mailgun, AWS HealthLake.
+**Regulatory alignment 57.8** — Health
 
-## Solutions
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/medplum/](https://apis.io/providers/medplum/).
 
-Custom EHR, Patient Portal, Provider Portal, AI-Powered Clinical Scribe, Population Health Platform, Revenue Cycle Management.
+## How this profile is made
 
-## Maintainers
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
 
-- **Kin Lane** — kin@apievangelist.com
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for Medplum: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/medplum/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
